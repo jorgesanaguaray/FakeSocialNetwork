@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/mLoginNavigation">
+
+    <fragment
+        android:id="@+id/mLoginNavigation"
+        android:name="com.jorgesanaguaray.fakesocialnetwork.login.presentation.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login">
+
+        <action
+            android:id="@+id/action_mLoginNavigation_to_mRegisterNavigation"
+            app:destination="@id/mRegisterNavigation"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/mRegisterNavigation"
+        android:name="com.jorgesanaguaray.fakesocialnetwork.register.presentation.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register"/>
+
+</navigation>

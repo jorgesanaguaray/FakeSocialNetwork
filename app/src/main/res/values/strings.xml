@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Fake Social Network</string>
+    <string name="do_not_have_an_account_yet_sign_up">Do not have an account yet? Sign up</string>
+    <string name="username">username</string>
+    <string name="name">Name</string>
+    <string name="password">Password</string>
+    <string name="sign_up">Sign up</string>
+    <string name="enter_a_username">Enter a username</string>
+    <string name="enter_a_name">Enter a name</string>
+    <string name="enter_a_password">Enter a password</string>
+    <string name="password_must_be_8_or_more_characters">Password must be 8 or more characters</string>
+    <string name="username_not_available_try_another">Username not available try another</string>
 </resources>
