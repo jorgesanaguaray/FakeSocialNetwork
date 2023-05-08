@@ -18,4 +18,7 @@ interface UserDao {
     @Query("SELECT * FROM user_table WHERE username = :username LIMIT 1")
     suspend fun getUserByUsername(username: String): UserEntity?
 
+    @Query("SELECT * FROM user_table WHERE username = :username AND password = :password")
+    suspend fun getUserByUsernameAndPassword(username: String, password: String): UserEntity?
+
 }

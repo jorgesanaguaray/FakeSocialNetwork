@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import com.jorgesanaguaray.fakesocialnetwork.R
@@ -58,8 +59,8 @@ class RegisterFragment : Fragment() {
                     binding.mEditTextPassword.error = resources.getString(R.string.enter_a_password)
                 }
 
-                binding.mEditTextPassword.text.toString().length < 8 -> {
-                    binding.mEditTextPassword.error = resources.getString(R.string.password_must_be_8_or_more_characters)
+                binding.mEditTextPassword.text.toString().length < 6 -> {
+                    binding.mEditTextPassword.error = resources.getString(R.string.password_must_be_6_or_more_characters)
                 }
 
                 else -> {
@@ -91,11 +92,12 @@ class RegisterFragment : Fragment() {
         val user = User(
             id = null,
             username = binding.mEditTextUsername.text.toString(),
-            name = binding.mEditTextName.text.toString(),
+            name = binding.mEditTextName.text.toString().trim(),
             password = binding.mEditTextPassword.text.toString()
         )
 
         registerViewModel.insertUser(user)
+        Toast.makeText(context, "The user has been successfully registered.", Toast.LENGTH_SHORT).show()
 
     }
 

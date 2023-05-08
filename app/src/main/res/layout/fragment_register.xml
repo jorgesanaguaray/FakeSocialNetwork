@@ -10,6 +10,14 @@
     android:padding="16dp"
     tools:context=".register.presentation.RegisterFragment">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="12dp"
+        android:text="@string/sign_up"
+        android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"/>
+
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textFilter"
-            android:digits="abcdefghijklmnopqrstuvwxyz123456789._"
+            android:digits="abcdefghijklmnopqrstuvwxyz0123456789._"
             android:maxLength="30"
             android:textAppearance="?attr/textAppearanceSubtitle1"/>
 
@@ -64,6 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
+            android:digits="abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789+×÷=/_!@#$%*-?\|¡¿"
             android:maxLength="12"
             android:textAppearance="?attr/textAppearanceSubtitle1"/>
 
