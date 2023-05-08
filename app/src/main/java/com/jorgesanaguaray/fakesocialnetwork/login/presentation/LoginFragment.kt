@@ -1,5 +1,6 @@
 package com.jorgesanaguaray.fakesocialnetwork.login.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import com.jorgesanaguaray.fakesocialnetwork.R
+import com.jorgesanaguaray.fakesocialnetwork.SecondActivity
 import com.jorgesanaguaray.fakesocialnetwork.databinding.FragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -89,7 +91,10 @@ class LoginFragment : Fragment() {
         )
 
         if (result) {
+
+            startActivity(Intent(context, SecondActivity::class.java))
             Toast.makeText(context, "Login successful.", Toast.LENGTH_SHORT).show()
+
         } else {
             showLoginFailedDialog()
         }

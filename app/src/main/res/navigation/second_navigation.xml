@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/mHomeNavigation">
+
+    <fragment
+        android:id="@+id/mHomeNavigation"
+        android:name="com.jorgesanaguaray.fakesocialnetwork.home.presentation.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home"/>
+
+    <fragment
+        android:id="@+id/mProfileNavigation"
+        android:name="com.jorgesanaguaray.fakesocialnetwork.profile.presentation.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile"/>
+
+</navigation>

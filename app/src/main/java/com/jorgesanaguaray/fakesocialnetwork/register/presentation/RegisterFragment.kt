@@ -1,5 +1,6 @@
 package com.jorgesanaguaray.fakesocialnetwork.register.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.fragment.app.Fragment
@@ -10,6 +11,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import com.jorgesanaguaray.fakesocialnetwork.R
+import com.jorgesanaguaray.fakesocialnetwork.SecondActivity
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.User
 import com.jorgesanaguaray.fakesocialnetwork.databinding.FragmentRegisterBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -97,6 +99,7 @@ class RegisterFragment : Fragment() {
         )
 
         registerViewModel.insertUser(user)
+        startActivity(Intent(context, SecondActivity::class.java))
         Toast.makeText(context, "The user has been successfully registered.", Toast.LENGTH_SHORT).show()
 
     }
