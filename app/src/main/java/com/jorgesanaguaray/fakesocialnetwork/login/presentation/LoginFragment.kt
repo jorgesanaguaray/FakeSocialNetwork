@@ -1,5 +1,6 @@
 package com.jorgesanaguaray.fakesocialnetwork.login.presentation
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -35,7 +36,7 @@ class LoginFragment : Fragment() {
         
         loginViewModel = ViewModelProvider(this).get()
 
-        signInClick()
+        logInClick()
         signUpClick()
 
     }
@@ -45,9 +46,9 @@ class LoginFragment : Fragment() {
         _binding = null
     }
     
-    private fun signInClick() {
+    private fun logInClick() {
         
-        binding.mSignIn.setOnClickListener {
+        binding.mLogIn.setOnClickListener {
 
             when {
 
@@ -92,13 +93,24 @@ class LoginFragment : Fragment() {
 
         if (result) {
 
+            saveLoginInfo()
             startActivity(Intent(context, SecondActivity::class.java))
-            Toast.makeText(context, "Login successful.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Log in successful.", Toast.LENGTH_SHORT).show()
 
         } else {
             showLoginFailedDialog()
         }
         
+    }
+
+    private fun saveLoginInfo() {
+
+        val sharedPreferences = activity?.getSharedPreferences(getString(R.string.login_info), Context.MODE_PRIVATE)
+        val editor = sharedPreferences!!.edit()
+        editor.putString("username", binding.mEditTextUsername.text.toString())
+        editor.putString("password", binding.mEditTextPassword.text.toString())
+        editor.apply()
+
     }
 
     private fun showLoginFailedDialog() {

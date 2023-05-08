@@ -1,5 +1,6 @@
 package com.jorgesanaguaray.fakesocialnetwork.register.presentation
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -99,8 +100,19 @@ class RegisterFragment : Fragment() {
         )
 
         registerViewModel.insertUser(user)
+        saveLoginInfo()
         startActivity(Intent(context, SecondActivity::class.java))
         Toast.makeText(context, "The user has been successfully registered.", Toast.LENGTH_SHORT).show()
+
+    }
+
+    private fun saveLoginInfo() {
+
+        val sharedPreferences = activity?.getSharedPreferences(getString(R.string.login_info), Context.MODE_PRIVATE)
+        val editor = sharedPreferences!!.edit()
+        editor.putString("username", binding.mEditTextUsername.text.toString())
+        editor.putString("password", binding.mEditTextPassword.text.toString())
+        editor.apply()
 
     }
 

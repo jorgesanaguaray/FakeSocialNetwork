@@ -4,13 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".profile.presentation.ProfileFragment">
 
     <TextView
+        android:id="@+id/mUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:textSize="28sp"
-        android:text="PROFILE"/>
+        android:text="username"/>
+
+    <Button
+        android:id="@+id/mLogOut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mUsername"
+        android:text="@string/log_out"
+        android:textAppearance="?attr/textAppearanceSubtitle1"/>
 
 </RelativeLayout>
