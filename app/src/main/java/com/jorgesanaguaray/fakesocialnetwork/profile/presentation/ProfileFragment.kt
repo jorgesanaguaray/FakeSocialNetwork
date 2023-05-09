@@ -26,6 +26,7 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        getUserInfo()
         logOutClick()
 
     }
@@ -33,6 +34,15 @@ class ProfileFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun getUserInfo() {
+
+        val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.login_info), Context.MODE_PRIVATE)
+        val username = sharedPreferences.getString("username", "")
+
+        binding.mUsername.text = username
+
     }
 
     private fun logOutClick() {
