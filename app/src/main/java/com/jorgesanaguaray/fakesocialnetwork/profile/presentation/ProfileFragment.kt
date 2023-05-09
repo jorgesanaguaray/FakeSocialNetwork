@@ -1,5 +1,6 @@
 package com.jorgesanaguaray.fakesocialnetwork.profile.presentation
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -7,10 +8,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jorgesanaguaray.fakesocialnetwork.MainActivity
 import com.jorgesanaguaray.fakesocialnetwork.R
+import com.jorgesanaguaray.fakesocialnetwork.databinding.DialogProfileBinding
 import com.jorgesanaguaray.fakesocialnetwork.databinding.FragmentProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
@@ -18,16 +27,40 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var profileViewModel: ProfileViewModel
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onStart() {
+        super.onStart()
 
-        getUserInfo()
-        logOutClick()
+        profileViewModel = ViewModelProvider(this).get()
+
+        val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.login_info), Context.MODE_PRIVATE)
+        val username = sharedPreferences.getString("username", "")
+
+        profileViewModel.getUserByUsername(username!!)
+
+    }
+
+    @SuppressLint("RepeatOnLifecycleWrongUsage")
+    override fun onResume() {
+        super.onResume()
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                profileViewModel.profileState.collect {
+                    setUpViews(it)
+                }
+            }
+        }
+
+        binding.mMenu.setOnClickListener {
+            menuClick()
+        }
 
     }
 
@@ -36,30 +69,46 @@ class ProfileFragment : Fragment() {
         _binding = null
     }
 
-    private fun getUserInfo() {
+    private fun setUpViews(profileState: ProfileState) {
 
-        val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.login_info), Context.MODE_PRIVATE)
-        val username = sharedPreferences.getString("username", "")
+        binding.mUsername.text = profileState.user!!.username
+        binding.mName.text = profileState.user.name
 
-        binding.mUsername.text = username
+    }
+
+    private fun menuClick() {
+
+        val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme)
+        val binding: DialogProfileBinding = DialogProfileBinding.inflate(layoutInflater)
+
+        binding.apply {
+
+            mClose.setOnClickListener {
+                bottomSheetDialog.dismiss()
+            }
+
+            mLogOut.setOnClickListener {
+                logOutClick()
+            }
+
+        }
+
+        bottomSheetDialog.setContentView(binding.root)
+        bottomSheetDialog.show()
 
     }
 
     private fun logOutClick() {
 
-        binding.mLogOut.setOnClickListener {
+        // Delete login info
+        val sharedPref = activity?.getSharedPreferences(getString(R.string.login_info), Context.MODE_PRIVATE)
+        val editor = sharedPref!!.edit()
+        editor.remove("username")
+        editor.remove("password")
+        editor.apply()
 
-            // Delete login info
-            val sharedPref = activity?.getSharedPreferences(getString(R.string.login_info), Context.MODE_PRIVATE)
-            val editor = sharedPref!!.edit()
-            editor.remove("username")
-            editor.remove("password")
-            editor.apply()
-
-            // Go MainActivity
-            startActivity(Intent(context, MainActivity::class.java))
-
-        }
+        // Go MainActivity
+        startActivity(Intent(context, MainActivity::class.java))
 
     }
 
