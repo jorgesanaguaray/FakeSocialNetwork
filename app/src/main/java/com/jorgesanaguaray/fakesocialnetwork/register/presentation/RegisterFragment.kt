@@ -96,7 +96,11 @@ class RegisterFragment : Fragment() {
             id = null,
             username = binding.mEditTextUsername.text.toString(),
             name = binding.mEditTextName.text.toString().trim(),
-            password = binding.mEditTextPassword.text.toString()
+            password = binding.mEditTextPassword.text.toString(),
+            bio = "",
+            link = "",
+            profilePicture = "",
+            isVerified = false
         )
 
         registerViewModel.insertUser(user)

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/mProfileEditNavigation">
+
+    <fragment
+        android:id="@+id/mProfileEditNavigation"
+        android:name="com.jorgesanaguaray.fakesocialnetwork.profileEdit.presentation.ProfileEditFragment"
+        android:label="fragment_profile_edit"
+        tools:layout="@layout/fragment_profile_edit"/>
+
+</navigation>

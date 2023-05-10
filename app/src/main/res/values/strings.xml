@@ -22,4 +22,9 @@
     <string name="posts">Posts</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
+    <string name="save">Save</string>
+    <string name="bio">Bio</string>
+    <string name="link">Link</string>
+    <string name="verified_account">Verified account</string>
+    <string name="user_id">UserId</string>
 </resources>

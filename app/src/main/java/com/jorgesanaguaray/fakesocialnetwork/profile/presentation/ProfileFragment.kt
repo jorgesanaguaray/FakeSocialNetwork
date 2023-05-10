@@ -16,6 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jorgesanaguaray.fakesocialnetwork.MainActivity
 import com.jorgesanaguaray.fakesocialnetwork.R
+import com.jorgesanaguaray.fakesocialnetwork.ThirdActivity
 import com.jorgesanaguaray.fakesocialnetwork.databinding.DialogProfileBinding
 import com.jorgesanaguaray.fakesocialnetwork.databinding.FragmentProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -54,12 +55,17 @@ class ProfileFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 profileViewModel.profileState.collect {
                     setUpViews(it)
+                    saveUserId(it)
                 }
             }
         }
 
         binding.mMenu.setOnClickListener {
             menuClick()
+        }
+
+        binding.mEditProfile.setOnClickListener {
+            startActivity(Intent(context, ThirdActivity::class.java))
         }
 
     }
@@ -109,6 +115,15 @@ class ProfileFragment : Fragment() {
 
         // Go MainActivity
         startActivity(Intent(context, MainActivity::class.java))
+
+    }
+
+    private fun saveUserId(profileState: ProfileState) {
+
+        val sharedPreferences = activity?.getSharedPreferences(getString(R.string.user_id), Context.MODE_PRIVATE)
+        val editor = sharedPreferences!!.edit()
+        editor.putInt("id", profileState.user!!.id!!)
+        editor.apply()
 
     }
 

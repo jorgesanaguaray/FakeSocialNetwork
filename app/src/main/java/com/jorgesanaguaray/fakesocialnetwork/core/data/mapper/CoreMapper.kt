@@ -9,12 +9,12 @@ import com.jorgesanaguaray.fakesocialnetwork.core.domain.User
 
 fun User.toDatabase(): UserEntity {
 
-    return UserEntity(id, username, name, password)
+    return UserEntity(id, username, name, bio, link, password, profilePicture, isVerified)
 
 }
 
 fun UserEntity.toDomain(): User {
 
-    return User(id, username, name, password)
+    return User(id, username, name, bio, link, password, profilePicture, isVerified)
 
 }
