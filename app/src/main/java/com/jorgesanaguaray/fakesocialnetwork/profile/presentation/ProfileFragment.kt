@@ -13,6 +13,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jorgesanaguaray.fakesocialnetwork.MainActivity
 import com.jorgesanaguaray.fakesocialnetwork.R
@@ -77,8 +79,24 @@ class ProfileFragment : Fragment() {
 
     private fun setUpViews(profileState: ProfileState) {
 
-        binding.mUsername.text = profileState.user!!.username
-        binding.mName.text = profileState.user.name
+        binding.apply {
+
+            mUsername.text = profileState.user!!.username
+            mName.text = profileState.user.name
+            mBio.text = profileState.user.bio
+            mLink.text = profileState.user.link
+            mProfilePicture.load(profileState.user.profilePicture) {
+                transformations(CircleCropTransformation())
+                placeholder(R.drawable.ic_profile)
+                error(R.drawable.ic_profile)
+                crossfade(true)
+                crossfade(400)
+            }
+
+            if (profileState.user.isVerified) mVerified.visibility = View.VISIBLE
+            else mVerified.visibility = View.GONE
+
+        }
 
     }
 

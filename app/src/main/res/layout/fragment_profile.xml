@@ -14,16 +14,27 @@
 
         <TextView
             android:id="@+id/mUsername"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toStartOf="@id/mMenu"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:padding="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="4dp"
             android:maxLines="1"
             android:ellipsize="end"
             android:textAppearance="?attr/textAppearanceSearchResultTitle"
             android:textStyle="bold"
             tools:text="username"/>
+
+        <ImageView
+            android:id="@+id/mVerified"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/mUsername"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/app_name"
+            android:visibility="gone"
+            android:src="@drawable/ic_verified"/>
 
         <ImageView
             android:id="@+id/mMenu"
@@ -186,6 +197,16 @@
             android:ellipsize="end"
             android:textAppearance="?attr/textAppearanceSubtitle1"
             tools:text="Bio"/>
+
+        <TextView
+            android:id="@+id/mLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:autoLink="all"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
+            tools:text="Link"/>
 
     </LinearLayout>
 
