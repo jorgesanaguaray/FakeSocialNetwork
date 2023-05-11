@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 
 /**
@@ -27,5 +28,9 @@ interface UserDao {
 
     @Query("SELECT * FROM user_table WHERE username = :username AND password = :password")
     suspend fun getUserByUsernameAndPassword(username: String, password: String): UserEntity?
+
+    @Transaction
+    @Query("SELECT * FROM user_table WHERE id = :userId")
+    suspend fun getUserWithPosts(userId: Int): UserWithPosts?
 
 }

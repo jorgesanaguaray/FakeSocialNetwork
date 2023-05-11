@@ -31,6 +31,7 @@ class ProfileFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var profileViewModel: ProfileViewModel
+    private lateinit var profileAdapter: ProfileAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
@@ -41,6 +42,7 @@ class ProfileFragment : Fragment() {
         super.onStart()
 
         profileViewModel = ViewModelProvider(this).get()
+        profileAdapter = ProfileAdapter()
 
         val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.login_info), Context.MODE_PRIVATE)
         val username = sharedPreferences.getString("username", "")
@@ -79,9 +81,11 @@ class ProfileFragment : Fragment() {
 
     private fun setUpViews(profileState: ProfileState) {
 
+        profileViewModel.getUserWithPosts(profileState.user!!.id!!)
+
         binding.apply {
 
-            mUsername.text = profileState.user!!.username
+            mUsername.text = profileState.user.username
             mName.text = profileState.user.name
             mBio.text = profileState.user.bio
             mLink.text = profileState.user.link
@@ -97,6 +101,9 @@ class ProfileFragment : Fragment() {
             else mVerified.visibility = View.GONE
 
         }
+
+        profileAdapter.setPosts(profileState.posts)
+        binding.mRecyclerView.adapter = profileAdapter
 
     }
 

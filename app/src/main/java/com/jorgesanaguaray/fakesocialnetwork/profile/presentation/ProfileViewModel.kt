@@ -45,4 +45,16 @@ class ProfileViewModel @Inject constructor(
 
     }
 
+    fun getUserWithPosts(userId: Int) {
+
+        viewModelScope.launch {
+
+            _profileState.update {
+                it.copy(posts = profileRepository.getUserWithPosts(userId)!!.posts)
+            }
+
+        }
+
+    }
+
 }
