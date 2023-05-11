@@ -3,6 +3,7 @@ package com.jorgesanaguaray.fakesocialnetwork.core.data.di
 import android.app.Application
 import androidx.room.Room
 import com.jorgesanaguaray.fakesocialnetwork.Constants.Companion.DATABASE_NAME
+import com.jorgesanaguaray.fakesocialnetwork.core.data.local.PostDao
 import com.jorgesanaguaray.fakesocialnetwork.core.data.local.UserDao
 import com.jorgesanaguaray.fakesocialnetwork.core.data.local.UserDatabase
 import dagger.Module
@@ -29,6 +30,12 @@ object CoreModule {
     @Provides
     fun provideUserDao(userDatabase: UserDatabase): UserDao {
         return userDatabase.userDao
+    }
+
+    @Singleton
+    @Provides
+    fun providePostDao(userDatabase: UserDatabase): PostDao {
+        return userDatabase.postDao
     }
 
 }

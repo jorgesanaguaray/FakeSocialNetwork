@@ -12,6 +12,12 @@
         tools:layout="@layout/fragment_home"/>
 
     <fragment
+        android:id="@+id/mAddFragment"
+        android:name="com.jorgesanaguaray.fakesocialnetwork.add.presentation.AddFragment"
+        android:label="fragment_add"
+        tools:layout="@layout/fragment_add"/>
+
+    <fragment
         android:id="@+id/mProfileNavigation"
         android:name="com.jorgesanaguaray.fakesocialnetwork.profile.presentation.ProfileFragment"
         android:label="fragment_profile"

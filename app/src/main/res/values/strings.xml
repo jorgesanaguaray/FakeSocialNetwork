@@ -16,6 +16,7 @@
     <string name="the_username_and_password_you_entered_do_not_match_any_account">The username and password you entered do not match any account.</string>
     <string name="try_again">Try again</string>
     <string name="menu_home">Home</string>
+    <string name="menu_add">Add</string>
     <string name="menu_profile">Profile</string>
     <string name="login_info">LoginInfo</string>
     <string name="edit_profile">Edit profile</string>
@@ -27,4 +28,7 @@
     <string name="link">Link</string>
     <string name="verified_account">Verified account</string>
     <string name="user_id">UserId</string>
+    <string name="description">Description</string>
+    <string name="post">Post</string>
+    <string name="enter_a_description">Enter a description</string>
 </resources>
