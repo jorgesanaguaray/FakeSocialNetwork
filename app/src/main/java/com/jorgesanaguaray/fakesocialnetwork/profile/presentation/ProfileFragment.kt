@@ -102,6 +102,7 @@ class ProfileFragment : Fragment() {
 
         }
 
+        profileAdapter.setUser(profileState.user)
         profileAdapter.setPosts(profileState.posts)
         binding.mRecyclerView.adapter = profileAdapter
 

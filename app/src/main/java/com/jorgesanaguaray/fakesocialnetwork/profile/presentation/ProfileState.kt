@@ -1,6 +1,7 @@
 package com.jorgesanaguaray.fakesocialnetwork.profile.presentation
 
 import com.jorgesanaguaray.fakesocialnetwork.core.data.local.PostEntity
+import com.jorgesanaguaray.fakesocialnetwork.core.data.local.UserWithPosts
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.User
 
 /**
