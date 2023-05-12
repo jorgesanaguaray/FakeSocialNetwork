@@ -18,7 +18,11 @@ import java.util.Locale
  * Created by Jorge Sanaguaray
  */
 
-class ProfileAdapter : RecyclerView.Adapter<ProfileAdapter.MyProfileViewHolder>() {
+class ProfileAdapter(
+
+    private val editClick:(Int) -> Unit
+
+) : RecyclerView.Adapter<ProfileAdapter.MyProfileViewHolder>() {
 
     private var user: User? = null
     private var posts: List<PostEntity> = ArrayList()
@@ -57,6 +61,10 @@ class ProfileAdapter : RecyclerView.Adapter<ProfileAdapter.MyProfileViewHolder>(
                 error(R.drawable.ic_profile)
                 crossfade(true)
                 crossfade(400)
+            }
+
+            mEdit.setOnClickListener {
+                editClick(post.id!!)
             }
 
 

@@ -21,6 +21,18 @@
         android:id="@+id/mProfileNavigation"
         android:name="com.jorgesanaguaray.fakesocialnetwork.profile.presentation.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile"/>
+        tools:layout="@layout/fragment_profile">
+
+        <action
+            android:id="@+id/action_mProfileNavigation_to_mPostEditNavigation"
+            app:destination="@id/mPostEditNavigation"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/mPostEditNavigation"
+        android:name="com.jorgesanaguaray.fakesocialnetwork.postEdit.presentation.PostEditFragment"
+        android:label="fragment_post_edit"
+        tools:layout="@layout/fragment_post_edit"/>
 
 </navigation>

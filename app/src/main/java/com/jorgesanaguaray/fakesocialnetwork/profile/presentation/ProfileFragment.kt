@@ -8,14 +8,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import coil.load
 import coil.transform.CircleCropTransformation
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.jorgesanaguaray.fakesocialnetwork.Constants.Companion.KEY_POST_ID
 import com.jorgesanaguaray.fakesocialnetwork.MainActivity
 import com.jorgesanaguaray.fakesocialnetwork.R
 import com.jorgesanaguaray.fakesocialnetwork.ThirdActivity
@@ -34,15 +38,24 @@ class ProfileFragment : Fragment() {
     private lateinit var profileAdapter: ProfileAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+
+        // Show BottomNavigationView
+        val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.mBottomNavigationView)
+        bottomNavigationView?.visibility = View.VISIBLE
+
+        // Inflate fragment layout
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
+
     }
 
     override fun onStart() {
         super.onStart()
 
         profileViewModel = ViewModelProvider(this).get()
-        profileAdapter = ProfileAdapter()
+        profileAdapter = ProfileAdapter(
+            editClick = { goEditClick(it) }
+        )
 
         val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.login_info), Context.MODE_PRIVATE)
         val username = sharedPreferences.getString("username", "")
@@ -151,6 +164,11 @@ class ProfileFragment : Fragment() {
         editor.putInt("id", profileState.user!!.id!!)
         editor.apply()
 
+    }
+
+    private fun goEditClick(id: Int) {
+        val bundle = bundleOf(KEY_POST_ID to id)
+        findNavController().navigate(R.id.action_mProfileNavigation_to_mPostEditNavigation, bundle)
     }
 
 }
