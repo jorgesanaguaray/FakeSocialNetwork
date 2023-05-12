@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="?android:attr/windowBackground"
-        app:menu="@menu/second_menu"/>
+        app:menu="@menu/second_menu"
+        style="@style/Widget.MaterialComponents.BottomNavigationView"/>
 
 </RelativeLayout>

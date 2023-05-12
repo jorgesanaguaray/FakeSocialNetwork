@@ -23,12 +23,12 @@ fun UserEntity.toDomain(): User {
 
 fun Post.toDatabase(): PostEntity {
 
-    return PostEntity(id, description, userId)
+    return PostEntity(id, description, image, date, userId)
 
 }
 
 fun PostEntity.toDomain(): Post {
 
-    return Post(id, description, userId)
+    return Post(id, description, image, date, userId)
 
 }

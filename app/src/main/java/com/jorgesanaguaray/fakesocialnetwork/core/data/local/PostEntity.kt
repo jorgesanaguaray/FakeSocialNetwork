@@ -24,6 +24,8 @@ data class PostEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
     val description: String,
+    val image: String,
+    val date: String,
     val userId: Int
 
 )

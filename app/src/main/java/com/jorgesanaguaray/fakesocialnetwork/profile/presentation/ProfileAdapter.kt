@@ -1,5 +1,6 @@
 package com.jorgesanaguaray.fakesocialnetwork.profile.presentation
 
+import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,8 @@ import com.jorgesanaguaray.fakesocialnetwork.R
 import com.jorgesanaguaray.fakesocialnetwork.core.data.local.PostEntity
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.User
 import com.jorgesanaguaray.fakesocialnetwork.databinding.ItemProfileBinding
+import java.util.Calendar
+import java.util.Locale
 
 /**
  * Created by Jorge Sanaguaray
@@ -30,6 +33,10 @@ class ProfileAdapter : RecyclerView.Adapter<ProfileAdapter.MyProfileViewHolder>(
 
         holder.binging.apply {
 
+            val calendar = Calendar.getInstance(Locale.getDefault())
+            calendar.timeInMillis = post.date.toLong()
+            val date = DateFormat.format("dd/MM/yyyy", calendar).toString()
+
             mProfilePicture.load(user!!.profilePicture) {
                 transformations(CircleCropTransformation())
                 placeholder(R.drawable.ic_profile)
@@ -42,7 +49,16 @@ class ProfileAdapter : RecyclerView.Adapter<ProfileAdapter.MyProfileViewHolder>(
             if (user!!.isVerified) mVerified.visibility = View.VISIBLE
             else mVerified.visibility = View.GONE
 
+            mDate.text = date
             mDescription.text = post.description
+
+            mImagePost.load(post.image) {
+                placeholder(R.drawable.ic_profile)
+                error(R.drawable.ic_profile)
+                crossfade(true)
+                crossfade(400)
+            }
+
 
         }
 

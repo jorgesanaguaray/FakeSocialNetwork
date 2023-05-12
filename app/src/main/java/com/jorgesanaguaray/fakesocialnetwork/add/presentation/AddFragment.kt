@@ -1,6 +1,8 @@
 package com.jorgesanaguaray.fakesocialnetwork.add.presentation
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.fragment.app.Fragment
@@ -8,8 +10,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import coil.load
+import coil.transform.CircleCropTransformation
+import com.github.drjacky.imagepicker.ImagePicker
 import com.jorgesanaguaray.fakesocialnetwork.R
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.Post
 import com.jorgesanaguaray.fakesocialnetwork.databinding.FragmentAddBinding
@@ -22,6 +29,7 @@ class AddFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var addViewModel: AddViewModel
+    private var imagePost = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentAddBinding.inflate(inflater, container, false)
@@ -32,6 +40,14 @@ class AddFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         addViewModel = ViewModelProvider(this).get()
+
+        binding.mImagePost.setOnClickListener {
+
+            ImagePicker.with(requireActivity()).crop().createIntentFromDialog {
+                launcherProfilePicture.launch(it)
+            }
+
+        }
 
         postClick()
 
@@ -72,11 +88,30 @@ class AddFragment : Fragment() {
         val post = Post(
             id = null,
             description = binding.mEditTextDescription.text.toString().trim(),
+            image = imagePost,
+            date = System.currentTimeMillis().toString(),
             userId = userId
         )
 
         addViewModel.insertPost(post)
         Toast.makeText(context, "Posted", Toast.LENGTH_SHORT).show()
+
+    }
+
+    private var launcherProfilePicture: ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+
+        if (it.resultCode == Activity.RESULT_OK) {
+
+            imagePost = it.data?.data!!.toString()
+
+            binding.mImagePost.load(imagePost) {
+                placeholder(R.drawable.ic_profile)
+                error(R.drawable.ic_profile)
+                crossfade(true)
+                crossfade(400)
+            }
+
+        }
 
     }
 
