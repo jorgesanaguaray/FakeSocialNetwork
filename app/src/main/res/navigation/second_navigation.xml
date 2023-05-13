@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_home"/>
 
     <fragment
-        android:id="@+id/mAddFragment"
+        android:id="@+id/mAddNavigation"
         android:name="com.jorgesanaguaray.fakesocialnetwork.add.presentation.AddFragment"
         android:label="fragment_add"
         tools:layout="@layout/fragment_add"/>
@@ -24,10 +24,20 @@
         tools:layout="@layout/fragment_profile">
 
         <action
+            android:id="@+id/action_mProfileNavigation_to_mProfileEditNavigation"
+            app:destination="@id/mProfileEditNavigation"/>
+
+        <action
             android:id="@+id/action_mProfileNavigation_to_mPostEditNavigation"
             app:destination="@id/mPostEditNavigation"/>
 
     </fragment>
+
+    <fragment
+        android:id="@+id/mProfileEditNavigation"
+        android:name="com.jorgesanaguaray.fakesocialnetwork.profileEdit.presentation.ProfileEditFragment"
+        android:label="fragment_profile_edit"
+        tools:layout="@layout/fragment_profile_edit"/>
 
     <fragment
         android:id="@+id/mPostEditNavigation"

@@ -20,6 +20,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.github.drjacky.imagepicker.ImagePicker
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.jorgesanaguaray.fakesocialnetwork.R
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.User
 import com.jorgesanaguaray.fakesocialnetwork.databinding.FragmentProfileEditBinding
@@ -39,8 +40,15 @@ class ProfileEditFragment : Fragment() {
     private var profilePicture = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+
+        // Hide BottomNavigationView
+        val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.mBottomNavigationView)
+        bottomNavigationView?.visibility = View.GONE
+
+        // Inflate fragment layout
         _binding = FragmentProfileEditBinding.inflate(inflater, container, false)
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

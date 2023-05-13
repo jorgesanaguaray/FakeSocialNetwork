@@ -22,7 +22,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jorgesanaguaray.fakesocialnetwork.Constants.Companion.KEY_POST_ID
 import com.jorgesanaguaray.fakesocialnetwork.MainActivity
 import com.jorgesanaguaray.fakesocialnetwork.R
-import com.jorgesanaguaray.fakesocialnetwork.ThirdActivity
 import com.jorgesanaguaray.fakesocialnetwork.databinding.DialogProfileBinding
 import com.jorgesanaguaray.fakesocialnetwork.databinding.FragmentProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -82,7 +81,7 @@ class ProfileFragment : Fragment() {
         }
 
         binding.mEditProfile.setOnClickListener {
-            startActivity(Intent(context, ThirdActivity::class.java))
+            findNavController().navigate(R.id.action_mProfileNavigation_to_mProfileEditNavigation)
         }
 
     }
