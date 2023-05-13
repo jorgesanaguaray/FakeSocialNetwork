@@ -61,4 +61,12 @@ class PostEditViewModel @Inject constructor(
 
     }
 
+    fun deletePostById(id: Int) {
+
+        viewModelScope.launch {
+            postEditRepository.deletePostById(id)
+        }
+
+    }
+
 }

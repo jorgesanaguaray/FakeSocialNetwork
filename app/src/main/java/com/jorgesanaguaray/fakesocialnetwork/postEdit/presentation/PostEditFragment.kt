@@ -94,7 +94,8 @@ class PostEditFragment : Fragment() {
 
         }
 
-        saveClick()
+        updateClick()
+        deleteClick()
 
     }
 
@@ -113,9 +114,9 @@ class PostEditFragment : Fragment() {
 
     }
 
-    private fun saveClick() {
+    private fun updateClick() {
 
-        binding.mSave.setOnClickListener {
+        binding.mUpdate.setOnClickListener {
 
             when {
 
@@ -149,7 +150,18 @@ class PostEditFragment : Fragment() {
         )
 
         postEditViewModel.updatePost(post)
-        Toast.makeText(context, "Post saved", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Post updated", Toast.LENGTH_SHORT).show()
+
+    }
+
+    private fun deleteClick() {
+
+        binding.mDelete.setOnClickListener {
+
+            postEditViewModel.deletePostById(postId)
+            Toast.makeText(context, "Post deleted", Toast.LENGTH_SHORT).show()
+
+        }
 
     }
 

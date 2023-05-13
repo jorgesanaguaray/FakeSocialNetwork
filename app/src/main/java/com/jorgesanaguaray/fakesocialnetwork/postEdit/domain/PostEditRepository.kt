@@ -12,4 +12,6 @@ interface PostEditRepository {
 
     suspend fun updatePost(post: Post)
 
+    suspend fun deletePostById(id: Int)
+
 }
