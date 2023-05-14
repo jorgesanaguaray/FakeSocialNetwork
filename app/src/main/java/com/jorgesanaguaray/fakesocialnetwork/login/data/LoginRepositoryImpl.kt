@@ -17,7 +17,9 @@ class LoginRepositoryImpl(private val userDao: UserDao) : LoginRepository {
         var userEntity: UserEntity?
 
         runBlocking(Dispatchers.IO) {
+
             userEntity = userDao.getUserByUsernameAndPassword(username, password)
+
         }
 
         if (userEntity != null) return true

@@ -4,6 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jorgesanaguaray.fakesocialnetwork.login.domain.LoginRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,15 +22,22 @@ class LoginViewModel @Inject constructor(
 
 ) : ViewModel() {
 
-    fun isLoginSuccessful(username: String, password: String): Boolean {
+    private val _loginState = MutableStateFlow(LoginState())
+    val loginState: StateFlow<LoginState> = _loginState.asStateFlow()
 
-        var result = false
+    fun isLoginSuccessful(username: String, password: String) {
 
         viewModelScope.launch {
-            result = loginRepository.isLoginSuccessful(username, password)
-        }
 
-        return result
+            val loginSuccessful = loginRepository.isLoginSuccessful(username, password)
+
+            _loginState.update {
+
+                it.copy(loginSuccessful = loginSuccessful)
+
+            }
+
+        }
 
     }
 

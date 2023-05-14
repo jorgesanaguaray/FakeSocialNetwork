@@ -21,6 +21,14 @@
         android:id="@+id/mRegisterNavigation"
         android:name="com.jorgesanaguaray.fakesocialnetwork.register.presentation.RegisterFragment"
         android:label="fragment_register"
-        tools:layout="@layout/fragment_register"/>
+        tools:layout="@layout/fragment_register">
+
+        <action
+            android:id="@+id/action_mRegisterNavigation_to_mLoginNavigation"
+            app:destination="@id/mLoginNavigation"
+            app:popUpTo="@+id/mLoginNavigation"
+            app:popUpToInclusive="true"/>
+
+    </fragment>
 
 </navigation>

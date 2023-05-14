@@ -22,20 +22,24 @@ class RegisterViewModel @Inject constructor(
     fun insertUser(user: User) {
 
         viewModelScope.launch {
+
             registerRepository.insertUser(user)
+
         }
 
     }
 
     fun isUsernameAvailable(username: String) : Boolean {
 
-        var result = false
+        var usernameAvailable = false
 
         viewModelScope.launch {
-            result = registerRepository.isUsernameAvailable(username)
+
+            usernameAvailable = registerRepository.isUsernameAvailable(username)
+
         }
 
-        return result
+        return usernameAvailable
 
     }
 

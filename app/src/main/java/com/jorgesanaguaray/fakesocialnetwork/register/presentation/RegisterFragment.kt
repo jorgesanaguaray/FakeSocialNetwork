@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import androidx.navigation.fragment.findNavController
 import com.jorgesanaguaray.fakesocialnetwork.R
 import com.jorgesanaguaray.fakesocialnetwork.SecondActivity
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.User
@@ -22,7 +23,6 @@ class RegisterFragment : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
-
     private lateinit var registerViewModel: RegisterViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -35,7 +35,13 @@ class RegisterFragment : Fragment() {
 
         registerViewModel = ViewModelProvider(this).get()
 
-        signUpClick()
+        binding.mBack.setOnClickListener {
+            findNavController().navigate(R.id.action_mRegisterNavigation_to_mLoginNavigation)
+        }
+
+        binding.mSignUp.setOnClickListener {
+            validateRegisterCredentials()
+        }
 
     }
 
@@ -44,33 +50,29 @@ class RegisterFragment : Fragment() {
         _binding = null
     }
 
-    private fun signUpClick() {
+    private fun validateRegisterCredentials() {
 
-        binding.mSignUp.setOnClickListener {
+        when {
 
-            when {
+            TextUtils.isEmpty(binding.mEditTextUsername.text.toString()) -> {
+                binding.mEditTextUsername.error = resources.getString(R.string.enter_a_username)
+            }
 
-                TextUtils.isEmpty(binding.mEditTextUsername.text.toString()) -> {
-                    binding.mEditTextUsername.error = resources.getString(R.string.enter_a_username)
-                }
+            TextUtils.isEmpty(binding.mEditTextName.text.toString()) -> {
+                binding.mEditTextName.error = resources.getString(R.string.enter_a_name)
+            }
 
-                TextUtils.isEmpty(binding.mEditTextName.text.toString()) -> {
-                    binding.mEditTextName.error = resources.getString(R.string.enter_a_name)
-                }
+            TextUtils.isEmpty(binding.mEditTextPassword.text.toString()) -> {
+                binding.mEditTextPassword.error = resources.getString(R.string.enter_a_password)
+            }
 
-                TextUtils.isEmpty(binding.mEditTextPassword.text.toString()) -> {
-                    binding.mEditTextPassword.error = resources.getString(R.string.enter_a_password)
-                }
+            binding.mEditTextPassword.text.toString().length < 6 -> {
+                binding.mEditTextPassword.error = resources.getString(R.string.password_must_be_6_or_more_characters)
+            }
 
-                binding.mEditTextPassword.text.toString().length < 6 -> {
-                    binding.mEditTextPassword.error = resources.getString(R.string.password_must_be_6_or_more_characters)
-                }
+            else -> {
 
-                else -> {
-
-                    isUsernameAvailable()
-
-                }
+                isUsernameAvailable()
 
             }
 
@@ -80,9 +82,7 @@ class RegisterFragment : Fragment() {
 
     private fun isUsernameAvailable() {
 
-        val result = registerViewModel.isUsernameAvailable(binding.mEditTextUsername.text.toString())
-
-        if (result) {
+        if (registerViewModel.isUsernameAvailable(binding.mEditTextUsername.text.toString())) {
             insertUser()
         } else {
             binding.mEditTextUsername.error = resources.getString(R.string.username_not_available_try_another)
@@ -106,7 +106,7 @@ class RegisterFragment : Fragment() {
         registerViewModel.insertUser(user)
         saveLoginInfo()
         startActivity(Intent(context, SecondActivity::class.java))
-        Toast.makeText(context, "The user has been successfully registered.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, resources.getString(R.string.registered_user_successfully), Toast.LENGTH_SHORT).show()
 
     }
 

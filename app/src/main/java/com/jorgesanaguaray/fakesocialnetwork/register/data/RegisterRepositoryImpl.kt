@@ -15,15 +15,19 @@ import kotlinx.coroutines.runBlocking
 class RegisterRepositoryImpl(private val userDao: UserDao) : RegisterRepository {
 
     override suspend fun insertUser(user: User) {
+
         userDao.insertUser(user.toDatabase())
+
     }
 
     override suspend fun isUsernameAvailable(username: String): Boolean {
 
-        var userEntity: UserEntity?
+        val userEntity: UserEntity?
 
         runBlocking(Dispatchers.IO) {
+
             userEntity = userDao.getUserByUsername(username)
+
         }
 
         if (userEntity == null) return true

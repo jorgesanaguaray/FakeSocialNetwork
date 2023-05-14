@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">Fake Social Network</string>
-    <string name="do_not_have_an_account_sign_up">Do not have an account? Sign up.</string>
+    <string name="do_not_have_an_account_sign_up">Do not have an account? Sign up</string>
     <string name="username">username</string>
     <string name="name">Name</string>
     <string name="password">Password</string>
     <string name="sign_up">Sign up</string>
-    <string name="log_in">Log in</string>
+    <string name="login">Login</string>
     <string name="log_out">Log out</string>
     <string name="enter_a_username">Enter a username</string>
     <string name="enter_a_name">Enter a name</string>
@@ -34,4 +34,6 @@
     <string name="follow">Follow</string>
     <string name="update">Update</string>
     <string name="delete">Delete</string>
+    <string name="login_successful">Login successful</string>
+    <string name="registered_user_successfully">Registered user successfully</string>
 </resources>
