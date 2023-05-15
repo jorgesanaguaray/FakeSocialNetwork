@@ -12,11 +12,10 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.github.drjacky.imagepicker.ImagePicker
@@ -25,7 +24,6 @@ import com.jorgesanaguaray.fakesocialnetwork.R
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.User
 import com.jorgesanaguaray.fakesocialnetwork.databinding.FragmentProfileEditBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProfileEditFragment : Fragment() {
@@ -34,67 +32,42 @@ class ProfileEditFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var profileEditViewModel: ProfileEditViewModel
+    private lateinit var navController: NavController
 
-    private var userId = 0
+    private var id = 0
     private var username = ""
     private var profilePicture = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-
-        // Hide BottomNavigationView
-        val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.mBottomNavigationView)
-        bottomNavigationView?.visibility = View.GONE
-
-        // Inflate fragment layout
         _binding = FragmentProfileEditBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         profileEditViewModel = ViewModelProvider(this).get()
+        navController = findNavController()
 
+        // Get user id from SharedPreferences
         val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.user_id), Context.MODE_PRIVATE)
-        userId = sharedPreferences.getInt("id", 0)
+        id = sharedPreferences.getInt("id", 0)
 
-        profileEditViewModel.getUserById(userId)
+        profileEditViewModel.getUserById(id)
 
         profileEditViewModel.user.observe(viewLifecycleOwner) {
 
             username = it.username
             profilePicture = it.profilePicture
-
-            binding.apply {
-
-                mProfilePicture.load(it.profilePicture) {
-                    transformations(CircleCropTransformation())
-                    placeholder(R.drawable.ic_profile)
-                    error(R.drawable.ic_profile)
-                    crossfade(true)
-                    crossfade(400)
-                }
-                mEditTextUsername.setText(it.username)
-                mEditTextName.setText(it.name)
-                mEditTextBio.setText(it.bio)
-                mEditTextLink.setText(it.link)
-                mEditTextPassword.setText(it.password)
-                mSwitch.isChecked = it.isVerified
-
-            }
+            setUpViews(it)
 
         }
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                profileEditViewModel.profileEditState.collect {
-                    setUpViews(it)
-                }
-            }
+        binding.mBack.setOnClickListener {
+            navController.navigateUp()
         }
 
-        binding.mCamera.setOnClickListener {
+        binding.mEditProfilePicture.setOnClickListener {
 
             ImagePicker.with(requireActivity()).crop().createIntentFromDialog {
                 launcherProfilePicture.launch(it)
@@ -102,7 +75,18 @@ class ProfileEditFragment : Fragment() {
 
         }
 
-        saveClick()
+        binding.mUpdate.setOnClickListener {
+            validateCredentials()
+        }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // Hide Bottom Navigation View
+        val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.mBottomNavigationView)
+        bottomNavigationView?.visibility = View.GONE
 
     }
 
@@ -111,41 +95,53 @@ class ProfileEditFragment : Fragment() {
         _binding = null
     }
 
-    private fun setUpViews(profileEditState: ProfileEditState) {
+    private fun setUpViews(user: User) {
 
-        if (profileEditState.isContent) binding.mContent.visibility = View.VISIBLE
-        else binding.mContent.visibility = View.GONE
+        binding.apply {
 
-        if (profileEditState.isLoading) binding.mProgressBar.visibility = View.VISIBLE
-        else binding.mProgressBar.visibility = View.GONE
+            mProfilePicture.load(user.profilePicture) {
+                transformations(CircleCropTransformation())
+                placeholder(R.drawable.ic_profile)
+                error(R.drawable.ic_profile)
+                crossfade(true)
+                crossfade(400)
+            }
+            mEditTextUsername.setText(user.username)
+            mEditTextName.setText(user.name)
+            mEditTextBio.setText(user.bio)
+            mEditTextLink.setText(user.link)
+            mEditTextPassword.setText(user.password)
+            mSwitch.isChecked = user.isVerified
+
+        }
 
     }
 
-    private fun saveClick() {
+    private fun validateCredentials() {
 
-        binding.mSave.setOnClickListener {
+        when {
 
-            when {
+            TextUtils.isEmpty(binding.mEditTextUsername.text.toString()) -> {
+                binding.mEditTextUsername.error = resources.getString(R.string.enter_a_username)
+            }
 
-                TextUtils.isEmpty(binding.mEditTextUsername.text.toString()) -> {
-                    binding.mEditTextUsername.error = resources.getString(R.string.enter_a_username)
-                }
+            TextUtils.isEmpty(binding.mEditTextPassword.text.toString()) -> {
+                binding.mEditTextPassword.error = resources.getString(R.string.enter_a_password)
+            }
 
-                TextUtils.isEmpty(binding.mEditTextPassword.text.toString()) -> {
-                    binding.mEditTextPassword.error = resources.getString(R.string.enter_a_password)
-                }
+            binding.mEditTextPassword.text.toString().length < 6 -> {
+                binding.mEditTextPassword.error = resources.getString(R.string.password_must_be_6_or_more_characters)
+            }
 
-                binding.mEditTextPassword.text.toString().length < 6 -> {
-                    binding.mEditTextPassword.error = resources.getString(R.string.password_must_be_6_or_more_characters)
-                }
+            else -> {
 
-                else -> {
+                if (username == binding.mEditTextUsername.text.toString()) {
 
-                    if (username == binding.mEditTextUsername.text.toString()) {
-                        updateUser()
-                    } else {
-                        isUsernameAvailable()
-                    }
+                    updateUser()
+
+                } else {
+
+                    isUsernameAvailable()
 
                 }
 
@@ -157,9 +153,7 @@ class ProfileEditFragment : Fragment() {
 
     private fun isUsernameAvailable() {
 
-        val result = profileEditViewModel.isUsernameAvailable(binding.mEditTextUsername.text.toString())
-
-        if (result) {
+        if (profileEditViewModel.isUsernameAvailable(binding.mEditTextUsername.text.toString())) {
             updateUser()
         } else {
             binding.mEditTextUsername.error = resources.getString(R.string.username_not_available_try_another)
@@ -170,7 +164,7 @@ class ProfileEditFragment : Fragment() {
     private fun updateUser() {
 
         val user = User(
-            id = userId,
+            id = id,
             username = binding.mEditTextUsername.text.toString(),
             name = binding.mEditTextName.text.toString().trim(),
             bio = binding.mEditTextBio.text.toString().trim(),
@@ -182,7 +176,8 @@ class ProfileEditFragment : Fragment() {
 
         profileEditViewModel.updateUser(user)
         saveLoginInfo()
-        Toast.makeText(context, "Updated user.", Toast.LENGTH_SHORT).show()
+        navController.navigateUp()
+        Toast.makeText(context, resources.getString(R.string.updated_user), Toast.LENGTH_SHORT).show()
 
     }
 

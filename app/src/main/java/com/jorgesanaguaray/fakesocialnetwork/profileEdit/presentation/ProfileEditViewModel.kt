@@ -7,10 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.User
 import com.jorgesanaguaray.fakesocialnetwork.profileEdit.domain.ProfileEditRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,24 +24,13 @@ class ProfileEditViewModel @Inject constructor(
     private val _user = MutableLiveData<User>()
     val user: LiveData<User> get() = _user
 
-    private val _profileEditState = MutableStateFlow(ProfileEditState())
-    val profileEditState: StateFlow<ProfileEditState> = _profileEditState.asStateFlow()
-
     fun getUserById(id: Int) {
 
         viewModelScope.launch {
 
-            _profileEditState.update {
-                it.copy(isContent = false, isLoading = true)
-            }
+            profileEditRepository.getUserById(id).onSuccess {
 
-            profileEditRepository.getUserById(id).onSuccess { user ->
-
-                _user.value = user
-
-                _profileEditState.update {
-                    it.copy(isContent = true, isLoading = false)
-                }
+                _user.value = it
 
             }.onFailure {}
 
@@ -55,20 +40,24 @@ class ProfileEditViewModel @Inject constructor(
 
     fun isUsernameAvailable(username: String) : Boolean {
 
-        var result = false
+        var usernameAvailable = false
 
         viewModelScope.launch {
-            result = profileEditRepository.isUsernameAvailable(username)
+
+            usernameAvailable = profileEditRepository.isUsernameAvailable(username)
+
         }
 
-        return result
+        return usernameAvailable
 
     }
 
     fun updateUser(user: User) {
 
         viewModelScope.launch {
+
             profileEditRepository.updateUser(user)
+
         }
 
     }

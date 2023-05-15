@@ -34,7 +34,9 @@ class ProfileEditRepositoryImpl(private val userDao: UserDao) : ProfileEditRepos
         var userEntity: UserEntity?
 
         runBlocking(Dispatchers.IO) {
+
             userEntity = userDao.getUserByUsername(username)
+
         }
 
         if (userEntity == null) return true
