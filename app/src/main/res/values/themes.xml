@@ -1,21 +1,35 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
+
     <!-- Base application theme. -->
-    <style name="Base.Theme.FakeSocialNetwork" parent="Theme.Material3.DayNight.NoActionBar">
+    <style
+        name="Base.Theme.FakeSocialNetwork"
+        parent="Theme.Material3.DayNight.NoActionBar">
+
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
     </style>
 
-    <style name="Theme.FakeSocialNetwork" parent="Base.Theme.FakeSocialNetwork" />
+    <style
+        name="Theme.FakeSocialNetwork"
+        parent="Base.Theme.FakeSocialNetwork"/>
 
 
-    <!-- BottomSheetDialogTheme -->
-    <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+    <!-- Bottom Sheet Dialog Theme. -->
+    <style
+        name="BottomSheetDialogTheme"
+        parent="Theme.Design.Light.BottomSheetDialog">
+
         <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+
     </style>
 
-    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+    <style
+        name="BottomSheetStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+
         <item name="android:background">@android:color/transparent</item>
-    </style>
 
+    </style>
 
 </resources>

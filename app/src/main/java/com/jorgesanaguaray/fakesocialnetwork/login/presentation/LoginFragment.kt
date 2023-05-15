@@ -97,6 +97,7 @@ class LoginFragment : Fragment() {
 
                         saveLoginInfo()
                         startActivity(Intent(context, SecondActivity::class.java))
+                        requireActivity().finish()
                         Toast.makeText(context, resources.getString(R.string.login_successful), Toast.LENGTH_SHORT).show()
 
                     } else {

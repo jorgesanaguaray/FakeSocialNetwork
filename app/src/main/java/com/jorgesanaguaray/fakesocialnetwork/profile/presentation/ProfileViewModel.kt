@@ -2,6 +2,7 @@ package com.jorgesanaguaray.fakesocialnetwork.profile.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jorgesanaguaray.fakesocialnetwork.core.data.mapper.toDomain
 import com.jorgesanaguaray.fakesocialnetwork.profile.domain.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,27 +31,27 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
 
             _profileState.update {
-                it.copy(isContent = false, isLoading = true)
+
+                it.copy(
+
+                    isContent = false,
+                    isLoading = true
+
+                )
+
             }
 
-            profileRepository.getUserByUsername(username).onSuccess { user ->
-
-                _profileState.update {
-                    it.copy(user = user, isContent = true, isLoading = false)
-                }
-
-            }.onFailure {}
-
-        }
-
-    }
-
-    fun getUserWithPosts(userId: Int) {
-
-        viewModelScope.launch {
-
             _profileState.update {
-                it.copy(posts = profileRepository.getUserWithPosts(userId)!!.posts)
+
+                it.copy(
+
+                    user = profileRepository.getUserWithPostsByUsername(username)!!.user.toDomain(),
+                    posts = profileRepository.getUserWithPostsByUsername(username)!!.posts.reversed(),
+                    isContent = true,
+                    isLoading = false
+
+                )
+
             }
 
         }

@@ -57,8 +57,8 @@ class ProfileAdapter(
             mDescription.text = post.description
 
             mImagePost.load(post.image) {
-                placeholder(R.drawable.ic_profile)
-                error(R.drawable.ic_profile)
+                placeholder(R.drawable.background_item_profile)
+                error(R.drawable.background_item_profile)
                 crossfade(true)
                 crossfade(400)
             }
@@ -66,7 +66,6 @@ class ProfileAdapter(
             mEdit.setOnClickListener {
                 editClick(post.id!!)
             }
-
 
         }
 

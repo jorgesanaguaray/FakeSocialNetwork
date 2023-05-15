@@ -106,6 +106,7 @@ class RegisterFragment : Fragment() {
         registerViewModel.insertUser(user)
         saveLoginInfo()
         startActivity(Intent(context, SecondActivity::class.java))
+        requireActivity().finish()
         Toast.makeText(context, resources.getString(R.string.registered_user_successfully), Toast.LENGTH_SHORT).show()
 
     }

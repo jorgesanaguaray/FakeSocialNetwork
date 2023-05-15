@@ -48,14 +48,13 @@ class ProfileFragment : Fragment() {
 
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         profileViewModel = ViewModelProvider(this).get()
-        profileAdapter = ProfileAdapter(
-            editClick = { goEditClick(it) }
-        )
+        profileAdapter = ProfileAdapter(editClick = { goPostEdit(it) })
 
+        // Get username from SharedPreferences
         val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.login_info), Context.MODE_PRIVATE)
         val username = sharedPreferences.getString("username", "")
 
@@ -68,16 +67,22 @@ class ProfileFragment : Fragment() {
         super.onResume()
 
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+
                 profileViewModel.profileState.collect {
+
                     setUpViews(it)
                     saveUserId(it)
+
                 }
+
             }
+
         }
 
         binding.mMenu.setOnClickListener {
-            menuClick()
+            openMenu()
         }
 
         binding.mEditProfile.setOnClickListener {
@@ -91,13 +96,49 @@ class ProfileFragment : Fragment() {
         _binding = null
     }
 
-    private fun setUpViews(profileState: ProfileState) {
+    private fun openMenu() {
 
-        profileViewModel.getUserWithPosts(profileState.user!!.id!!)
+        val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme)
+        val binding: DialogProfileBinding = DialogProfileBinding.inflate(layoutInflater)
 
         binding.apply {
 
-            mUsername.text = profileState.user.username
+            mClose.setOnClickListener { bottomSheetDialog.dismiss() }
+
+            mLogout.setOnClickListener { logout() }
+
+        }
+
+        bottomSheetDialog.setContentView(binding.root)
+        bottomSheetDialog.show()
+
+    }
+
+    private fun logout() {
+
+        // Delete login info
+        val sharedPref = activity?.getSharedPreferences(getString(R.string.login_info), Context.MODE_PRIVATE)
+        val editor = sharedPref!!.edit()
+        editor.remove("username")
+        editor.remove("password")
+        editor.apply()
+
+        // Go MainActivity
+        startActivity(Intent(context, MainActivity::class.java))
+        requireActivity().finish()
+
+    }
+
+    private fun goPostEdit(id: Int) {
+        val bundle = bundleOf(KEY_POST_ID to id)
+        findNavController().navigate(R.id.action_mProfileNavigation_to_mPostEditNavigation, bundle)
+    }
+
+    private fun setUpViews(profileState: ProfileState) {
+
+        binding.apply {
+
+            mUsername.text = profileState.user!!.username
             mName.text = profileState.user.name
             mBio.text = profileState.user.bio
             mLink.text = profileState.user.link
@@ -114,45 +155,15 @@ class ProfileFragment : Fragment() {
 
         }
 
-        profileAdapter.setUser(profileState.user)
+        profileAdapter.setUser(profileState.user!!)
         profileAdapter.setPosts(profileState.posts)
         binding.mRecyclerView.adapter = profileAdapter
 
-    }
+        if (profileState.isContent) binding.mNestedScroll.visibility = View.VISIBLE
+        else binding.mNestedScroll.visibility = View.GONE
 
-    private fun menuClick() {
-
-        val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme)
-        val binding: DialogProfileBinding = DialogProfileBinding.inflate(layoutInflater)
-
-        binding.apply {
-
-            mClose.setOnClickListener {
-                bottomSheetDialog.dismiss()
-            }
-
-            mLogOut.setOnClickListener {
-                logOutClick()
-            }
-
-        }
-
-        bottomSheetDialog.setContentView(binding.root)
-        bottomSheetDialog.show()
-
-    }
-
-    private fun logOutClick() {
-
-        // Delete login info
-        val sharedPref = activity?.getSharedPreferences(getString(R.string.login_info), Context.MODE_PRIVATE)
-        val editor = sharedPref!!.edit()
-        editor.remove("username")
-        editor.remove("password")
-        editor.apply()
-
-        // Go MainActivity
-        startActivity(Intent(context, MainActivity::class.java))
+        if (profileState.isLoading) binding.mProgressBar.visibility = View.VISIBLE
+        else binding.mProgressBar.visibility = View.GONE
 
     }
 
@@ -163,11 +174,6 @@ class ProfileFragment : Fragment() {
         editor.putInt("id", profileState.user!!.id!!)
         editor.apply()
 
-    }
-
-    private fun goEditClick(id: Int) {
-        val bundle = bundleOf(KEY_POST_ID to id)
-        findNavController().navigate(R.id.action_mProfileNavigation_to_mPostEditNavigation, bundle)
     }
 
 }

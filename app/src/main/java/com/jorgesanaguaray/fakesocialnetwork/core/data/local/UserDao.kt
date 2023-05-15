@@ -30,7 +30,7 @@ interface UserDao {
     suspend fun getUserByUsernameAndPassword(username: String, password: String): UserEntity?
 
     @Transaction
-    @Query("SELECT * FROM user_table WHERE id = :userId")
-    suspend fun getUserWithPosts(userId: Int): UserWithPosts?
+    @Query("SELECT * FROM user_table WHERE username = :username")
+    suspend fun getUserWithPostsByUsername(username: String): UserWithPosts?
 
 }
