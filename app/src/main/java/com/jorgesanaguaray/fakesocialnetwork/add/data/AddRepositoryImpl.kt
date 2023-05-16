@@ -12,7 +12,9 @@ import com.jorgesanaguaray.fakesocialnetwork.core.domain.Post
 class AddRepositoryImpl(private val postDao: PostDao) : AddRepository {
 
     override suspend fun insertPost(post: Post) {
+
         postDao.insertPost(post.toDatabase())
+
     }
 
 }

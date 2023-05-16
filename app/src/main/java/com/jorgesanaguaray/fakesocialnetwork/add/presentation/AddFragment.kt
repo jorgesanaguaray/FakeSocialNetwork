@@ -15,7 +15,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import coil.load
-import coil.transform.CircleCropTransformation
 import com.github.drjacky.imagepicker.ImagePicker
 import com.jorgesanaguaray.fakesocialnetwork.R
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.Post
@@ -44,12 +43,14 @@ class AddFragment : Fragment() {
         binding.mImagePost.setOnClickListener {
 
             ImagePicker.with(requireActivity()).crop().createIntentFromDialog {
-                launcherProfilePicture.launch(it)
+                launcherImage.launch(it)
             }
 
         }
 
-        postClick()
+        binding.mPost.setOnClickListener {
+            validateCredentials()
+        }
 
     }
 
@@ -58,21 +59,17 @@ class AddFragment : Fragment() {
         _binding = null
     }
 
-    private fun postClick() {
+    private fun validateCredentials() {
 
-        binding.mPost.setOnClickListener {
+        when {
 
-            when {
+            TextUtils.isEmpty(binding.mEditTextDescription.text.toString()) -> {
+                binding.mEditTextDescription.error = resources.getString(R.string.enter_a_description)
+            }
 
-                TextUtils.isEmpty(binding.mEditTextDescription.text.toString()) -> {
-                    binding.mEditTextDescription.error = resources.getString(R.string.enter_a_description)
-                }
+            else -> {
 
-                else -> {
-
-                    insertPost()
-
-                }
+                insertPost()
 
             }
 
@@ -82,6 +79,7 @@ class AddFragment : Fragment() {
 
     private fun insertPost() {
 
+        // Get user id from SharedPreferences
         val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.user_id), Context.MODE_PRIVATE)
         val userId = sharedPreferences.getInt("id", 0)
 
@@ -94,19 +92,27 @@ class AddFragment : Fragment() {
         )
 
         addViewModel.insertPost(post)
-        Toast.makeText(context, "Posted", Toast.LENGTH_SHORT).show()
+        clearViews()
+        Toast.makeText(context, resources.getString(R.string.post_published), Toast.LENGTH_SHORT).show()
 
     }
 
-    private var launcherProfilePicture: ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+    private fun clearViews() {
+
+        binding.mEditTextDescription.setText("")
+        binding.mImagePost.setImageResource(R.drawable.ic_add)
+
+    }
+
+    private var launcherImage: ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
 
         if (it.resultCode == Activity.RESULT_OK) {
 
             imagePost = it.data?.data!!.toString()
 
             binding.mImagePost.load(imagePost) {
-                placeholder(R.drawable.ic_profile)
-                error(R.drawable.ic_profile)
+                placeholder(R.drawable.ic_add)
+                error(R.drawable.ic_add)
                 crossfade(true)
                 crossfade(400)
             }
