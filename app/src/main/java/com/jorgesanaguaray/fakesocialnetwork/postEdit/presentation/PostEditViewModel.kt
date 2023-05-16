@@ -7,10 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.Post
 import com.jorgesanaguaray.fakesocialnetwork.postEdit.domain.PostEditRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,24 +24,13 @@ class PostEditViewModel @Inject constructor(
     private val _post = MutableLiveData<Post>()
     val post: LiveData<Post> get() = _post
 
-    private val _postEditState = MutableStateFlow(PostEditState())
-    val postEditState: StateFlow<PostEditState> = _postEditState.asStateFlow()
-
     fun getPostById(id: Int) {
 
         viewModelScope.launch {
 
-            _postEditState.update {
-                it.copy(isContent = false, isLoading = true)
-            }
+            postEditRepository.getPostById(id).onSuccess {
 
-            postEditRepository.getPostById(id).onSuccess { post ->
-
-                _post.value = post
-
-                _postEditState.update {
-                    it.copy(isContent = true, isLoading = false)
-                }
+                _post.value = it
 
             }.onFailure {}
 
@@ -56,7 +41,9 @@ class PostEditViewModel @Inject constructor(
     fun updatePost(post: Post) {
 
         viewModelScope.launch {
+
             postEditRepository.updatePost(post)
+
         }
 
     }
@@ -64,7 +51,9 @@ class PostEditViewModel @Inject constructor(
     fun deletePostById(id: Int) {
 
         viewModelScope.launch {
+
             postEditRepository.deletePostById(id)
+
         }
 
     }

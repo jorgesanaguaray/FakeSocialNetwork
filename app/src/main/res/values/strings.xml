@@ -38,4 +38,6 @@
     <string name="registered_user_successfully">Registered user successfully</string>
     <string name="edit_profile_picture">Edit profile picture</string>
     <string name="updated_user">Updated user</string>
+    <string name="post_updated">Post updated</string>
+    <string name="post_deleted">Post deleted</string>
 </resources>

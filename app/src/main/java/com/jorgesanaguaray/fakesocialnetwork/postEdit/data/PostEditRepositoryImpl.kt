@@ -27,11 +27,15 @@ class PostEditRepositoryImpl(private val postDao: PostDao) : PostEditRepository 
     }
 
     override suspend fun updatePost(post: Post) {
+
         postDao.updatePost(post.toDatabase())
+
     }
 
     override suspend fun deletePostById(id: Int) {
+
         postDao.deletePostById(id)
+
     }
 
 }
