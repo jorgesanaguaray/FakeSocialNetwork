@@ -117,11 +117,17 @@ class ProfileFragment : Fragment() {
     private fun logout() {
 
         // Delete login info
-        val sharedPref = activity?.getSharedPreferences(getString(R.string.login_info), Context.MODE_PRIVATE)
-        val editor = sharedPref!!.edit()
-        editor.remove("username")
-        editor.remove("password")
-        editor.apply()
+        val sharedPreferencesA = activity?.getSharedPreferences(getString(R.string.login_info), Context.MODE_PRIVATE)
+        val editorA = sharedPreferencesA!!.edit()
+        editorA.remove("username")
+        editorA.remove("password")
+        editorA.apply()
+
+        // Delete user id
+        val sharedPreferencesB = activity?.getSharedPreferences(getString(R.string.user_id), Context.MODE_PRIVATE)
+        val editorB = sharedPreferencesB!!.edit()
+        editorB.remove("id")
+        editorB.apply()
 
         // Go MainActivity
         startActivity(Intent(context, MainActivity::class.java))

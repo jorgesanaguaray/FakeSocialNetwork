@@ -12,6 +12,12 @@
         tools:layout="@layout/fragment_home"/>
 
     <fragment
+        android:id="@+id/mSearchNavigation"
+        android:name="com.jorgesanaguaray.fakesocialnetwork.search.presentation.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search"/>
+
+    <fragment
         android:id="@+id/mAddNavigation"
         android:name="com.jorgesanaguaray.fakesocialnetwork.add.presentation.AddFragment"
         android:label="fragment_add"

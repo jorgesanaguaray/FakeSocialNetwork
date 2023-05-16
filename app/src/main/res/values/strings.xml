@@ -16,6 +16,7 @@
     <string name="the_username_and_password_you_entered_do_not_match_any_account">The username and password you entered do not match any account.</string>
     <string name="try_again">Try again</string>
     <string name="menu_home">Home</string>
+    <string name="menu_search">Search</string>
     <string name="menu_add">Add</string>
     <string name="menu_profile">Profile</string>
     <string name="login_info">LoginInfo</string>
@@ -41,4 +42,5 @@
     <string name="post_published">Post published</string>
     <string name="post_updated">Post updated</string>
     <string name="post_deleted">Post deleted</string>
+    <string name="search_users">Search users</string>
 </resources>

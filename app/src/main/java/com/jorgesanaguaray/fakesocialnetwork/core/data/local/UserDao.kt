@@ -20,6 +20,9 @@ interface UserDao {
     @Update
     suspend fun updateUser(userEntity: UserEntity)
 
+    @Query("SELECT * FROM user_table")
+    suspend fun getUsers(): List<UserEntity>
+
     @Query("SELECT * FROM user_table WHERE id = :id")
     suspend fun getUserById(id: Int): UserEntity
 
