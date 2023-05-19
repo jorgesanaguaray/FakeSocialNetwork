@@ -70,7 +70,7 @@ class ProfileAdapter(
 
     private fun setUserOfPost(userId: Int, binding: ItemProfileBinding) {
 
-        profileViewModel.getUserById(userId) {
+        profileViewModel.getUserById2(userId) {
 
             binding.mProfilePicture.load(it.profilePicture) {
                 transformations(CircleCropTransformation())

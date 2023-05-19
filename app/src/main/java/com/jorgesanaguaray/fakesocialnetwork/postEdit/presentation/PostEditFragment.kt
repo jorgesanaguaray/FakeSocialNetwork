@@ -132,7 +132,7 @@ class PostEditFragment : Fragment() {
     private fun updatePost() {
 
         // Get user id from SharedPreferences
-        val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.user_id), Context.MODE_PRIVATE)
+        val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.user_info), Context.MODE_PRIVATE)
         val userId = sharedPreferences.getInt("id", 0)
 
         val post = Post(

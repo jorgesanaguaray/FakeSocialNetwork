@@ -15,10 +15,6 @@ import kotlinx.coroutines.flow.map
 
 class ProfileRepositoryImpl(private val userDao: UserDao, private val postDao: PostDao) : ProfileRepository {
 
-    override suspend fun getUserByUsername(username: String): User {
-        return userDao.getUserByUsername(username)!!.toDomain()
-    }
-
     override suspend fun getUserById(id: Int): User {
         return userDao.getUserById(id).toDomain()
     }

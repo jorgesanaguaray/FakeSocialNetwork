@@ -2,7 +2,6 @@ package com.jorgesanaguaray.fakesocialnetwork.profile.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jorgesanaguaray.fakesocialnetwork.core.data.mapper.toDomain
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.User
 import com.jorgesanaguaray.fakesocialnetwork.profile.domain.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,6 +31,30 @@ class ProfileViewModel @Inject constructor(
 
     init {
         getPosts()
+    }
+
+    fun getUserById1(id: Int) {
+
+        viewModelScope.launch {
+
+            _profileState.update {
+                it.copy(isContent = false, isLoading = true)
+            }
+
+            _profileState.update {
+
+                it.copy(
+
+                    user = profileRepository.getUserById(id),
+                    isContent = true,
+                    isLoading = false
+
+                )
+
+            }
+
+        }
+
     }
 
     private fun getPosts() {
@@ -69,7 +92,7 @@ class ProfileViewModel @Inject constructor(
 
     }
 
-    fun getUserById(id: Int, callback: (User) -> Unit) {
+    fun getUserById2(id: Int, callback: (User) -> Unit) {
 
         viewModelScope.launch(Dispatchers.IO) {
 
@@ -91,37 +114,6 @@ class ProfileViewModel @Inject constructor(
 
             val user: User = profileRepository.getUserById(id)
             user
-
-        }
-
-    }
-
-    fun getUserByUsername(username: String) {
-
-        viewModelScope.launch {
-
-            _profileState.update {
-
-                it.copy(
-
-                    isContent = false,
-                    isLoading = true
-
-                )
-
-            }
-
-            _profileState.update {
-
-                it.copy(
-
-                    user = profileRepository.getUserByUsername(username),
-                    isContent = true,
-                    isLoading = false
-
-                )
-
-            }
 
         }
 

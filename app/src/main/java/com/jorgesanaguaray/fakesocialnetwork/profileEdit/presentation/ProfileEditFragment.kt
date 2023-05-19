@@ -34,7 +34,7 @@ class ProfileEditFragment : Fragment() {
     private lateinit var profileEditViewModel: ProfileEditViewModel
     private lateinit var navController: NavController
 
-    private var id = 0
+    private var userId = 0
     private var username = ""
     private var profilePicture = ""
 
@@ -50,10 +50,10 @@ class ProfileEditFragment : Fragment() {
         navController = findNavController()
 
         // Get user id from SharedPreferences
-        val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.user_id), Context.MODE_PRIVATE)
-        id = sharedPreferences.getInt("id", 0)
+        val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.user_info), Context.MODE_PRIVATE)
+        userId = sharedPreferences.getInt("id", 0)
 
-        profileEditViewModel.getUserById(id)
+        profileEditViewModel.getUserById(userId)
 
         profileEditViewModel.user.observe(viewLifecycleOwner) {
 
@@ -164,7 +164,7 @@ class ProfileEditFragment : Fragment() {
     private fun updateUser() {
 
         val user = User(
-            id = id,
+            id = userId,
             username = binding.mEditTextUsername.text.toString(),
             name = binding.mEditTextName.text.toString().trim(),
             bio = binding.mEditTextBio.text.toString().trim(),
@@ -183,7 +183,7 @@ class ProfileEditFragment : Fragment() {
 
     private fun saveLoginInfo() {
 
-        val sharedPreferences = activity?.getSharedPreferences(getString(R.string.login_info), Context.MODE_PRIVATE)
+        val sharedPreferences = activity?.getSharedPreferences(getString(R.string.user_info), Context.MODE_PRIVATE)
         val editor = sharedPreferences!!.edit()
         editor.putString("username", binding.mEditTextUsername.text.toString())
         editor.putString("password", binding.mEditTextPassword.text.toString())

@@ -60,11 +60,11 @@ class ProfileFragment : Fragment() {
         )
         posts = ArrayList()
 
-        // Get username from SharedPreferences
-        val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.login_info), Context.MODE_PRIVATE)
-        val username = sharedPreferences.getString("username", "")
+        // Get user id from SharedPreferences
+        val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.user_info), Context.MODE_PRIVATE)
+        val userId = sharedPreferences.getInt("id", 0)
 
-        profileViewModel.getUserByUsername(username!!)
+        profileViewModel.getUserById1(userId)
 
     }
 
@@ -79,7 +79,6 @@ class ProfileFragment : Fragment() {
                 profileViewModel.profileState.collect {
 
                     setUpViews(it)
-                    saveUserId(it)
 
                 }
 
@@ -123,17 +122,12 @@ class ProfileFragment : Fragment() {
     private fun logout() {
 
         // Delete login info
-        val sharedPreferencesA = activity?.getSharedPreferences(getString(R.string.login_info), Context.MODE_PRIVATE)
+        val sharedPreferencesA = activity?.getSharedPreferences(getString(R.string.user_info), Context.MODE_PRIVATE)
         val editorA = sharedPreferencesA!!.edit()
+        editorA.remove("id")
         editorA.remove("username")
         editorA.remove("password")
         editorA.apply()
-
-        // Delete user id
-        val sharedPreferencesB = activity?.getSharedPreferences(getString(R.string.user_id), Context.MODE_PRIVATE)
-        val editorB = sharedPreferencesB!!.edit()
-        editorB.remove("id")
-        editorB.apply()
 
         // Go MainActivity
         startActivity(Intent(context, MainActivity::class.java))
@@ -185,15 +179,6 @@ class ProfileFragment : Fragment() {
 
         if (profileState.isLoading) binding.mProgressBar.visibility = View.VISIBLE
         else binding.mProgressBar.visibility = View.GONE
-
-    }
-
-    private fun saveUserId(profileState: ProfileState) {
-
-        val sharedPreferences = activity?.getSharedPreferences(getString(R.string.user_id), Context.MODE_PRIVATE)
-        val editor = sharedPreferences!!.edit()
-        editor.putInt("id", profileState.user!!.id!!)
-        editor.apply()
 
     }
 

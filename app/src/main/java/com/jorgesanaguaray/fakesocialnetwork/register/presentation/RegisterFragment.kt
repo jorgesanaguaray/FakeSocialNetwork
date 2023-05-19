@@ -121,7 +121,7 @@ class RegisterFragment : Fragment() {
 
     private fun saveLoginInfo(userId: Int) {
 
-        val sharedPreferences = activity?.getSharedPreferences(getString(R.string.login_info), Context.MODE_PRIVATE)
+        val sharedPreferences = activity?.getSharedPreferences(getString(R.string.user_info), Context.MODE_PRIVATE)
         val editor = sharedPreferences!!.edit()
         editor.putInt("id", userId)
         editor.putString("username", binding.mEditTextUsername.text.toString())

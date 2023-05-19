@@ -31,7 +31,8 @@ class SearchAdapter(
     override fun onBindViewHolder(holder: MySearchViewHolder, position: Int) {
 
         // Get user id from SharedPreferences
-        val sharedPreferences = context.getSharedPreferences(context.getString(R.string.user_id), Context.MODE_PRIVATE)
+        // Get user id from SharedPreferences
+        val sharedPreferences = context.getSharedPreferences(context.getString(R.string.user_info), Context.MODE_PRIVATE)
         val userId = sharedPreferences.getInt("id", 0)
 
         val user = users[position]
@@ -47,7 +48,7 @@ class SearchAdapter(
             }
             mUsername.text = user.username
 
-            if (user.id!! != userId) {
+            if (user.id != userId) {
                 holder.binding.mFollow.visibility = View.VISIBLE
             } else {
                 holder.binding.mFollow.visibility = View.GONE

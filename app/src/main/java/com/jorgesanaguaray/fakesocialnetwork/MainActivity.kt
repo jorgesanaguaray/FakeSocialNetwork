@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        val sharedPreferences = getSharedPreferences(getString(R.string.login_info), Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences(getString(R.string.user_info), Context.MODE_PRIVATE)
         val username = sharedPreferences.getString("username", "")
         val password = sharedPreferences.getString("password", "")
 

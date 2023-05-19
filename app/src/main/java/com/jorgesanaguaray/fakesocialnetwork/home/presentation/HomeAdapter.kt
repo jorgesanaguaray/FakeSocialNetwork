@@ -35,7 +35,7 @@ class HomeAdapter(
     override fun onBindViewHolder(holder: MyHomeViewHolder, position: Int) {
 
         // Get user id from SharedPreferences
-        val sharedPreferences = context.getSharedPreferences(context.getString(R.string.user_id), Context.MODE_PRIVATE)
+        val sharedPreferences = context.getSharedPreferences(context.getString(R.string.user_info), Context.MODE_PRIVATE)
         val userId = sharedPreferences.getInt("id", 0)
 
         val post = posts[position]
