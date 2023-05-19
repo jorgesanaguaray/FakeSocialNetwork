@@ -1,5 +1,6 @@
 package com.jorgesanaguaray.fakesocialnetwork.login.presentation
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -34,10 +35,15 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onStart() {
+        super.onStart()
 
         loginViewModel = ViewModelProvider(this).get()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         binding.mLogin.setOnClickListener {
             validateLoginCredentials()
@@ -80,6 +86,7 @@ class LoginFragment : Fragment() {
         
     }
 
+    @SuppressLint("RepeatOnLifecycleWrongUsage")
     private fun isLoginSuccessful() {
 
         loginViewModel.isLoginSuccessful(
@@ -93,7 +100,7 @@ class LoginFragment : Fragment() {
 
                 loginViewModel.loginState.collect {
 
-                    if (it.loginSuccessful) {
+                    if (it.isLoginSuccessful) {
 
                         saveLoginInfo()
                         startActivity(Intent(context, SecondActivity::class.java))
@@ -116,11 +123,16 @@ class LoginFragment : Fragment() {
 
     private fun saveLoginInfo() {
 
-        val sharedPreferences = activity?.getSharedPreferences(getString(R.string.login_info), Context.MODE_PRIVATE)
-        val editor = sharedPreferences!!.edit()
-        editor.putString("username", binding.mEditTextUsername.text.toString())
-        editor.putString("password", binding.mEditTextPassword.text.toString())
-        editor.apply()
+        loginViewModel.user.observe(viewLifecycleOwner) {
+
+            val sharedPreferences = activity?.getSharedPreferences(getString(R.string.login_info), Context.MODE_PRIVATE)
+            val editor = sharedPreferences!!.edit()
+            editor.putInt("id", it.id)
+            editor.putString("username", it.username)
+            editor.putString("password", it.password)
+            editor.apply()
+
+        }
 
     }
 

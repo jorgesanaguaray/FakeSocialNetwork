@@ -17,6 +17,7 @@ import com.jorgesanaguaray.fakesocialnetwork.SecondActivity
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.User
 import com.jorgesanaguaray.fakesocialnetwork.databinding.FragmentRegisterBinding
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.UUID
 
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
@@ -30,10 +31,15 @@ class RegisterFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onStart() {
+        super.onStart()
 
         registerViewModel = ViewModelProvider(this).get()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         binding.mBack.setOnClickListener {
             findNavController().navigate(R.id.action_mRegisterNavigation_to_mLoginNavigation)
@@ -92,8 +98,10 @@ class RegisterFragment : Fragment() {
 
     private fun insertUser() {
 
+        val userId = UUID.randomUUID().toString().hashCode()
+
         val user = User(
-            id = null,
+            id = userId,
             username = binding.mEditTextUsername.text.toString(),
             name = binding.mEditTextName.text.toString().trim(),
             password = binding.mEditTextPassword.text.toString(),
@@ -104,17 +112,18 @@ class RegisterFragment : Fragment() {
         )
 
         registerViewModel.insertUser(user)
-        saveLoginInfo()
+        saveLoginInfo(userId)
         startActivity(Intent(context, SecondActivity::class.java))
         requireActivity().finish()
         Toast.makeText(context, resources.getString(R.string.registered_user_successfully), Toast.LENGTH_SHORT).show()
 
     }
 
-    private fun saveLoginInfo() {
+    private fun saveLoginInfo(userId: Int) {
 
         val sharedPreferences = activity?.getSharedPreferences(getString(R.string.login_info), Context.MODE_PRIVATE)
         val editor = sharedPreferences!!.edit()
+        editor.putInt("id", userId)
         editor.putString("username", binding.mEditTextUsername.text.toString())
         editor.putString("password", binding.mEditTextPassword.text.toString())
         editor.apply()

@@ -6,7 +6,7 @@ package com.jorgesanaguaray.fakesocialnetwork.core.domain
 
 data class User(
 
-    val id: Int? = null,
+    val id: Int,
     val username: String,
     val name: String,
     val bio: String,
