@@ -1,7 +1,7 @@
 package com.jorgesanaguaray.fakesocialnetwork.register.data
 
-import com.jorgesanaguaray.fakesocialnetwork.core.data.local.UserDao
-import com.jorgesanaguaray.fakesocialnetwork.core.data.local.UserEntity
+import com.jorgesanaguaray.fakesocialnetwork.core.data.local.dao.UserDao
+import com.jorgesanaguaray.fakesocialnetwork.core.data.local.entities.UserEntity
 import com.jorgesanaguaray.fakesocialnetwork.core.data.mapper.toDatabase
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.User
 import com.jorgesanaguaray.fakesocialnetwork.register.domain.RegisterRepository

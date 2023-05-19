@@ -46,7 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/ConstraintLayout"
-                android:layout_toStartOf="@id/RelativeLayout"
+                android:layout_toStartOf="@id/mEdit"
                 android:layout_centerVertical="true"
                 android:orientation="vertical"
                 android:layout_marginHorizontal="8dp">
@@ -90,32 +90,16 @@
 
             </LinearLayout>
 
-            <RelativeLayout
-                android:id="@+id/RelativeLayout"
+            <ImageView
+                android:id="@+id/mEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true">
-
-                <Button
-                    android:id="@+id/mFollow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:text="@string/follow"
-                    android:textAppearance="?attr/textAppearanceSubtitle1"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
-
-                <ImageView
-                    android:id="@+id/mEdit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:visibility="visible"
-                    android:contentDescription="@string/app_name"
-                    android:src="@drawable/ic_edit"/>
-
-            </RelativeLayout>
+                android:layout_centerVertical="true"
+                android:padding="8dp"
+                android:visibility="visible"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_edit"/>
 
         </RelativeLayout>
 

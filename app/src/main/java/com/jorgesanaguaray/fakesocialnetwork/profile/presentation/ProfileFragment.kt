@@ -22,6 +22,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jorgesanaguaray.fakesocialnetwork.Constants.Companion.KEY_POST_ID
 import com.jorgesanaguaray.fakesocialnetwork.MainActivity
 import com.jorgesanaguaray.fakesocialnetwork.R
+import com.jorgesanaguaray.fakesocialnetwork.core.domain.Post
 import com.jorgesanaguaray.fakesocialnetwork.databinding.DialogProfileBinding
 import com.jorgesanaguaray.fakesocialnetwork.databinding.FragmentProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,6 +36,7 @@ class ProfileFragment : Fragment() {
 
     private lateinit var profileViewModel: ProfileViewModel
     private lateinit var profileAdapter: ProfileAdapter
+    private lateinit var posts: MutableList<Post>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
@@ -48,11 +50,15 @@ class ProfileFragment : Fragment() {
 
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onStart() {
+        super.onStart()
 
         profileViewModel = ViewModelProvider(this).get()
-        profileAdapter = ProfileAdapter(editClick = { goPostEdit(it) })
+        profileAdapter = ProfileAdapter(
+            profileViewModel = profileViewModel,
+            editClick = { goPostEdit(it) }
+        )
+        posts = ArrayList()
 
         // Get username from SharedPreferences
         val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.login_info), Context.MODE_PRIVATE)
@@ -161,8 +167,17 @@ class ProfileFragment : Fragment() {
 
         }
 
-        profileAdapter.setUser(profileState.user!!)
-        profileAdapter.setPosts(profileState.posts)
+        posts.clear()
+
+        profileState.posts.forEach { post ->
+
+            if (post.userId == profileState.user!!.id) {
+                posts.add(post)
+            }
+
+        }
+
+        profileAdapter.setPosts(posts)
         binding.mRecyclerView.adapter = profileAdapter
 
         if (profileState.isContent) binding.mNestedScroll.visibility = View.VISIBLE

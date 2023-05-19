@@ -1,10 +1,11 @@
-package com.jorgesanaguaray.fakesocialnetwork.core.data.local
+package com.jorgesanaguaray.fakesocialnetwork.core.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.jorgesanaguaray.fakesocialnetwork.core.data.local.entities.PostEntity
 import kotlinx.coroutines.flow.Flow
 
 /**

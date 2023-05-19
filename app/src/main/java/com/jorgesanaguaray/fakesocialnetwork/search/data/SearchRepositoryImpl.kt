@@ -1,6 +1,6 @@
 package com.jorgesanaguaray.fakesocialnetwork.search.data
 
-import com.jorgesanaguaray.fakesocialnetwork.core.data.local.UserDao
+import com.jorgesanaguaray.fakesocialnetwork.core.data.local.dao.UserDao
 import com.jorgesanaguaray.fakesocialnetwork.core.data.mapper.toDomain
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.User
 import com.jorgesanaguaray.fakesocialnetwork.search.domain.SearchRepository

@@ -1,6 +1,6 @@
 package com.jorgesanaguaray.fakesocialnetwork.postEdit.data.di
 
-import com.jorgesanaguaray.fakesocialnetwork.core.data.local.PostDao
+import com.jorgesanaguaray.fakesocialnetwork.core.data.local.dao.PostDao
 import com.jorgesanaguaray.fakesocialnetwork.postEdit.data.PostEditRepositoryImpl
 import com.jorgesanaguaray.fakesocialnetwork.postEdit.domain.PostEditRepository
 import dagger.Module

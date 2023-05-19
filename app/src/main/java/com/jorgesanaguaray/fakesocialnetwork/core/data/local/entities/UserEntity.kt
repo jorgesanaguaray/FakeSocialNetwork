@@ -1,4 +1,4 @@
-package com.jorgesanaguaray.fakesocialnetwork.core.data.local
+package com.jorgesanaguaray.fakesocialnetwork.core.data.local.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

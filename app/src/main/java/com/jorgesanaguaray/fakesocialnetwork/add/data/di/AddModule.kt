@@ -2,7 +2,7 @@ package com.jorgesanaguaray.fakesocialnetwork.add.data.di
 
 import com.jorgesanaguaray.fakesocialnetwork.add.data.AddRepositoryImpl
 import com.jorgesanaguaray.fakesocialnetwork.add.domain.AddRepository
-import com.jorgesanaguaray.fakesocialnetwork.core.data.local.PostDao
+import com.jorgesanaguaray.fakesocialnetwork.core.data.local.dao.PostDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,6 +1,6 @@
 package com.jorgesanaguaray.fakesocialnetwork.postEdit.data
 
-import com.jorgesanaguaray.fakesocialnetwork.core.data.local.PostDao
+import com.jorgesanaguaray.fakesocialnetwork.core.data.local.dao.PostDao
 import com.jorgesanaguaray.fakesocialnetwork.core.data.mapper.toDatabase
 import com.jorgesanaguaray.fakesocialnetwork.core.data.mapper.toDomain
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.Post

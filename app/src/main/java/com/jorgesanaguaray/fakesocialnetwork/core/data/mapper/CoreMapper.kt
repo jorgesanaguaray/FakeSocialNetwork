@@ -1,7 +1,7 @@
 package com.jorgesanaguaray.fakesocialnetwork.core.data.mapper
 
-import com.jorgesanaguaray.fakesocialnetwork.core.data.local.PostEntity
-import com.jorgesanaguaray.fakesocialnetwork.core.data.local.UserEntity
+import com.jorgesanaguaray.fakesocialnetwork.core.data.local.entities.PostEntity
+import com.jorgesanaguaray.fakesocialnetwork.core.data.local.entities.UserEntity
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.Post
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.User
 

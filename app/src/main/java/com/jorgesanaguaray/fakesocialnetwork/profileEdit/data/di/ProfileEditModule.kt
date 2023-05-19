@@ -1,6 +1,6 @@
 package com.jorgesanaguaray.fakesocialnetwork.profileEdit.data.di
 
-import com.jorgesanaguaray.fakesocialnetwork.core.data.local.UserDao
+import com.jorgesanaguaray.fakesocialnetwork.core.data.local.dao.UserDao
 import com.jorgesanaguaray.fakesocialnetwork.profileEdit.data.ProfileEditRepositoryImpl
 import com.jorgesanaguaray.fakesocialnetwork.profileEdit.domain.ProfileEditRepository
 import dagger.Module

@@ -1,6 +1,6 @@
 package com.jorgesanaguaray.fakesocialnetwork.login.data.di
 
-import com.jorgesanaguaray.fakesocialnetwork.core.data.local.UserDao
+import com.jorgesanaguaray.fakesocialnetwork.core.data.local.dao.UserDao
 import com.jorgesanaguaray.fakesocialnetwork.login.data.LoginRepositoryImpl
 import com.jorgesanaguaray.fakesocialnetwork.login.domain.LoginRepository
 import dagger.Module

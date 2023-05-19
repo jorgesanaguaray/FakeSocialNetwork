@@ -1,7 +1,7 @@
 package com.jorgesanaguaray.fakesocialnetwork.login.data
 
-import com.jorgesanaguaray.fakesocialnetwork.core.data.local.UserDao
-import com.jorgesanaguaray.fakesocialnetwork.core.data.local.UserEntity
+import com.jorgesanaguaray.fakesocialnetwork.core.data.local.dao.UserDao
+import com.jorgesanaguaray.fakesocialnetwork.core.data.local.entities.UserEntity
 import com.jorgesanaguaray.fakesocialnetwork.login.domain.LoginRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
