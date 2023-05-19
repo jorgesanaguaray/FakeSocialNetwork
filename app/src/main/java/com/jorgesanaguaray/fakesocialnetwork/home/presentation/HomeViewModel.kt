@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -40,53 +41,28 @@ class HomeViewModel @Inject constructor(
 
                 it.copy(
 
-                    isSearchView = false,
-                    isRecyclerView = false,
+                    isContent = false,
                     isLoading = true
 
                 )
 
             }
 
-            homeRepository.getPosts().onSuccess { posts ->
+            homeRepository.getPosts().collectLatest { posts ->
 
                 _homeState.update {
 
                     it.copy(
 
                         posts = posts,
-                        isSearchView = true,
-                        isRecyclerView = true,
+                        isContent = true,
                         isLoading = false
 
                     )
 
                 }
 
-            }.onFailure {}
-
-        }
-
-    }
-
-    fun getSearchedPosts(query: String) {
-
-        viewModelScope.launch {
-
-            homeRepository.getSearchedPosts(query).onSuccess { posts ->
-
-                _homeState.update {
-
-                    it.copy(
-                        posts = posts,
-                        isSearchView = true,
-                        isRecyclerView = true,
-                        isLoading = false
-                    )
-
-                }
-
-            }.onFailure {}
+            }
 
         }
 

@@ -9,8 +9,7 @@ import com.jorgesanaguaray.fakesocialnetwork.core.domain.Post
 data class HomeState(
 
     val posts: List<Post> = emptyList(),
-    val isSearchView: Boolean = false,
-    val isRecyclerView: Boolean = false,
+    val isContent: Boolean = false,
     val isLoading: Boolean = false
 
 )

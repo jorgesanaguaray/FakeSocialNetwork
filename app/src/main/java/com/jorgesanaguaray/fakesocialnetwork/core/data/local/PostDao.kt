@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Created by Jorge Sanaguaray
@@ -20,7 +21,7 @@ interface PostDao {
     suspend fun updatePost(postEntity: PostEntity)
 
     @Query("SELECT * FROM post_table ORDER BY id DESC")
-    suspend fun getPosts(): List<PostEntity>
+    fun getPosts(): Flow<List<PostEntity>>
 
     @Query("SELECT * FROM post_table WHERE id = :id")
     suspend fun getPostById(id: Int): PostEntity

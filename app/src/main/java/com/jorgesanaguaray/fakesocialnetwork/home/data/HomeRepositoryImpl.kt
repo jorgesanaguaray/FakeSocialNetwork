@@ -6,6 +6,8 @@ import com.jorgesanaguaray.fakesocialnetwork.core.data.mapper.toDomain
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.Post
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.User
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.HomeRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 /**
  * Created by Jorge Sanaguaray
@@ -13,42 +15,19 @@ import com.jorgesanaguaray.fakesocialnetwork.home.domain.HomeRepository
 
 class HomeRepositoryImpl(private val userDao: UserDao, private val postDao: PostDao) : HomeRepository {
 
-    private lateinit var searchedPosts: MutableList<Post>
-
     override suspend fun getUserById(id: Int): User {
         return userDao.getUserById(id).toDomain()
     }
 
-    override suspend fun getPosts(): Result<List<Post>> {
+    override fun getPosts(): Flow<List<Post>> {
 
-        return try {
+        return postDao.getPosts().map { postsEntity ->
 
-            Result.success(postDao.getPosts().map { it.toDomain() })
+            postsEntity.map {
 
-        } catch (e: Exception) {
+                it.toDomain()
 
-            Result.failure(e)
-
-        }
-
-    }
-
-    override suspend fun getSearchedPosts(query: String): Result<List<Post>> {
-
-        return try {
-
-            val posts = postDao.getPosts().map { it.toDomain() }
-            searchedPosts = ArrayList()
-
-            for (post in posts) {
-                if (post.description.lowercase().contains(query.lowercase())) searchedPosts.add(post)
             }
-
-            Result.success(searchedPosts.shuffled())
-
-        } catch (e: Exception) {
-
-            Result.failure(e)
 
         }
 

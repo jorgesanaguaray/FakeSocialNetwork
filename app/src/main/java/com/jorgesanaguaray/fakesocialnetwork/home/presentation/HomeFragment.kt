@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -71,24 +70,8 @@ class HomeFragment : Fragment() {
 
         }
 
-        binding.mSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                homeViewModel.getSearchedPosts(query!!)
-                binding.mSearchView.clearFocus()
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                homeViewModel.getSearchedPosts(newText!!)
-                return true
-            }
-
-        })
-
         binding.mSwipeRefresh.setOnRefreshListener {
             homeViewModel.getPosts()
-            binding.mSearchView.setQuery("", false)
             binding.mSwipeRefresh.isRefreshing = false
         }
 
@@ -109,10 +92,7 @@ class HomeFragment : Fragment() {
         homeAdapter.setPosts(homeState.posts)
         binding.mRecyclerView.adapter = homeAdapter
 
-        if (homeState.isSearchView) binding.mSearchView.visibility = View.VISIBLE
-        else binding.mSearchView.visibility = View.GONE
-
-        if (homeState.isRecyclerView) binding.mRecyclerView.visibility = View.VISIBLE
+        if (homeState.isContent) binding.mRecyclerView.visibility = View.VISIBLE
         else binding.mRecyclerView.visibility = View.GONE
 
         if (homeState.isLoading) binding.mProgressBar.visibility = View.VISIBLE
