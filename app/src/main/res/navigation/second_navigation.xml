@@ -9,13 +9,7 @@
         android:id="@+id/mHomeNavigation"
         android:name="com.jorgesanaguaray.fakesocialnetwork.home.presentation.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home">
-
-        <action
-            android:id="@+id/action_mHomeNavigation_to_mPostEditNavigation"
-            app:destination="@id/mPostEditNavigation"/>
-
-    </fragment>
+        tools:layout="@layout/fragment_home"/>
 
     <fragment
         android:id="@+id/mSearchNavigation"

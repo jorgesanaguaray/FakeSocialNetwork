@@ -1,6 +1,5 @@
 package com.jorgesanaguaray.fakesocialnetwork.home.presentation
 
-import android.content.Context
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
@@ -21,8 +20,6 @@ import java.util.Locale
 class HomeAdapter(
 
     private val homeViewModel: HomeViewModel,
-    private val context: Context,
-    private val editClick:(Int) -> Unit
 
 ) : RecyclerView.Adapter<HomeAdapter.MyHomeViewHolder>() {
 
@@ -33,10 +30,6 @@ class HomeAdapter(
     }
 
     override fun onBindViewHolder(holder: MyHomeViewHolder, position: Int) {
-
-        // Get user id from SharedPreferences
-        val sharedPreferences = context.getSharedPreferences(context.getString(R.string.user_info), Context.MODE_PRIVATE)
-        val userId = sharedPreferences.getInt("id", 0)
 
         val post = posts[position]
 
@@ -52,18 +45,6 @@ class HomeAdapter(
             mImagePost.load(post.image) {
                 crossfade(true)
                 crossfade(400)
-            }
-
-            if (post.userId == userId) {
-                holder.binding.mEdit.visibility = View.VISIBLE
-                holder.binding.mFollow.visibility = View.GONE
-            } else {
-                holder.binding.mEdit.visibility = View.GONE
-                holder.binding.mFollow.visibility = View.VISIBLE
-            }
-
-            mEdit.setOnClickListener {
-                editClick(post.id!!)
             }
 
         }
