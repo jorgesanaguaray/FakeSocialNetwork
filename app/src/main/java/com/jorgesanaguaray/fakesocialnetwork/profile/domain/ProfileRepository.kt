@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface ProfileRepository {
 
-    suspend fun getUserById(id: Int): User
+    fun getUserById(id: Int): Flow<User>
 
     fun getPosts(): Flow<List<Post>>
 

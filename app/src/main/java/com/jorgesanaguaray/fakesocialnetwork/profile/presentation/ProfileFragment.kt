@@ -40,7 +40,7 @@ class ProfileFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
-        // Show BottomNavigationView
+        // Show Bottom Navigation View
         val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.mBottomNavigationView)
         bottomNavigationView?.visibility = View.VISIBLE
 
@@ -54,17 +54,14 @@ class ProfileFragment : Fragment() {
         super.onStart()
 
         profileViewModel = ViewModelProvider(this).get()
-        profileAdapter = ProfileAdapter(
-            profileViewModel = profileViewModel,
-            editClick = { goPostEdit(it) }
-        )
+        profileAdapter = ProfileAdapter(editClick = { goPostEdit(it) })
         posts = ArrayList()
 
         // Get user id from SharedPreferences
         val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.user_info), Context.MODE_PRIVATE)
         val userId = sharedPreferences.getInt("id", 0)
 
-        profileViewModel.getUserById1(userId)
+        profileViewModel.getUserById(userId)
 
     }
 
@@ -121,7 +118,7 @@ class ProfileFragment : Fragment() {
 
     private fun logout() {
 
-        // Delete login info
+        // Delete user info from SharedPreferences
         val sharedPreferencesA = activity?.getSharedPreferences(getString(R.string.user_info), Context.MODE_PRIVATE)
         val editorA = sharedPreferencesA!!.edit()
         editorA.remove("id")
@@ -171,14 +168,17 @@ class ProfileFragment : Fragment() {
 
         }
 
+        profileAdapter.setUser(profileState.user!!)
         profileAdapter.setPosts(posts)
         binding.mRecyclerView.adapter = profileAdapter
 
-        if (profileState.isContent) binding.mNestedScroll.visibility = View.VISIBLE
-        else binding.mNestedScroll.visibility = View.GONE
-
-        if (profileState.isLoading) binding.mProgressBar.visibility = View.VISIBLE
-        else binding.mProgressBar.visibility = View.GONE
+        if (profileState.isLoading) {
+            binding.mNestedScroll.visibility = View.GONE
+            binding.mProgressBar.visibility = View.VISIBLE
+        } else {
+            binding.mNestedScroll.visibility = View.VISIBLE
+            binding.mProgressBar.visibility = View.GONE
+        }
 
     }
 

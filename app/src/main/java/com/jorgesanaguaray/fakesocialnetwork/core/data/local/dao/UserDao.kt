@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.jorgesanaguaray.fakesocialnetwork.core.data.local.entities.UserEntity
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Created by Jorge Sanaguaray
@@ -22,6 +23,9 @@ interface UserDao {
 
     @Query("SELECT * FROM user_table")
     suspend fun getUsers(): List<UserEntity>
+
+    @Query("SELECT * FROM user_table WHERE id = :id")
+    fun getUserByIdA(id: Int): Flow<UserEntity>
 
     @Query("SELECT * FROM user_table WHERE id = :id")
     suspend fun getUserById(id: Int): UserEntity
