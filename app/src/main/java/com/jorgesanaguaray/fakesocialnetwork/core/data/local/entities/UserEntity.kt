@@ -18,6 +18,8 @@ data class UserEntity(
     val link: String,
     val password: String,
     val profilePicture: String,
+    val followers: String,
+    val following: String,
     val isVerified: Boolean
 
 )

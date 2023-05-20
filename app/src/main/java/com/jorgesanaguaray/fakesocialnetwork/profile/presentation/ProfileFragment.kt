@@ -139,9 +139,26 @@ class ProfileFragment : Fragment() {
 
     private fun setUpViews(profileState: ProfileState) {
 
+        posts.clear()
+
+        profileState.posts.forEach { post ->
+
+            if (post.userId == profileState.user!!.id) {
+                posts.add(post)
+            }
+
+        }
+
+        profileAdapter.setUser(profileState.user!!)
+        profileAdapter.setPosts(posts)
+        binding.mRecyclerView.adapter = profileAdapter
+
         binding.apply {
 
-            mUsername.text = profileState.user!!.username
+            mUsername.text = profileState.user.username
+            mNumberPosts.text = posts.size.toString()
+            mNumberFollowers.text = profileState.user.followers
+            mNumberFollowing.text = profileState.user.following
             mName.text = profileState.user.name
             mBio.text = profileState.user.bio
             mLink.text = profileState.user.link
@@ -157,20 +174,6 @@ class ProfileFragment : Fragment() {
             else mVerified.visibility = View.GONE
 
         }
-
-        posts.clear()
-
-        profileState.posts.forEach { post ->
-
-            if (post.userId == profileState.user!!.id) {
-                posts.add(post)
-            }
-
-        }
-
-        profileAdapter.setUser(profileState.user!!)
-        profileAdapter.setPosts(posts)
-        binding.mRecyclerView.adapter = profileAdapter
 
         if (profileState.isLoading) {
             binding.mNestedScroll.visibility = View.GONE

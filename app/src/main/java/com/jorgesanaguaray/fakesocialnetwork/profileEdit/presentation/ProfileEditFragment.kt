@@ -110,6 +110,8 @@ class ProfileEditFragment : Fragment() {
             mEditTextName.setText(user.name)
             mEditTextBio.setText(user.bio)
             mEditTextLink.setText(user.link)
+            mEditTextFollowers.setText(user.followers)
+            mEditTextFollowing.setText(user.following)
             mEditTextPassword.setText(user.password)
             mSwitch.isChecked = user.isVerified
 
@@ -171,17 +173,19 @@ class ProfileEditFragment : Fragment() {
             link = binding.mEditTextLink.text.toString().trim(),
             password = binding.mEditTextPassword.text.toString(),
             profilePicture = profilePicture,
+            followers = binding.mEditTextFollowers.text.toString(),
+            following = binding.mEditTextFollowing.text.toString(),
             isVerified = binding.mSwitch.isChecked
         )
 
         profileEditViewModel.updateUser(user)
-        saveLoginInfo()
+        saveUserInfo()
         navController.navigateUp()
         Toast.makeText(context, resources.getString(R.string.updated_user), Toast.LENGTH_SHORT).show()
 
     }
 
-    private fun saveLoginInfo() {
+    private fun saveUserInfo() {
 
         val sharedPreferences = activity?.getSharedPreferences(getString(R.string.user_info), Context.MODE_PRIVATE)
         val editor = sharedPreferences!!.edit()
