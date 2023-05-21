@@ -45,7 +45,7 @@
     <string name="like">Like</string>
     <string name="comment">Comment</string>
     <string name="share">Share</string>
-    <string name="likes">Likes</string>
-    <string name="comments">Comments</string>
-    <string name="shares">Shares</string>
+    <string name="likes">likes</string>
+    <string name="comments">comments</string>
+    <string name="shares">shares</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.jorgesanaguaray.fakesocialnetwork.profile.presentation
 
+import android.annotation.SuppressLint
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
@@ -31,6 +32,7 @@ class ProfileAdapter(
         return MyProfileViewHolder(ItemProfileBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyProfileViewHolder, position: Int) {
 
         val post = posts[position]
@@ -50,13 +52,15 @@ class ProfileAdapter(
             if (user!!.isVerified) mVerified.visibility = View.VISIBLE
             else mVerified.visibility = View.GONE
 
-            // set post info in views
+            // Set post info in views
             val calendar = Calendar.getInstance(Locale.getDefault())
             calendar.timeInMillis = post.date.toLong()
             val date = DateFormat.format("dd/MM/yyyy", calendar).toString()
 
             mDate.text = date
             mDescription.text = post.description
+            mLikes.text = post.likes
+            mCommentsAndShares.text = "${post.comments} ${holder.itemView.context.getString(R.string.comments)} • ${post.shares} ${holder.itemView.context.getString(R.string.shares)}"
 
             mImagePost.load(post.image) {
                 crossfade(true)

@@ -7,6 +7,11 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="?attr/colorControlHighlight"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -67,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/app_name"
                     android:visibility="visible"
-                    android:src="@drawable/ic_verified"/>
+                    android:src="@drawable/ic_verified_b"/>
 
             </LinearLayout>
 
@@ -75,7 +80,7 @@
                 android:id="@+id/mDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:alpha="0.5"
+                android:alpha="0.6"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 tools:text="11/05/2023"/>
 
@@ -119,33 +124,22 @@
         android:alpha="0.6">
 
         <TextView
+            android:id="@+id/mLikes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:textAppearance="?attr/textAppearanceSubtitle1"
             tools:text="0"/>
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/mCommentsAndShares"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            tools:ignore="RelativeOverlap">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceSubtitle1"
-                tools:text="0 comments"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceSubtitle1"
-                tools:text=" • 0 shares"/>
-
-        </LinearLayout>
+            android:textAppearance="?attr/textAppearanceSubtitle1"
+            tools:text="0 comments • 0 shares"
+            tools:ignore="RelativeOverlap"/>
 
     </RelativeLayout>
 
@@ -153,7 +147,7 @@
         android:layout_width="match_parent"
         android:layout_height="0.1dp"
         android:layout_marginHorizontal="12dp"
-        android:background="@android:color/darker_gray"/>
+        android:background="?attr/colorControlHighlight"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -244,7 +238,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="8dp"
-        android:background="@android:color/darker_gray"/>
+        android:layout_height="4dp"
+        android:background="?attr/colorControlHighlight"/>
 
 </LinearLayout>

@@ -56,7 +56,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
-            android:background="@android:color/darker_gray"/>
+            android:background="?attr/colorControlHighlight"/>
 
     </LinearLayout>
 
@@ -120,7 +120,7 @@
                             android:gravity="center">
 
                             <TextView
-                                android:id="@+id/mNumberPosts"
+                                android:id="@+id/mPosts"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textAppearance="?attr/textAppearanceSubtitle1"
@@ -142,7 +142,7 @@
                             android:gravity="center">
 
                             <TextView
-                                android:id="@+id/mNumberFollowers"
+                                android:id="@+id/mFollowers"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textAppearance="?attr/textAppearanceSubtitle1"
@@ -164,7 +164,7 @@
                             android:gravity="center">
 
                             <TextView
-                                android:id="@+id/mNumberFollowing"
+                                android:id="@+id/mFollowing"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textAppearance="?attr/textAppearanceSubtitle1"
@@ -193,10 +193,12 @@
             </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/mContainerNameBioLink"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingHorizontal="12dp">
+                android:paddingHorizontal="12dp"
+                android:paddingBottom="12dp">
 
                 <TextView
                     android:id="@+id/mName"

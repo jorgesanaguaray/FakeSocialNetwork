@@ -156,15 +156,27 @@ class ProfileFragment : Fragment() {
         binding.apply {
 
             mUsername.text = profileState.user.username
-            mNumberPosts.text = posts.size.toString()
-            mNumberFollowers.text = profileState.user.followers
-            mNumberFollowing.text = profileState.user.following
+            mPosts.text = posts.size.toString()
+            mFollowers.text = profileState.user.followers
+            mFollowing.text = profileState.user.following
             mProfilePicture.load(profileState.user.profilePicture) {
                 transformations(CircleCropTransformation())
                 placeholder(R.drawable.ic_profile)
                 error(R.drawable.ic_profile)
                 crossfade(true)
                 crossfade(400)
+            }
+
+            if (profileState.user.isVerified) {
+                mVerified.visibility = View.VISIBLE
+            } else {
+                mVerified.visibility = View.GONE
+            }
+
+            if (profileState.user.name == "" && profileState.user.bio == "" && profileState.user.link == "") {
+                mContainerNameBioLink.visibility = View.GONE
+            } else {
+                mContainerNameBioLink.visibility = View.VISIBLE
             }
 
             if (profileState.user.name != "") {
@@ -186,12 +198,6 @@ class ProfileFragment : Fragment() {
                 mLink.text = profileState.user.link
             } else {
                 mLink.visibility = View.GONE
-            }
-
-            if (profileState.user.isVerified) {
-                mVerified.visibility = View.VISIBLE
-            } else {
-                mVerified.visibility = View.GONE
             }
 
             if (profileState.isLoading) {
