@@ -159,9 +159,6 @@ class ProfileFragment : Fragment() {
             mNumberPosts.text = posts.size.toString()
             mNumberFollowers.text = profileState.user.followers
             mNumberFollowing.text = profileState.user.following
-            mName.text = profileState.user.name
-            mBio.text = profileState.user.bio
-            mLink.text = profileState.user.link
             mProfilePicture.load(profileState.user.profilePicture) {
                 transformations(CircleCropTransformation())
                 placeholder(R.drawable.ic_profile)
@@ -170,17 +167,41 @@ class ProfileFragment : Fragment() {
                 crossfade(400)
             }
 
-            if (profileState.user.isVerified) mVerified.visibility = View.VISIBLE
-            else mVerified.visibility = View.GONE
+            if (profileState.user.name != "") {
+                mName.visibility = View.VISIBLE
+                mName.text = profileState.user.name
+            } else {
+                mName.visibility = View.GONE
+            }
 
-        }
+            if (profileState.user.bio != "") {
+                mBio.visibility = View.VISIBLE
+                mBio.text = profileState.user.bio
+            } else {
+                mBio.visibility = View.GONE
+            }
 
-        if (profileState.isLoading) {
-            binding.mNestedScroll.visibility = View.GONE
-            binding.mProgressBar.visibility = View.VISIBLE
-        } else {
-            binding.mNestedScroll.visibility = View.VISIBLE
-            binding.mProgressBar.visibility = View.GONE
+            if (profileState.user.link != "") {
+                mLink.visibility = View.VISIBLE
+                mLink.text = profileState.user.link
+            } else {
+                mLink.visibility = View.GONE
+            }
+
+            if (profileState.user.isVerified) {
+                mVerified.visibility = View.VISIBLE
+            } else {
+                mVerified.visibility = View.GONE
+            }
+
+            if (profileState.isLoading) {
+                mNestedScrollView.visibility = View.GONE
+                mProgressBar.visibility = View.VISIBLE
+            } else {
+                mNestedScrollView.visibility = View.VISIBLE
+                mProgressBar.visibility = View.GONE
+            }
+
         }
 
     }

@@ -42,4 +42,7 @@
     <string name="post_updated">Post updated</string>
     <string name="post_deleted">Post deleted</string>
     <string name="search_users">Search users</string>
+    <string name="like">Like</string>
+    <string name="comment">Comment</string>
+    <string name="share">Share</string>
 </resources>
