@@ -128,7 +128,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             tools:text="0"/>
 
         <TextView
@@ -137,7 +137,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             tools:text="0 comments • 0 shares"
             tools:ignore="RelativeOverlap"/>
 
@@ -178,7 +178,7 @@
                 android:layout_marginStart="4dp"
                 android:alpha="0.6"
                 android:text="@string/like"
-                android:textAppearance="?attr/textAppearanceSubtitle1"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
         </RelativeLayout>
 
@@ -204,7 +204,7 @@
                 android:layout_marginStart="4dp"
                 android:alpha="0.6"
                 android:text="@string/comment"
-                android:textAppearance="?attr/textAppearanceSubtitle1"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
         </RelativeLayout>
 
@@ -230,7 +230,7 @@
                 android:layout_marginStart="4dp"
                 android:alpha="0.6"
                 android:text="@string/share"
-                android:textAppearance="?attr/textAppearanceSubtitle1"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
         </RelativeLayout>
 

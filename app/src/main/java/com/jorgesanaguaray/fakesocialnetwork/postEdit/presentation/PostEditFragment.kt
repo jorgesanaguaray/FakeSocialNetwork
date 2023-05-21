@@ -35,6 +35,7 @@ class PostEditFragment : Fragment() {
     private lateinit var navController: NavController
 
     private var postId = 0
+    private var date = ""
     private var imagePost = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -54,6 +55,7 @@ class PostEditFragment : Fragment() {
 
         postEditViewModel.post.observe(viewLifecycleOwner) {
 
+            date = it.date
             imagePost = it.image
             setUpViews(it)
 
@@ -142,7 +144,7 @@ class PostEditFragment : Fragment() {
             id = postId,
             description = binding.mEditTextDescription.text.toString().trim(),
             image = imagePost,
-            date = System.currentTimeMillis().toString(),
+            date = date,
             likes = binding.mEditTextLikes.text.toString(),
             comments = binding.mEditTextComments.text.toString(),
             shares = binding.mEditTextShares.text.toString(),

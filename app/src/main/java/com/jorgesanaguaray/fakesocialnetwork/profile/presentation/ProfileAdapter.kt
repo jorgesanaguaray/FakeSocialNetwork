@@ -1,7 +1,7 @@
 package com.jorgesanaguaray.fakesocialnetwork.profile.presentation
 
 import android.annotation.SuppressLint
-import android.text.format.DateFormat
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +12,9 @@ import com.jorgesanaguaray.fakesocialnetwork.R
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.Post
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.User
 import com.jorgesanaguaray.fakesocialnetwork.databinding.ItemProfileBinding
+import org.ocpsoft.prettytime.PrettyTime
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 /**
@@ -32,45 +34,16 @@ class ProfileAdapter(
         return MyProfileViewHolder(ItemProfileBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyProfileViewHolder, position: Int) {
 
         val post = posts[position]
 
-        holder.binding.apply {
+        setUserInfo(holder.binding)
 
-            // Set user info in views
-            mProfilePicture.load(user!!.profilePicture) {
-                transformations(CircleCropTransformation())
-                placeholder(R.drawable.ic_profile)
-                error(R.drawable.ic_profile)
-                crossfade(true)
-                crossfade(400)
-            }
-            mUsername.text = user!!.username
+        setPostInfo(post, holder.binding, holder.itemView.context)
 
-            if (user!!.isVerified) mVerified.visibility = View.VISIBLE
-            else mVerified.visibility = View.GONE
-
-            // Set post info in views
-            val calendar = Calendar.getInstance(Locale.getDefault())
-            calendar.timeInMillis = post.date.toLong()
-            val date = DateFormat.format("dd/MM/yyyy", calendar).toString()
-
-            mDate.text = date
-            mDescription.text = post.description
-            mLikes.text = post.likes
-            mCommentsAndShares.text = "${post.comments} ${holder.itemView.context.getString(R.string.comments)} • ${post.shares} ${holder.itemView.context.getString(R.string.shares)}"
-
-            mImagePost.load(post.image) {
-                crossfade(true)
-                crossfade(400)
-            }
-
-            mEdit.setOnClickListener {
-                editClick(post.id!!)
-            }
-
+        holder.binding.mEdit.setOnClickListener {
+            editClick(post.id!!)
         }
 
     }
@@ -87,6 +60,51 @@ class ProfileAdapter(
 
     fun setPosts(posts: List<Post>) {
         this.posts = posts
+    }
+
+    private fun setUserInfo(binding: ItemProfileBinding) {
+
+        binding.apply {
+
+            mProfilePicture.load(user!!.profilePicture) {
+                transformations(CircleCropTransformation())
+                placeholder(R.drawable.ic_profile)
+                error(R.drawable.ic_profile)
+                crossfade(true)
+                crossfade(400)
+            }
+            mUsername.text = user!!.username
+
+            if (user!!.isVerified) mVerified.visibility = View.VISIBLE
+            else mVerified.visibility = View.GONE
+
+        }
+
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setPostInfo(post: Post, binding: ItemProfileBinding, context: Context) {
+
+        binding.apply {
+
+            val calendar = Calendar.getInstance(Locale.getDefault())
+            calendar.timeInMillis = post.date.toLong()
+
+            val publicationDate: Date = calendar.time
+            val prettyTime = PrettyTime()
+            val dateFormat: String = prettyTime.format(publicationDate)
+
+            mImagePost.load(post.image) {
+                crossfade(true)
+                crossfade(400)
+            }
+            mDate.text = dateFormat
+            mDescription.text = post.description
+            mLikes.text = "${post.likes} ${context.getString(R.string.likes)}"
+            mCommentsAndShares.text = "${post.comments} ${context.getString(R.string.comments)} • ${post.shares} ${context.getString(R.string.shares)}"
+
+        }
+
     }
 
 }
