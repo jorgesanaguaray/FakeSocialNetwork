@@ -10,6 +10,9 @@ data class Post(
     val description: String,
     val image: String,
     val date: String,
+    val likes: String,
+    val comments: String,
+    val shares: String,
     val userId: Int
 
 )
