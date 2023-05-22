@@ -102,9 +102,9 @@ class PostEditFragment : Fragment() {
         binding.apply {
 
             mEditTextDescription.setText(post.description)
-            mEditTextLikes.setText(post.likes)
-            mEditTextComments.setText(post.comments)
-            mEditTextShares.setText(post.shares)
+            mEditTextLikes.setText(post.likes.toString())
+            mEditTextComments.setText(post.comments.toString())
+            mEditTextShares.setText(post.shares.toString())
             mImagePost.load(post.image) {
                 placeholder(R.drawable.ic_add)
                 error(R.drawable.ic_add)
@@ -145,9 +145,9 @@ class PostEditFragment : Fragment() {
             description = binding.mEditTextDescription.text.toString().trim(),
             image = imagePost,
             date = date,
-            likes = binding.mEditTextLikes.text.toString(),
-            comments = binding.mEditTextComments.text.toString(),
-            shares = binding.mEditTextShares.text.toString(),
+            likes = binding.mEditTextLikes.text.toString().toLong(),
+            comments = binding.mEditTextComments.text.toString().toLong(),
+            shares = binding.mEditTextShares.text.toString().toLong(),
             userId = userId
         )
 

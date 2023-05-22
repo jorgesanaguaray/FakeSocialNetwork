@@ -13,6 +13,7 @@ import com.jorgesanaguaray.fakesocialnetwork.core.domain.Post
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.User
 import com.jorgesanaguaray.fakesocialnetwork.databinding.ItemProfileBinding
 import org.ocpsoft.prettytime.PrettyTime
+import java.text.NumberFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -100,11 +101,28 @@ class ProfileAdapter(
             }
             mDate.text = dateFormat
             mDescription.text = post.description
-            mLikes.text = "${post.likes} ${context.getString(R.string.likes)}"
-            mCommentsAndShares.text = "${post.comments} ${context.getString(R.string.comments)} • ${post.shares} ${context.getString(R.string.shares)}"
+            mLikes.text = numberFormat(post.likes)
+            mCommentsAndShares.text = "${numberFormat(post.comments)} ${context.getString(R.string.comments)} • ${numberFormat(post.shares)} ${context.getString(R.string.shares)}"
 
         }
 
+    }
+
+    private fun numberFormat(likes: Long): String {
+
+        val numberFormat = NumberFormat.getInstance()
+
+        numberFormat.maximumFractionDigits = 1
+        numberFormat.minimumFractionDigits = 0
+
+        return when {
+
+            likes < 1000 -> numberFormat.format(likes)
+            likes < 1000000 -> numberFormat.format(likes / 1000.0) + "K"
+            likes < 1000000000 -> numberFormat.format(likes / 1000000.0) + "M"
+            else -> numberFormat.format(likes / 1000000000.0) + "B"
+
+        }
     }
 
 }

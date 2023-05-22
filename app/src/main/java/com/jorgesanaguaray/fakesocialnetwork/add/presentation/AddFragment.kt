@@ -88,9 +88,9 @@ class AddFragment : Fragment() {
             description = binding.mEditTextDescription.text.toString().trim(),
             image = imagePost,
             date = System.currentTimeMillis().toString(),
-            likes = binding.mEditTextLikes.text.toString(),
-            comments = binding.mEditTextComments.text.toString(),
-            shares = binding.mEditTextShares.text.toString(),
+            likes = binding.mEditTextLikes.text.toString().toLong(),
+            comments = binding.mEditTextComments.text.toString().toLong(),
+            shares = binding.mEditTextShares.text.toString().toLong(),
             userId = userId
         )
 
