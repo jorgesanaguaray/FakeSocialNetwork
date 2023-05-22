@@ -31,6 +31,9 @@
     <string name="description">Description</string>
     <string name="post">Post</string>
     <string name="enter_a_description">Enter a description</string>
+    <string name="enter_a_number_of_likes">Enter a number of likes</string>
+    <string name="enter_a_number_of_comments">Enter a number of comments</string>
+    <string name="enter_a_number_of_shares">Enter a number of shares</string>
     <string name="follow">Follow</string>
     <string name="update">Update</string>
     <string name="delete">Delete</string>

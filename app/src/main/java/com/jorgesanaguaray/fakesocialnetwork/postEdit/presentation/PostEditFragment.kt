@@ -124,6 +124,18 @@ class PostEditFragment : Fragment() {
                 binding.mEditTextDescription.error = resources.getString(R.string.enter_a_description)
             }
 
+            TextUtils.isEmpty(binding.mEditTextLikes.text.toString()) -> {
+                binding.mEditTextLikes.error = resources.getString(R.string.enter_a_number_of_likes)
+            }
+
+            TextUtils.isEmpty(binding.mEditTextComments.text.toString()) -> {
+                binding.mEditTextComments.error = resources.getString(R.string.enter_a_number_of_comments)
+            }
+
+            TextUtils.isEmpty(binding.mEditTextShares.text.toString()) -> {
+                binding.mEditTextShares.error = resources.getString(R.string.enter_a_number_of_shares)
+            }
+
             else -> {
 
                 updatePost()
