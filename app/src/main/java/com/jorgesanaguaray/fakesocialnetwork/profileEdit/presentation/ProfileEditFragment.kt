@@ -110,8 +110,8 @@ class ProfileEditFragment : Fragment() {
             mEditTextName.setText(user.name)
             mEditTextBio.setText(user.bio)
             mEditTextLink.setText(user.link)
-            mEditTextFollowers.setText(user.followers)
-            mEditTextFollowing.setText(user.following)
+            mEditTextFollowers.setText(user.followers.toString())
+            mEditTextFollowing.setText(user.following.toString())
             mEditTextPassword.setText(user.password)
             mSwitch.isChecked = user.isVerified
 
@@ -169,12 +169,12 @@ class ProfileEditFragment : Fragment() {
             id = userId,
             username = binding.mEditTextUsername.text.toString(),
             name = binding.mEditTextName.text.toString().trim(),
-            bio = binding.mEditTextBio.text.toString().trim(),
+            bio = binding.mEditTextBio.text.toString(),
             link = binding.mEditTextLink.text.toString().trim(),
             password = binding.mEditTextPassword.text.toString(),
             profilePicture = profilePicture,
-            followers = binding.mEditTextFollowers.text.toString(),
-            following = binding.mEditTextFollowing.text.toString(),
+            followers = binding.mEditTextFollowers.text.toString().toLong(),
+            following = binding.mEditTextFollowing.text.toString().toLong(),
             isVerified = binding.mSwitch.isChecked
         )
 

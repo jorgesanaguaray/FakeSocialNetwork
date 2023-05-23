@@ -108,8 +108,8 @@ class RegisterFragment : Fragment() {
             bio = "",
             link = "",
             profilePicture = "",
-            followers = "0",
-            following = "0",
+            followers = 0,
+            following = 0,
             isVerified = false
         )
 

@@ -13,8 +13,8 @@ data class User(
     val link: String,
     val password: String,
     val profilePicture: String,
-    val followers: String,
-    val following: String,
+    val followers: Long,
+    val following: Long,
     val isVerified: Boolean
 
 )

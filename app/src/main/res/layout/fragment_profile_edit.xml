@@ -147,7 +147,7 @@
                 android:hint="@string/followers"
                 app:startIconDrawable="@drawable/ic_number"
                 app:counterEnabled="true"
-                app:counterMaxLength="9"
+                app:counterMaxLength="10"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -155,7 +155,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:maxLength="9"
+                    android:maxLength="10"
                     android:textAppearance="?attr/textAppearanceSubtitle1"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -166,7 +166,7 @@
                 android:hint="@string/following"
                 app:startIconDrawable="@drawable/ic_number"
                 app:counterEnabled="true"
-                app:counterMaxLength="9"
+                app:counterMaxLength="10"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -174,7 +174,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:maxLength="9"
+                    android:maxLength="10"
                     android:textAppearance="?attr/textAppearanceSubtitle1"/>
 
             </com.google.android.material.textfield.TextInputLayout>
