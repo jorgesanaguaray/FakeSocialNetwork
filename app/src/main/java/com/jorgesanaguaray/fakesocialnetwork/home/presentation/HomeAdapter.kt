@@ -1,6 +1,7 @@
 package com.jorgesanaguaray.fakesocialnetwork.home.presentation
 
-import android.text.format.DateFormat
+import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,10 @@ import coil.transform.CircleCropTransformation
 import com.jorgesanaguaray.fakesocialnetwork.R
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.Post
 import com.jorgesanaguaray.fakesocialnetwork.databinding.ItemHomeBinding
+import org.ocpsoft.prettytime.PrettyTime
+import java.text.NumberFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 /**
@@ -33,23 +37,9 @@ class HomeAdapter(
 
         val post = posts[position]
 
-        holder.binding.apply {
+        setUserInfo(post.userId, holder.binding)
 
-            val calendar = Calendar.getInstance(Locale.getDefault())
-            calendar.timeInMillis = post.date.toLong()
-            val date = DateFormat.format("dd/MM/yyyy", calendar).toString()
-
-            mDate.text = date
-            mDescription.text = post.description
-
-            mImagePost.load(post.image) {
-                crossfade(true)
-                crossfade(400)
-            }
-
-        }
-
-        setUserOfPost(post.userId, holder.binding)
+        setPostInfo(post, holder.binding, holder.itemView.context)
 
     }
 
@@ -63,7 +53,7 @@ class HomeAdapter(
         this.posts = posts
     }
 
-    private fun setUserOfPost(userId: Int, binding: ItemHomeBinding) {
+    private fun setUserInfo(userId: Int, binding: ItemHomeBinding) {
 
         homeViewModel.getUserById(userId) {
 
@@ -81,6 +71,48 @@ class HomeAdapter(
 
         }
 
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setPostInfo(post: Post, binding: ItemHomeBinding, context: Context) {
+
+        binding.apply {
+
+            val calendar = Calendar.getInstance(Locale.getDefault())
+            calendar.timeInMillis = post.date.toLong()
+
+            val publicationDate: Date = calendar.time
+            val prettyTime = PrettyTime()
+            val dateFormat: String = prettyTime.format(publicationDate)
+
+            mImagePost.load(post.image) {
+                crossfade(true)
+                crossfade(400)
+            }
+            mDate.text = dateFormat
+            mDescription.text = post.description
+            mLikes.text = numberFormat(post.likes)
+            mCommentsAndShares.text = "${numberFormat(post.comments)} ${context.getString(R.string.comments)} • ${numberFormat(post.shares)} ${context.getString(R.string.shares)}"
+
+        }
+
+    }
+
+    private fun numberFormat(likes: Long): String {
+
+        val numberFormat = NumberFormat.getInstance()
+
+        numberFormat.maximumFractionDigits = 1
+        numberFormat.minimumFractionDigits = 0
+
+        return when {
+
+            likes < 1000 -> numberFormat.format(likes)
+            likes < 1000000 -> numberFormat.format(likes / 1000.0) + "K"
+            likes < 1000000000 -> numberFormat.format(likes / 1000000.0) + "M"
+            else -> numberFormat.format(likes / 1000000000.0) + "B"
+
+        }
     }
 
 }
