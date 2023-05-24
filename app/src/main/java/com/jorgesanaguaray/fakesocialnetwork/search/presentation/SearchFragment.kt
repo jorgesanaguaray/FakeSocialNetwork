@@ -34,10 +34,7 @@ class SearchFragment : Fragment() {
         super.onStart()
 
         searchViewModel = ViewModelProvider(this).get()
-        searchAdapter = SearchAdapter(
-            context = requireContext(),
-            followClick = {}
-        )
+        searchAdapter = SearchAdapter()
 
     }
 

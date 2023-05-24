@@ -1,6 +1,5 @@
 package com.jorgesanaguaray.fakesocialnetwork.search.presentation
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,12 +14,7 @@ import com.jorgesanaguaray.fakesocialnetwork.databinding.ItemSearchBinding
  * Created by Jorge Sanaguaray
  */
 
-class SearchAdapter(
-
-    private val context: Context,
-    private val followClick:(Int) -> Unit
-
-) : RecyclerView.Adapter<SearchAdapter.MySearchViewHolder>() {
+class SearchAdapter : RecyclerView.Adapter<SearchAdapter.MySearchViewHolder>() {
 
     private var users: List<User> = ArrayList()
 
@@ -29,11 +23,6 @@ class SearchAdapter(
     }
 
     override fun onBindViewHolder(holder: MySearchViewHolder, position: Int) {
-
-        // Get user id from SharedPreferences
-        // Get user id from SharedPreferences
-        val sharedPreferences = context.getSharedPreferences(context.getString(R.string.user_info), Context.MODE_PRIVATE)
-        val userId = sharedPreferences.getInt("id", 0)
 
         val user = users[position]
 
@@ -48,18 +37,8 @@ class SearchAdapter(
             }
             mUsername.text = user.username
 
-            if (user.id != userId) {
-                holder.binding.mFollow.visibility = View.VISIBLE
-            } else {
-                holder.binding.mFollow.visibility = View.GONE
-            }
-
             if (user.isVerified) mVerified.visibility = View.VISIBLE
             else mVerified.visibility = View.GONE
-
-            mFollow.setOnClickListener {
-                followClick(user.id)
-            }
 
         }
 
