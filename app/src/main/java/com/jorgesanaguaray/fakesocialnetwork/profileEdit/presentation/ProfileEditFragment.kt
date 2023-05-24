@@ -69,7 +69,7 @@ class ProfileEditFragment : Fragment() {
 
         binding.mEditProfilePicture.setOnClickListener {
 
-            ImagePicker.with(requireActivity()).crop().createIntentFromDialog {
+            ImagePicker.with(requireActivity()).crop().cropOval().createIntentFromDialog {
                 launcherProfilePicture.launch(it)
             }
 
