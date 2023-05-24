@@ -24,7 +24,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingHorizontal="12dp"
+            android:paddingBottom="12dp">
 
             <LinearLayout
                 android:id="@+id/mEditProfilePicture"
@@ -57,9 +58,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="12dp"
                     android:text="@string/edit_profile_picture"
-                    android:textAppearance="?attr/textAppearanceSubtitle1"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="?android:attr/colorPrimary"/>
 
             </LinearLayout>
@@ -80,7 +81,7 @@
                     android:inputType="textFilter"
                     android:digits="abcdefghijklmnopqrstuvwxyz0123456789._"
                     android:maxLength="30"
-                    android:textAppearance="?attr/textAppearanceSubtitle1"/>
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -99,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="text"
                     android:maxLength="50"
-                    android:textAppearance="?attr/textAppearanceSubtitle1"/>
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -118,7 +119,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
                     android:maxLength="150"
-                    android:textAppearance="?attr/textAppearanceSubtitle1"/>
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -137,7 +138,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textWebEmailAddress"
                     android:maxLength="50"
-                    android:textAppearance="?attr/textAppearanceSubtitle1"/>
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -156,7 +157,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:maxLength="10"
-                    android:textAppearance="?attr/textAppearanceSubtitle1"/>
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -175,7 +176,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:maxLength="10"
-                    android:textAppearance="?attr/textAppearanceSubtitle1"/>
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -196,7 +197,7 @@
                     android:inputType="textPassword"
                     android:digits="abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789!¡@$%^_-={}[]|\:;'/¿?#>*"
                     android:maxLength="12"
-                    android:textAppearance="?attr/textAppearanceSubtitle1"/>
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -205,15 +206,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/verified_account"
-                android:textAppearance="?attr/textAppearanceSubtitle1"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
             <Button
                 android:id="@+id/mUpdate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:text="@string/update"
-                android:textAppearance="?attr/textAppearanceSubtitle1"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
         </LinearLayout>
 
