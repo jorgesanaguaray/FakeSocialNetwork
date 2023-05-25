@@ -55,7 +55,7 @@ class ProfileAdapter(
 
     class MyProfileViewHolder(val binding: ItemProfileBinding) : RecyclerView.ViewHolder(binding.root)
 
-    fun setUser(user: User) {
+    fun setUser(user: User?) {
         this.user = user
     }
 

@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,14 +29,9 @@ class ProfileViewModel @Inject constructor(
 
         viewModelScope.launch {
 
-            profileRepository.getUserById(id).collectLatest { user ->
+            profileRepository.getUserById(id).collectLatest {
 
-                _profileState.update {
-
-                    it.copy(user = user, isLoading = true)
-
-                }
-
+                _profileState.value = _profileState.value.copy(user = it, isLoading = true)
                 getPosts()
 
             }
@@ -50,13 +44,9 @@ class ProfileViewModel @Inject constructor(
 
         viewModelScope.launch {
 
-            profileRepository.getPosts().collectLatest { posts ->
+            profileRepository.getPosts().collectLatest {
 
-                _profileState.update {
-
-                    it.copy(posts = posts, isLoading = false)
-
-                }
+                _profileState.value = _profileState.value.copy(posts = it, isLoading = false)
 
             }
 

@@ -9,9 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
@@ -35,54 +34,36 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var profileViewModel: ProfileViewModel
+    private val profileViewModel: ProfileViewModel by viewModels()
     private lateinit var profileAdapter: ProfileAdapter
-    private lateinit var posts: MutableList<Post>
+    private var posts: MutableList<Post> = mutableListOf()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        // Show Bottom Navigation View
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupViews()
+        observeProfileState()
+        retrieveUserId()
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun setupViews() {
+
         val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.mBottomNavigationView)
         bottomNavigationView?.visibility = View.VISIBLE
 
-        // Inflate fragment layout
-        _binding = FragmentProfileBinding.inflate(inflater, container, false)
-        return binding.root
-
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        profileViewModel = ViewModelProvider(this).get()
-        profileAdapter = ProfileAdapter(editClick = { goPostEdit(it) })
-        posts = ArrayList()
-
-        // Get user id from SharedPreferences
-        val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.user_info), Context.MODE_PRIVATE)
-        val userId = sharedPreferences.getInt("id", 0)
-
-        profileViewModel.getUserById(userId)
-
-    }
-
-    @SuppressLint("RepeatOnLifecycleWrongUsage")
-    override fun onResume() {
-        super.onResume()
-
-        lifecycleScope.launch {
-
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
-
-                profileViewModel.profileState.collect {
-
-                    setUpViews(it)
-
-                }
-
-            }
-
-        }
+        profileAdapter = ProfileAdapter { postId -> goPostEdit(postId) }
+        binding.mRecyclerView.adapter = profileAdapter
 
         binding.mMenu.setOnClickListener {
             openMenu()
@@ -94,9 +75,30 @@ class ProfileFragment : Fragment() {
 
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun observeProfileState() {
+
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                profileViewModel.profileState.collect {
+
+                    updateViews(it)
+
+                }
+
+            }
+
+        }
+
+    }
+
+    private fun retrieveUserId() {
+
+        val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.user_info), Context.MODE_PRIVATE)
+        val userId = sharedPreferences.getInt("id", 0)
+        profileViewModel.getUserById(userId)
+
     }
 
     private fun openMenu() {
@@ -105,11 +107,8 @@ class ProfileFragment : Fragment() {
         val binding: DialogProfileBinding = DialogProfileBinding.inflate(layoutInflater)
 
         binding.apply {
-
             mClose.setOnClickListener { bottomSheetDialog.dismiss() }
-
             mLogout.setOnClickListener { logout() }
-
         }
 
         bottomSheetDialog.setContentView(binding.root)
@@ -119,7 +118,6 @@ class ProfileFragment : Fragment() {
 
     private fun logout() {
 
-        // Delete user info from SharedPreferences
         val sharedPreferencesA = activity?.getSharedPreferences(getString(R.string.user_info), Context.MODE_PRIVATE)
         val editorA = sharedPreferencesA!!.edit()
         editorA.remove("id")
@@ -127,7 +125,6 @@ class ProfileFragment : Fragment() {
         editorA.remove("password")
         editorA.apply()
 
-        // Go MainActivity
         startActivity(Intent(context, MainActivity::class.java))
         requireActivity().finish()
 
@@ -138,29 +135,23 @@ class ProfileFragment : Fragment() {
         findNavController().navigate(R.id.action_mProfileNavigation_to_mPostEditNavigation, bundle)
     }
 
-    private fun setUpViews(profileState: ProfileState) {
+    @SuppressLint("NotifyDataSetChanged")
+    private fun updateViews(profileState: ProfileState) {
 
         posts.clear()
+        posts.addAll(profileState.posts.filter { it.userId == profileState.user?.id })
 
-        profileState.posts.forEach { post ->
-
-            if (post.userId == profileState.user!!.id) {
-                posts.add(post)
-            }
-
-        }
-
-        profileAdapter.setUser(profileState.user!!)
+        profileAdapter.setUser(profileState.user)
         profileAdapter.setPosts(posts)
-        binding.mRecyclerView.adapter = profileAdapter
+        profileAdapter.notifyDataSetChanged()
 
         binding.apply {
 
-            mUsername.text = profileState.user.username
+            mUsername.text = profileState.user?.username
             mPosts.text = posts.size.toString()
-            mFollowers.text = numberFormat(profileState.user.followers)
-            mFollowing.text = numberFormat(profileState.user.following)
-            mProfilePicture.load(profileState.user.profilePicture) {
+            mFollowers.text = numberFormat(profileState.user?.followers ?: 0)
+            mFollowing.text = numberFormat(profileState.user?.following ?: 0)
+            mProfilePicture.load(profileState.user?.profilePicture) {
                 transformations(CircleCropTransformation())
                 placeholder(R.drawable.ic_profile)
                 error(R.drawable.ic_profile)
@@ -168,46 +159,22 @@ class ProfileFragment : Fragment() {
                 crossfade(400)
             }
 
-            if (profileState.user.isVerified) {
-                mVerified.visibility = View.VISIBLE
-            } else {
-                mVerified.visibility = View.GONE
-            }
+            mVerified.visibility = if (profileState.user?.isVerified == true) View.VISIBLE else View.GONE
 
-            if (profileState.user.name == "" && profileState.user.bio == "" && profileState.user.link == "") {
-                mContainerNameBioLink.visibility = View.GONE
-            } else {
-                mContainerNameBioLink.visibility = View.VISIBLE
-            }
+            val isNameBioLinkEmpty = profileState.user?.name.isNullOrEmpty() && profileState.user?.bio.isNullOrEmpty() && profileState.user?.link.isNullOrEmpty()
+            mContainerNameBioLink.visibility = if (isNameBioLinkEmpty) View.GONE else View.VISIBLE
 
-            if (profileState.user.name != "") {
-                mName.visibility = View.VISIBLE
-                mName.text = profileState.user.name
-            } else {
-                mName.visibility = View.GONE
-            }
+            mName.visibility = if (profileState.user?.name.isNullOrEmpty()) View.GONE else View.VISIBLE
+            mName.text = profileState.user?.name
 
-            if (profileState.user.bio != "") {
-                mBio.visibility = View.VISIBLE
-                mBio.text = profileState.user.bio
-            } else {
-                mBio.visibility = View.GONE
-            }
+            mBio.visibility = if (profileState.user?.bio.isNullOrEmpty()) View.GONE else View.VISIBLE
+            mBio.text = profileState.user?.bio
 
-            if (profileState.user.link != "") {
-                mLink.visibility = View.VISIBLE
-                mLink.text = profileState.user.link
-            } else {
-                mLink.visibility = View.GONE
-            }
+            mLink.visibility = if (profileState.user?.link.isNullOrEmpty()) View.GONE else View.VISIBLE
+            mLink.text = profileState.user?.link
 
-            if (profileState.isLoading) {
-                mNestedScrollView.visibility = View.GONE
-                mProgressBar.visibility = View.VISIBLE
-            } else {
-                mNestedScrollView.visibility = View.VISIBLE
-                mProgressBar.visibility = View.GONE
-            }
+            mNestedScrollView.visibility = if (profileState.isLoading) View.GONE else View.VISIBLE
+            mProgressBar.visibility = if (profileState.isLoading) View.VISIBLE else View.GONE
 
         }
 
@@ -216,18 +183,16 @@ class ProfileFragment : Fragment() {
     private fun numberFormat(likes: Long): String {
 
         val numberFormat = NumberFormat.getInstance()
-
         numberFormat.maximumFractionDigits = 1
         numberFormat.minimumFractionDigits = 0
 
         return when {
-
             likes < 1000 -> numberFormat.format(likes)
             likes < 1000000 -> numberFormat.format(likes / 1000.0) + "K"
             likes < 1000000000 -> numberFormat.format(likes / 1000000.0) + "M"
             else -> numberFormat.format(likes / 1000000000.0) + "B"
-
         }
+
     }
 
 }

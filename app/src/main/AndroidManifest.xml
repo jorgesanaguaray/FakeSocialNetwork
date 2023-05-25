@@ -18,7 +18,8 @@
         <activity
             android:name=".SecondActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|uiMode"/>
 
         <activity
             android:name=".MainActivity"

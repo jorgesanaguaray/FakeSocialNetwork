@@ -22,17 +22,11 @@ class ProfileRepositoryImpl(private val userDao: UserDao, private val postDao: P
     }
 
     override fun getPosts(): Flow<List<Post>> {
-
         return postDao.getPosts().map { postsEntity ->
-
             postsEntity.map {
-
                 it.toDomain()
-
             }
-
         }
-
     }
 
 }
