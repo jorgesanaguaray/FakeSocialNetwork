@@ -1,4 +1,4 @@
-package com.jorgesanaguaray.fakesocialnetwork.login.presentation
+package com.jorgesanaguaray.fakesocialnetwork.authentication.presentation.login
 
 import android.annotation.SuppressLint
 import android.content.Context

@@ -1,9 +1,10 @@
-package com.jorgesanaguaray.fakesocialnetwork.register.presentation
+package com.jorgesanaguaray.fakesocialnetwork.authentication.presentation.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jorgesanaguaray.fakesocialnetwork.authentication.domain.usecases.InsertUserUseCase
+import com.jorgesanaguaray.fakesocialnetwork.authentication.domain.usecases.IsUsernameAvailableUseCase
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.User
-import com.jorgesanaguaray.fakesocialnetwork.register.domain.RegisterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,17 +15,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-
-    private val registerRepository: RegisterRepository
-
+    private val insertUserUseCase: InsertUserUseCase,
+    private val isUsernameAvailableUseCase: IsUsernameAvailableUseCase
 ) : ViewModel() {
 
     fun insertUser(user: User) {
 
         viewModelScope.launch {
-
-            registerRepository.insertUser(user)
-
+            insertUserUseCase(user)
         }
 
     }
@@ -34,9 +32,7 @@ class RegisterViewModel @Inject constructor(
         var usernameAvailable = false
 
         viewModelScope.launch {
-
-            usernameAvailable = registerRepository.isUsernameAvailable(username)
-
+            usernameAvailable = isUsernameAvailableUseCase(username)
         }
 
         return usernameAvailable

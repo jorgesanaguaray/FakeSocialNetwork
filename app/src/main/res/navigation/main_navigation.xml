@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mLoginNavigation"
-        android:name="com.jorgesanaguaray.fakesocialnetwork.login.presentation.LoginFragment"
+        android:name="com.jorgesanaguaray.fakesocialnetwork.authentication.presentation.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
 
@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/mRegisterNavigation"
-        android:name="com.jorgesanaguaray.fakesocialnetwork.register.presentation.RegisterFragment"
+        android:name="com.jorgesanaguaray.fakesocialnetwork.authentication.presentation.register.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register">
 

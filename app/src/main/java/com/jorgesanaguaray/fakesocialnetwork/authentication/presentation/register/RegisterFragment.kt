@@ -1,4 +1,4 @@
-package com.jorgesanaguaray.fakesocialnetwork.register.presentation
+package com.jorgesanaguaray.fakesocialnetwork.authentication.presentation.register
 
 import android.content.Context
 import android.content.Intent

@@ -1,11 +1,12 @@
-package com.jorgesanaguaray.fakesocialnetwork.login.presentation
+package com.jorgesanaguaray.fakesocialnetwork.authentication.presentation.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jorgesanaguaray.fakesocialnetwork.authentication.domain.usecases.GetUserByUsernameAndPasswordUseCase
+import com.jorgesanaguaray.fakesocialnetwork.authentication.domain.usecases.IsLoginSuccessfulUseCase
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.User
-import com.jorgesanaguaray.fakesocialnetwork.login.domain.LoginRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,9 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-
-    private val loginRepository: LoginRepository
-
+    private val isLoginSuccessfulUseCase: IsLoginSuccessfulUseCase,
+    private val getUserByUsernameAndPasswordUseCase: GetUserByUsernameAndPasswordUseCase
 ) : ViewModel() {
 
     private val _user = MutableLiveData<User>()
@@ -35,7 +35,7 @@ class LoginViewModel @Inject constructor(
 
         viewModelScope.launch {
 
-            val loginSuccessful = loginRepository.isLoginSuccessful(username, password)
+            val loginSuccessful = isLoginSuccessfulUseCase(username, password)
 
             _loginState.update {
 
@@ -53,7 +53,7 @@ class LoginViewModel @Inject constructor(
 
         viewModelScope.launch {
 
-            loginRepository.getUserByUsernameAndPassword(username, password).onSuccess {
+            getUserByUsernameAndPasswordUseCase(username, password).onSuccess {
 
                 _user.value = it
 
