@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jorgesanaguaray.fakesocialnetwork.authentication.domain.usecases.GetUserByUsernameAndPasswordUseCase
 import com.jorgesanaguaray.fakesocialnetwork.authentication.domain.usecases.IsLoginSuccessfulUseCase
-import com.jorgesanaguaray.fakesocialnetwork.core.domain.User
+import com.jorgesanaguaray.fakesocialnetwork.core.domain.models.User
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

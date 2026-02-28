@@ -14,7 +14,7 @@ import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import com.jorgesanaguaray.fakesocialnetwork.R
 import com.jorgesanaguaray.fakesocialnetwork.SecondActivity
-import com.jorgesanaguaray.fakesocialnetwork.core.domain.User
+import com.jorgesanaguaray.fakesocialnetwork.core.domain.models.User
 import com.jorgesanaguaray.fakesocialnetwork.databinding.FragmentRegisterBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.UUID
@@ -45,7 +45,7 @@ class RegisterFragment : Fragment() {
             findNavController().navigate(R.id.action_mRegisterNavigation_to_mLoginNavigation)
         }
 
-        binding.mSignUp.setOnClickListener {
+        binding.mRegister.setOnClickListener {
             validateRegisterCredentials()
         }
 

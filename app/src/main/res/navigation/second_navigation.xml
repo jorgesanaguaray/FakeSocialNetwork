@@ -7,25 +7,25 @@
 
     <fragment
         android:id="@+id/mHomeNavigation"
-        android:name="com.jorgesanaguaray.fakesocialnetwork.home.presentation.HomeFragment"
+        android:name="com.jorgesanaguaray.fakesocialnetwork.home.presentation.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home"/>
 
     <fragment
         android:id="@+id/mSearchNavigation"
-        android:name="com.jorgesanaguaray.fakesocialnetwork.search.presentation.SearchFragment"
+        android:name="com.jorgesanaguaray.fakesocialnetwork.home.presentation.search.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search"/>
 
     <fragment
         android:id="@+id/mAddNavigation"
-        android:name="com.jorgesanaguaray.fakesocialnetwork.add.presentation.AddFragment"
+        android:name="com.jorgesanaguaray.fakesocialnetwork.home.presentation.add.AddFragment"
         android:label="fragment_add"
         tools:layout="@layout/fragment_add"/>
 
     <fragment
         android:id="@+id/mProfileNavigation"
-        android:name="com.jorgesanaguaray.fakesocialnetwork.profile.presentation.ProfileFragment"
+        android:name="com.jorgesanaguaray.fakesocialnetwork.home.presentation.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile">
 
@@ -41,13 +41,13 @@
 
     <fragment
         android:id="@+id/mProfileEditNavigation"
-        android:name="com.jorgesanaguaray.fakesocialnetwork.profileEdit.presentation.ProfileEditFragment"
+        android:name="com.jorgesanaguaray.fakesocialnetwork.home.presentation.profileEdit.ProfileEditFragment"
         android:label="fragment_profile_edit"
         tools:layout="@layout/fragment_profile_edit"/>
 
     <fragment
         android:id="@+id/mPostEditNavigation"
-        android:name="com.jorgesanaguaray.fakesocialnetwork.postEdit.presentation.PostEditFragment"
+        android:name="com.jorgesanaguaray.fakesocialnetwork.home.presentation.postEdit.PostEditFragment"
         android:label="fragment_post_edit"
         tools:layout="@layout/fragment_post_edit"/>
 

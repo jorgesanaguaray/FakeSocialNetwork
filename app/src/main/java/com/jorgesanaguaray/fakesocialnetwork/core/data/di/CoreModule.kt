@@ -2,10 +2,13 @@ package com.jorgesanaguaray.fakesocialnetwork.core.data.di
 
 import android.app.Application
 import androidx.room.Room
-import com.jorgesanaguaray.fakesocialnetwork.Constants.Companion.DATABASE_NAME
-import com.jorgesanaguaray.fakesocialnetwork.core.data.local.dao.PostDao
-import com.jorgesanaguaray.fakesocialnetwork.core.data.local.dao.UserDao
-import com.jorgesanaguaray.fakesocialnetwork.core.data.local.UserDatabase
+import com.jorgesanaguaray.fakesocialnetwork.core.data.local.daos.PostDao
+import com.jorgesanaguaray.fakesocialnetwork.core.data.local.daos.UserDao
+import com.jorgesanaguaray.fakesocialnetwork.core.data.local.database.FakeSocialNetworkDatabase
+import com.jorgesanaguaray.fakesocialnetwork.core.data.repository.PostRepositoryImpl
+import com.jorgesanaguaray.fakesocialnetwork.core.data.repository.UserRepositoryImpl
+import com.jorgesanaguaray.fakesocialnetwork.core.domain.repository.PostRepository
+import com.jorgesanaguaray.fakesocialnetwork.core.domain.repository.UserRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,22 +23,34 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object CoreModule {
 
-    @Singleton
     @Provides
-    fun provideUserDatabase(application: Application): UserDatabase {
-        return Room.databaseBuilder(application, UserDatabase::class.java, DATABASE_NAME).build()
+    @Singleton
+    fun provideDatabase(application: Application): FakeSocialNetworkDatabase {
+        return Room.databaseBuilder(application, FakeSocialNetworkDatabase::class.java, "fake_social_network").build()
     }
 
-    @Singleton
     @Provides
-    fun provideUserDao(userDatabase: UserDatabase): UserDao {
-        return userDatabase.userDao
+    @Singleton
+    fun provideUserDao(database: FakeSocialNetworkDatabase): UserDao {
+        return database.userDao
     }
 
-    @Singleton
     @Provides
-    fun providePostDao(userDatabase: UserDatabase): PostDao {
-        return userDatabase.postDao
+    @Singleton
+    fun providePostDao(database: FakeSocialNetworkDatabase): PostDao {
+        return database.postDao
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserRepository(userDao: UserDao): UserRepository {
+        return UserRepositoryImpl(userDao)
+    }
+
+    @Provides
+    @Singleton
+    fun providePostRepository(postDao: PostDao): PostRepository {
+        return PostRepositoryImpl(postDao)
     }
 
 }
