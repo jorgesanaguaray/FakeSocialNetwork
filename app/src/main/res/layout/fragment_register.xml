@@ -7,13 +7,30 @@
     android:layout_height="match_parent"
     tools:context=".authentication.presentation.register.RegisterFragment">
 
-    <ImageView
-        android:id="@+id/mBack"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_arrow_back"/>
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="?attr/colorControlHighlight"/>
+
+        <ImageView
+            android:id="@+id/mBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_arrow_back"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="?attr/colorControlHighlight"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
