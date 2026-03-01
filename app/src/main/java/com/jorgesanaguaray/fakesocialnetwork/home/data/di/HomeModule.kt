@@ -52,32 +52,32 @@ object HomeModule {
         return GetSearchedUsersUseCase(repository)
     }
 
-    @Singleton
     @Provides
+    @Singleton
     fun provideObservePostsUseCase(repository: PostRepository): ObservePostsUseCase {
         return ObservePostsUseCase(repository)
     }
 
-    @Singleton
     @Provides
+    @Singleton
     fun provideInsertPostUseCase(repository: PostRepository): InsertPostUseCase {
         return InsertPostUseCase(repository)
     }
 
-    @Singleton
     @Provides
+    @Singleton
     fun provideGetPostByIdUseCase(repository: PostRepository): GetPostByIdUseCase {
         return GetPostByIdUseCase(repository)
     }
 
-    @Singleton
     @Provides
+    @Singleton
     fun provideUpdatePostUseCase(repository: PostRepository): UpdatePostUseCase {
         return UpdatePostUseCase(repository)
     }
 
-    @Singleton
     @Provides
+    @Singleton
     fun provideDeletePostByIdUseCase(repository: PostRepository): DeletePostByIdUseCase {
         return DeletePostByIdUseCase(repository)
     }
