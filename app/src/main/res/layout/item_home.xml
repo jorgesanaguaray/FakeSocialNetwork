@@ -7,11 +7,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:background="?attr/colorControlHighlight"/>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -239,7 +234,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="4dp"
+        android:layout_height="8dp"
         android:background="?attr/colorControlHighlight"/>
 
 </LinearLayout>
