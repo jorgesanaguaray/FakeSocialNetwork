@@ -52,22 +52,8 @@ class AddFragment : Fragment() {
                 binding.mEditTextDescription.error = resources.getString(R.string.enter_a_description)
             }
 
-            TextUtils.isEmpty(binding.mEditTextLikes.text.toString()) -> {
-                binding.mEditTextLikes.error = resources.getString(R.string.enter_a_number_of_likes)
-            }
-
-            TextUtils.isEmpty(binding.mEditTextComments.text.toString()) -> {
-                binding.mEditTextComments.error = resources.getString(R.string.enter_a_number_of_comments)
-            }
-
-            TextUtils.isEmpty(binding.mEditTextShares.text.toString()) -> {
-                binding.mEditTextShares.error = resources.getString(R.string.enter_a_number_of_shares)
-            }
-
             else -> {
-
                 insertPost()
-
             }
 
         }
@@ -85,9 +71,6 @@ class AddFragment : Fragment() {
             description = binding.mEditTextDescription.text.toString().trim(),
             image = binding.mEditTextImageLink.text.toString().trim(),
             date = System.currentTimeMillis().toString(),
-            likes = binding.mEditTextLikes.text.toString().toLong(),
-            comments = binding.mEditTextComments.text.toString().toLong(),
-            shares = binding.mEditTextShares.text.toString().toLong(),
             userId = userId
         )
 
@@ -101,9 +84,6 @@ class AddFragment : Fragment() {
 
         binding.mEditTextDescription.setText("")
         binding.mEditTextImageLink.setText("")
-        binding.mEditTextLikes.setText("")
-        binding.mEditTextComments.setText("")
-        binding.mEditTextShares.setText("")
 
     }
 

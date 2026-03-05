@@ -135,7 +135,7 @@ class ProfileFragment : Fragment() {
         findNavController().navigate(R.id.action_mProfileNavigation_to_mPostEditNavigation, bundle)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
     private fun updateViews(profileState: ProfileState) {
 
         posts.clear()

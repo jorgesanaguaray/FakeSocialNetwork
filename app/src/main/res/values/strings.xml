@@ -52,4 +52,6 @@
     <string name="comments">comments</string>
     <string name="shares">shares</string>
     <string name="image_link">Image Link</string>
+    <string name="zero_likes">0 likes</string>
+    <string name="zero_comments_shares">0 comments • 0 shares</string>
 </resources>

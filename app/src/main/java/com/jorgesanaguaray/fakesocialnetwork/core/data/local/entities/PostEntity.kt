@@ -15,9 +15,6 @@ data class PostEntity(
     val description: String,
     val image: String,
     val date: String,
-    val likes: Long,
-    val comments: Long,
-    val shares: Long,
     val userId: Int
 
 )

@@ -1,7 +1,5 @@
 package com.jorgesanaguaray.fakesocialnetwork.home.presentation.profile
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +11,6 @@ import com.jorgesanaguaray.fakesocialnetwork.core.domain.models.Post
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.models.User
 import com.jorgesanaguaray.fakesocialnetwork.databinding.ItemProfileBinding
 import org.ocpsoft.prettytime.PrettyTime
-import java.text.NumberFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -23,9 +20,7 @@ import java.util.Locale
  */
 
 class ProfileAdapter(
-
     private val editClick:(Int) -> Unit
-
 ) : RecyclerView.Adapter<ProfileAdapter.MyProfileViewHolder>() {
 
     private var user: User? = null
@@ -40,8 +35,7 @@ class ProfileAdapter(
         val post = posts[position]
 
         setUserInfo(holder.binding)
-
-        setPostInfo(post, holder.binding, holder.itemView.context)
+        setPostInfo(post, holder.binding)
 
         holder.binding.mEdit.setOnClickListener {
             editClick(post.id!!)
@@ -83,8 +77,7 @@ class ProfileAdapter(
 
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun setPostInfo(post: Post, binding: ItemProfileBinding, context: Context) {
+    private fun setPostInfo(post: Post, binding: ItemProfileBinding) {
 
         binding.apply {
 
@@ -101,28 +94,9 @@ class ProfileAdapter(
             }
             mDate.text = dateFormat
             mDescription.text = post.description
-            mLikes.text = numberFormat(post.likes)
-            mCommentsAndShares.text = "${numberFormat(post.comments)} ${context.getString(R.string.comments)} • ${numberFormat(post.shares)} ${context.getString(R.string.shares)}"
 
         }
 
-    }
-
-    private fun numberFormat(likes: Long): String {
-
-        val numberFormat = NumberFormat.getInstance()
-
-        numberFormat.maximumFractionDigits = 1
-        numberFormat.minimumFractionDigits = 0
-
-        return when {
-
-            likes < 1000 -> numberFormat.format(likes)
-            likes < 1000000 -> numberFormat.format(likes / 1000.0) + "K"
-            likes < 1000000000 -> numberFormat.format(likes / 1000000.0) + "M"
-            else -> numberFormat.format(likes / 1000000000.0) + "B"
-
-        }
     }
 
 }

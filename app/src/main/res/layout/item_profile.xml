@@ -125,7 +125,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            tools:text="0"/>
+            android:text="@string/zero_likes"/>
 
         <TextView
             android:id="@+id/mCommentsAndShares"
@@ -134,7 +134,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            tools:text="0 comments • 0 shares"
+            android:text="@string/zero_comments_shares"
             tools:ignore="RelativeOverlap"/>
 
     </RelativeLayout>

@@ -1,7 +1,5 @@
 package com.jorgesanaguaray.fakesocialnetwork.home.presentation.home
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +10,6 @@ import com.jorgesanaguaray.fakesocialnetwork.R
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.models.Post
 import com.jorgesanaguaray.fakesocialnetwork.databinding.ItemHomeBinding
 import org.ocpsoft.prettytime.PrettyTime
-import java.text.NumberFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -22,10 +19,8 @@ import java.util.Locale
  */
 
 class HomeAdapter(
-
-    private val homeViewModel: HomeViewModel,
-
-    ) : RecyclerView.Adapter<HomeAdapter.MyHomeViewHolder>() {
+    private val homeViewModel: HomeViewModel
+) : RecyclerView.Adapter<HomeAdapter.MyHomeViewHolder>() {
 
     private var posts: List<Post> = ArrayList()
 
@@ -38,8 +33,7 @@ class HomeAdapter(
         val post = posts[position]
 
         setUserInfo(post.userId, holder.binding)
-
-        setPostInfo(post, holder.binding, holder.itemView.context)
+        setPostInfo(post, holder.binding)
 
     }
 
@@ -73,8 +67,7 @@ class HomeAdapter(
 
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun setPostInfo(post: Post, binding: ItemHomeBinding, context: Context) {
+    private fun setPostInfo(post: Post, binding: ItemHomeBinding) {
 
         binding.apply {
 
@@ -91,28 +84,9 @@ class HomeAdapter(
             }
             mDate.text = dateFormat
             mDescription.text = post.description
-            mLikes.text = numberFormat(post.likes)
-            mCommentsAndShares.text = "${numberFormat(post.comments)} ${context.getString(R.string.comments)} • ${numberFormat(post.shares)} ${context.getString(R.string.shares)}"
 
         }
 
-    }
-
-    private fun numberFormat(likes: Long): String {
-
-        val numberFormat = NumberFormat.getInstance()
-
-        numberFormat.maximumFractionDigits = 1
-        numberFormat.minimumFractionDigits = 0
-
-        return when {
-
-            likes < 1000 -> numberFormat.format(likes)
-            likes < 1000000 -> numberFormat.format(likes / 1000.0) + "K"
-            likes < 1000000000 -> numberFormat.format(likes / 1000000.0) + "M"
-            else -> numberFormat.format(likes / 1000000000.0) + "B"
-
-        }
     }
 
 }

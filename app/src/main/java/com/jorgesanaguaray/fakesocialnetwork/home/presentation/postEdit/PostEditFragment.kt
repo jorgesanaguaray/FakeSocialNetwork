@@ -89,9 +89,6 @@ class PostEditFragment : Fragment() {
         binding.apply {
             mEditTextDescription.setText(post.description)
             mEditTextImageLink.setText(post.image)
-            mEditTextLikes.setText(post.likes.toString())
-            mEditTextComments.setText(post.comments.toString())
-            mEditTextShares.setText(post.shares.toString())
             mImagePost.load(post.image) {
                 placeholder(R.drawable.ic_image)
                 error(R.drawable.ic_image)
@@ -108,18 +105,6 @@ class PostEditFragment : Fragment() {
 
             TextUtils.isEmpty(binding.mEditTextDescription.text.toString()) -> {
                 binding.mEditTextDescription.error = resources.getString(R.string.enter_a_description)
-            }
-
-            TextUtils.isEmpty(binding.mEditTextLikes.text.toString()) -> {
-                binding.mEditTextLikes.error = resources.getString(R.string.enter_a_number_of_likes)
-            }
-
-            TextUtils.isEmpty(binding.mEditTextComments.text.toString()) -> {
-                binding.mEditTextComments.error = resources.getString(R.string.enter_a_number_of_comments)
-            }
-
-            TextUtils.isEmpty(binding.mEditTextShares.text.toString()) -> {
-                binding.mEditTextShares.error = resources.getString(R.string.enter_a_number_of_shares)
             }
 
             else -> {
@@ -141,9 +126,6 @@ class PostEditFragment : Fragment() {
             description = binding.mEditTextDescription.text.toString().trim(),
             image = binding.mEditTextImageLink.text.toString().trim(),
             date = date,
-            likes = binding.mEditTextLikes.text.toString().toLong(),
-            comments = binding.mEditTextComments.text.toString().toLong(),
-            shares = binding.mEditTextShares.text.toString().toLong(),
             userId = userId
         )
 

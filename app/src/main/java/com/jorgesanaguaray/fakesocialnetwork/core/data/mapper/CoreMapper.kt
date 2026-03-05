@@ -18,9 +18,9 @@ fun UserEntity.toDomain(): User {
 }
 
 fun Post.toDatabase(): PostEntity {
-    return PostEntity(id, description, image, date, likes, comments, shares, userId)
+    return PostEntity(id, description, image, date, userId)
 }
 
 fun PostEntity.toDomain(): Post {
-    return Post(id, description, image, date, likes, comments, shares, userId)
+    return Post(id, description, image, date, userId)
 }
