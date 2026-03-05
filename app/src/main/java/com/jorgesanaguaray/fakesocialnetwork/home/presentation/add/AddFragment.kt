@@ -1,8 +1,6 @@
 package com.jorgesanaguaray.fakesocialnetwork.home.presentation.add
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.fragment.app.Fragment
@@ -10,12 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
-import coil.load
-import com.github.drjacky.imagepicker.ImagePicker
 import com.jorgesanaguaray.fakesocialnetwork.R
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.models.Post
 import com.jorgesanaguaray.fakesocialnetwork.databinding.FragmentAddBinding
@@ -28,7 +22,6 @@ class AddFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var addViewModel: AddViewModel
-    private var imagePost = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentAddBinding.inflate(inflater, container, false)
@@ -39,14 +32,6 @@ class AddFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         addViewModel = ViewModelProvider(this).get()
-
-        binding.mImagePost.setOnClickListener {
-
-            ImagePicker.with(requireActivity()).crop().createIntentFromDialog {
-                launcherImage.launch(it)
-            }
-
-        }
 
         binding.mPost.setOnClickListener {
             validateCredentials()
@@ -98,7 +83,7 @@ class AddFragment : Fragment() {
         val post = Post(
             id = null,
             description = binding.mEditTextDescription.text.toString().trim(),
-            image = imagePost,
+            image = binding.mEditTextImageLink.text.toString().trim(),
             date = System.currentTimeMillis().toString(),
             likes = binding.mEditTextLikes.text.toString().toLong(),
             comments = binding.mEditTextComments.text.toString().toLong(),
@@ -115,27 +100,10 @@ class AddFragment : Fragment() {
     private fun clearViews() {
 
         binding.mEditTextDescription.setText("")
+        binding.mEditTextImageLink.setText("")
         binding.mEditTextLikes.setText("")
         binding.mEditTextComments.setText("")
         binding.mEditTextShares.setText("")
-        binding.mImagePost.setImageResource(R.drawable.ic_add)
-
-    }
-
-    private var launcherImage: ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-
-        if (it.resultCode == Activity.RESULT_OK) {
-
-            imagePost = it.data?.data!!.toString()
-
-            binding.mImagePost.load(imagePost) {
-                placeholder(R.drawable.ic_add)
-                error(R.drawable.ic_add)
-                crossfade(true)
-                crossfade(400)
-            }
-
-        }
 
     }
 

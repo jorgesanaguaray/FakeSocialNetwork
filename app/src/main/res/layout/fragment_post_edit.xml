@@ -48,6 +48,23 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/image_link"
+                app:startIconDrawable="@drawable/ic_link"
+                app:counterEnabled="true"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/mEditTextImageLink"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textUri"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:hint="@string/likes"
                 app:startIconDrawable="@drawable/ic_like"
                 app:counterEnabled="true"
@@ -109,7 +126,7 @@
                 android:layout_marginTop="12dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_add"/>
+                android:src="@drawable/background_item_profile"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -1,17 +1,13 @@
 package com.jorgesanaguaray.fakesocialnetwork.home.presentation.profileEdit
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
@@ -19,7 +15,6 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import coil.load
 import coil.transform.CircleCropTransformation
-import com.github.drjacky.imagepicker.ImagePicker
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.jorgesanaguaray.fakesocialnetwork.R
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.models.User
@@ -68,14 +63,6 @@ class ProfileEditFragment : Fragment() {
             navController.navigateUp()
         }
 
-        binding.mEditProfilePicture.setOnClickListener {
-
-            ImagePicker.with(requireActivity()).crop().cropOval().createIntentFromDialog {
-                launcherProfilePicture.launch(it)
-            }
-
-        }
-
         binding.mUpdate.setOnClickListener {
             validateCredentials()
         }
@@ -112,6 +99,7 @@ class ProfileEditFragment : Fragment() {
             mEditTextName.setText(user.name)
             mEditTextBio.setText(user.bio)
             mEditTextLink.setText(user.link)
+            mEditTextImageLink.setText(user.profilePicture)
             mEditTextFollowers.setText(user.followers.toString())
             mEditTextFollowing.setText(user.following.toString())
             mEditTextPassword.setText(user.password)
@@ -174,7 +162,7 @@ class ProfileEditFragment : Fragment() {
             bio = binding.mEditTextBio.text.toString(),
             link = binding.mEditTextLink.text.toString().trim(),
             password = binding.mEditTextPassword.text.toString(),
-            profilePicture = profilePicture,
+            profilePicture = binding.mEditTextImageLink.text.toString().trim(),
             followers = binding.mEditTextFollowers.text.toString().toLong(),
             following = binding.mEditTextFollowing.text.toString().toLong(),
             isVerified = binding.mSwitch.isChecked
@@ -194,24 +182,6 @@ class ProfileEditFragment : Fragment() {
         editor.putString("username", binding.mEditTextUsername.text.toString())
         editor.putString("password", binding.mEditTextPassword.text.toString())
         editor.apply()
-
-    }
-
-    private var launcherProfilePicture: ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-
-        if (it.resultCode == Activity.RESULT_OK) {
-
-            profilePicture = it.data?.data!!.toString()
-
-            binding.mProfilePicture.load(profilePicture) {
-                transformations(CircleCropTransformation())
-                placeholder(R.drawable.ic_profile)
-                error(R.drawable.ic_profile)
-                crossfade(true)
-                crossfade(400)
-            }
-
-        }
 
     }
 

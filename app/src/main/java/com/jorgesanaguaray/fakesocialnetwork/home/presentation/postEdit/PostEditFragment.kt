@@ -1,8 +1,7 @@
 package com.jorgesanaguaray.fakesocialnetwork.home.presentation.postEdit
 
-import android.app.Activity
+import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.fragment.app.Fragment
@@ -10,14 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import coil.load
-import com.github.drjacky.imagepicker.ImagePicker
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.jorgesanaguaray.fakesocialnetwork.Constants.Companion.KEY_POST_ID
 import com.jorgesanaguaray.fakesocialnetwork.R
@@ -54,23 +50,13 @@ class PostEditFragment : Fragment() {
         postEditViewModel.getPostById(postId)
 
         postEditViewModel.post.observe(viewLifecycleOwner) {
-
             date = it.date
             imagePost = it.image
             setUpViews(it)
-
         }
 
         binding.mBack.setOnClickListener {
             navController.navigateUp()
-        }
-
-        binding.mImagePost.setOnClickListener {
-
-            ImagePicker.with(requireActivity()).crop().createIntentFromDialog {
-                launcherImage.launch(it)
-            }
-
         }
 
         binding.mUpdate.setOnClickListener {
@@ -97,21 +83,21 @@ class PostEditFragment : Fragment() {
         _binding = null
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setUpViews(post: Post) {
 
         binding.apply {
-
             mEditTextDescription.setText(post.description)
+            mEditTextImageLink.setText(post.image)
             mEditTextLikes.setText(post.likes.toString())
             mEditTextComments.setText(post.comments.toString())
             mEditTextShares.setText(post.shares.toString())
             mImagePost.load(post.image) {
-                placeholder(R.drawable.ic_add)
-                error(R.drawable.ic_add)
+                placeholder(R.drawable.ic_image)
+                error(R.drawable.ic_image)
                 crossfade(true)
                 crossfade(400)
             }
-
         }
 
     }
@@ -137,9 +123,7 @@ class PostEditFragment : Fragment() {
             }
 
             else -> {
-
                 updatePost()
-
             }
 
         }
@@ -155,7 +139,7 @@ class PostEditFragment : Fragment() {
         val post = Post(
             id = postId,
             description = binding.mEditTextDescription.text.toString().trim(),
-            image = imagePost,
+            image = binding.mEditTextImageLink.text.toString().trim(),
             date = date,
             likes = binding.mEditTextLikes.text.toString().toLong(),
             comments = binding.mEditTextComments.text.toString().toLong(),
@@ -170,28 +154,9 @@ class PostEditFragment : Fragment() {
     }
 
     private fun deletePost() {
-
         postEditViewModel.deletePostById(postId)
         navController.navigateUp()
         Toast.makeText(context, resources.getString(R.string.post_deleted), Toast.LENGTH_SHORT).show()
-
-    }
-
-    private var launcherImage: ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-
-        if (it.resultCode == Activity.RESULT_OK) {
-
-            imagePost = it.data?.data!!.toString()
-
-            binding.mImagePost.load(imagePost) {
-                placeholder(R.drawable.ic_add)
-                error(R.drawable.ic_add)
-                crossfade(true)
-                crossfade(400)
-            }
-
-        }
-
     }
 
 }

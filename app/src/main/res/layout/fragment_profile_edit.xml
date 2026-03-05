@@ -27,43 +27,26 @@
             android:paddingHorizontal="12dp"
             android:paddingBottom="12dp">
 
-            <LinearLayout
-                android:id="@+id/mEditProfilePicture"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="center">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="12dp">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_gravity="center">
+                <ImageView
+                    android:id="@+id/mProfilePicture"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ic_profile"
+                    app:layout_constraintDimensionRatio="H,1:1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
 
-                    <ImageView
-                        android:id="@+id/mProfilePicture"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:scaleType="centerCrop"
-                        android:contentDescription="@string/app_name"
-                        android:src="@drawable/ic_profile"
-                        app:layout_constraintDimensionRatio="H,1:1"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"/>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="12dp"
-                    android:text="@string/edit_profile_picture"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textColor="?android:attr/colorPrimary"/>
-
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -138,6 +121,23 @@
                     android:layout_height="wrap_content"
                     android:inputType="textWebEmailAddress"
                     android:maxLength="50"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/image_link"
+                app:startIconDrawable="@drawable/ic_link"
+                app:counterEnabled="true"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/mEditTextImageLink"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textUri"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
             </com.google.android.material.textfield.TextInputLayout>
