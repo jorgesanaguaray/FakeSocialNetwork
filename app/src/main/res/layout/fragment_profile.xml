@@ -154,7 +154,7 @@
                                 android:layout_height="wrap_content"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                                 android:textStyle="bold"
-                                tools:text="0"/>
+                                android:text="@string/zero"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -177,7 +177,7 @@
                                 android:layout_height="wrap_content"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                                 android:textStyle="bold"
-                                tools:text="0"/>
+                                android:text="@string/zero"/>
 
                             <TextView
                                 android:layout_width="wrap_content"

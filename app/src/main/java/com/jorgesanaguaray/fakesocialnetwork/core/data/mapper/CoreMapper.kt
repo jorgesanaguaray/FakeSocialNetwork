@@ -10,11 +10,11 @@ import com.jorgesanaguaray.fakesocialnetwork.core.domain.models.User
  */
 
 fun User.toDatabase(): UserEntity {
-    return UserEntity(id, username, name, bio, link, password, profilePicture, followers, following, isVerified)
+    return UserEntity(id, username, name, bio, link, password, profilePicture, isVerified)
 }
 
 fun UserEntity.toDomain(): User {
-    return User(id, username, name, bio, link, password, profilePicture, followers, following, isVerified)
+    return User(id, username, name, bio, link, password, profilePicture, isVerified)
 }
 
 fun Post.toDatabase(): PostEntity {

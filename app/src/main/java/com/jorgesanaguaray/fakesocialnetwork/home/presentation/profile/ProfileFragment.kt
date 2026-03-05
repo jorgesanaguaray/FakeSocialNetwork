@@ -26,7 +26,6 @@ import com.jorgesanaguaray.fakesocialnetwork.databinding.DialogProfileBinding
 import com.jorgesanaguaray.fakesocialnetwork.databinding.FragmentProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import java.text.NumberFormat
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
@@ -149,8 +148,6 @@ class ProfileFragment : Fragment() {
 
             mUsername.text = profileState.user?.username
             mPosts.text = posts.size.toString()
-            mFollowers.text = numberFormat(profileState.user?.followers ?: 0)
-            mFollowing.text = numberFormat(profileState.user?.following ?: 0)
             mProfilePicture.load(profileState.user?.profilePicture) {
                 transformations(CircleCropTransformation())
                 placeholder(R.drawable.ic_profile)
@@ -176,21 +173,6 @@ class ProfileFragment : Fragment() {
             mNestedScrollView.visibility = if (profileState.isLoading) View.GONE else View.VISIBLE
             mProgressBar.visibility = if (profileState.isLoading) View.VISIBLE else View.GONE
 
-        }
-
-    }
-
-    private fun numberFormat(likes: Long): String {
-
-        val numberFormat = NumberFormat.getInstance()
-        numberFormat.maximumFractionDigits = 1
-        numberFormat.minimumFractionDigits = 0
-
-        return when {
-            likes < 1000 -> numberFormat.format(likes)
-            likes < 1000000 -> numberFormat.format(likes / 1000.0) + "K"
-            likes < 1000000000 -> numberFormat.format(likes / 1000000.0) + "M"
-            else -> numberFormat.format(likes / 1000000000.0) + "B"
         }
 
     }

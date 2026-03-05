@@ -99,9 +99,7 @@ class ProfileEditFragment : Fragment() {
             mEditTextName.setText(user.name)
             mEditTextBio.setText(user.bio)
             mEditTextLink.setText(user.link)
-            mEditTextImageLink.setText(user.profilePicture)
-            mEditTextFollowers.setText(user.followers.toString())
-            mEditTextFollowing.setText(user.following.toString())
+            mEditTextLinkProfilePicture.setText(user.profilePicture)
             mEditTextPassword.setText(user.password)
             mSwitch.isChecked = user.isVerified
 
@@ -162,9 +160,7 @@ class ProfileEditFragment : Fragment() {
             bio = binding.mEditTextBio.text.toString(),
             link = binding.mEditTextLink.text.toString().trim(),
             password = binding.mEditTextPassword.text.toString(),
-            profilePicture = binding.mEditTextImageLink.text.toString().trim(),
-            followers = binding.mEditTextFollowers.text.toString().toLong(),
-            following = binding.mEditTextFollowing.text.toString().toLong(),
+            profilePicture = binding.mEditTextLinkProfilePicture.text.toString().trim(),
             isVerified = binding.mSwitch.isChecked
         )
 

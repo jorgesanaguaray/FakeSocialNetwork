@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/image_link"
-            app:startIconDrawable="@drawable/ic_link"
+            app:startIconDrawable="@drawable/ic_image_link"
             app:counterEnabled="true"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 

@@ -128,54 +128,16 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/image_link"
-                app:startIconDrawable="@drawable/ic_link"
+                android:hint="@string/link_profile_picture"
+                app:startIconDrawable="@drawable/ic_image_link"
                 app:counterEnabled="true"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/mEditTextImageLink"
+                    android:id="@+id/mEditTextLinkProfilePicture"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textUri"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/followers"
-                app:startIconDrawable="@drawable/ic_number"
-                app:counterEnabled="true"
-                app:counterMaxLength="10"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/mEditTextFollowers"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:maxLength="10"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/following"
-                app:startIconDrawable="@drawable/ic_number"
-                app:counterEnabled="true"
-                app:counterMaxLength="10"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/mEditTextFollowing"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:maxLength="10"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
             </com.google.android.material.textfield.TextInputLayout>
