@@ -1,7 +1,6 @@
 package com.jorgesanaguaray.fakesocialnetwork.home.presentation.profileEdit
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -27,12 +26,11 @@ class ProfileEditFragment : Fragment() {
     private var _binding: FragmentProfileEditBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var profileEditViewModel: ProfileEditViewModel
+    private lateinit var viewModel: ProfileEditViewModel
     private lateinit var navController: NavController
 
     private var userId = 0
-    private var username = ""
-    private var profilePicture = ""
+    private var usernameCurrent = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentProfileEditBinding.inflate(inflater, container, false)
@@ -42,21 +40,13 @@ class ProfileEditFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        profileEditViewModel = ViewModelProvider(this).get()
+        viewModel = ViewModelProvider(this).get()
         navController = findNavController()
 
-        // Get user id from SharedPreferences
-        val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.user_info), Context.MODE_PRIVATE)
-        userId = sharedPreferences.getInt("id", 0)
-
-        profileEditViewModel.getUserById(userId)
-
-        profileEditViewModel.user.observe(viewLifecycleOwner) {
-
-            username = it!!.username
-            profilePicture = it.profilePicture
+        viewModel.user.observe(viewLifecycleOwner) {
+            userId = it!!.id
+            usernameCurrent = it.username
             setUpViews(it)
-
         }
 
         binding.mBack.setOnClickListener {
@@ -87,7 +77,6 @@ class ProfileEditFragment : Fragment() {
     private fun setUpViews(user: User) {
 
         binding.apply {
-
             mProfilePicture.load(user.profilePicture) {
                 transformations(CircleCropTransformation())
                 placeholder(R.drawable.ic_profile)
@@ -102,7 +91,6 @@ class ProfileEditFragment : Fragment() {
             mEditTextLinkProfilePicture.setText(user.profilePicture)
             mEditTextPassword.setText(user.password)
             mSwitch.isChecked = user.isVerified
-
         }
 
     }
@@ -125,14 +113,10 @@ class ProfileEditFragment : Fragment() {
 
             else -> {
 
-                if (username == binding.mEditTextUsername.text.toString()) {
-
+                if (usernameCurrent == binding.mEditTextUsername.text.toString()) {
                     updateUser()
-
                 } else {
-
                     isUsernameAvailable()
-
                 }
 
             }
@@ -143,7 +127,7 @@ class ProfileEditFragment : Fragment() {
 
     private fun isUsernameAvailable() {
 
-        if (profileEditViewModel.isUsernameAvailable(binding.mEditTextUsername.text.toString())) {
+        if (viewModel.isUsernameAvailable(binding.mEditTextUsername.text.toString())) {
             updateUser()
         } else {
             binding.mEditTextUsername.error = resources.getString(R.string.username_not_available_try_another)
@@ -164,7 +148,7 @@ class ProfileEditFragment : Fragment() {
             isVerified = binding.mSwitch.isChecked
         )
 
-        profileEditViewModel.updateUser(user)
+        viewModel.updateUser(user)
         saveUserInfo()
         navController.navigateUp()
         Toast.makeText(context, resources.getString(R.string.updated_user), Toast.LENGTH_SHORT).show()
@@ -173,11 +157,11 @@ class ProfileEditFragment : Fragment() {
 
     private fun saveUserInfo() {
 
-        val sharedPreferences = activity?.getSharedPreferences(getString(R.string.user_info), Context.MODE_PRIVATE)
-        val editor = sharedPreferences!!.edit()
-        editor.putString("username", binding.mEditTextUsername.text.toString())
-        editor.putString("password", binding.mEditTextPassword.text.toString())
-        editor.apply()
+        viewModel.saveLoginInfo(
+            id = userId,
+            username = binding.mEditTextUsername.text.toString(),
+            password = binding.mEditTextPassword.text.toString()
+        )
 
     }
 

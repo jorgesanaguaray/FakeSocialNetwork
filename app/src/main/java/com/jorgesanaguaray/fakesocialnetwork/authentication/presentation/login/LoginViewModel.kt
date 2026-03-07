@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.jorgesanaguaray.fakesocialnetwork.authentication.domain.usecases.GetUserByUsernameAndPasswordUseCase
 import com.jorgesanaguaray.fakesocialnetwork.authentication.domain.usecases.IsLoginSuccessfulUseCase
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.models.User
+import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.SaveLoginInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,7 +23,8 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val isLoginSuccessfulUseCase: IsLoginSuccessfulUseCase,
-    private val getUserByUsernameAndPasswordUseCase: GetUserByUsernameAndPasswordUseCase
+    private val getUserByUsernameAndPasswordUseCase: GetUserByUsernameAndPasswordUseCase,
+    private val saveLoginInfoUseCase: SaveLoginInfoUseCase
 ) : ViewModel() {
 
     private val _user = MutableLiveData<User>()
@@ -61,6 +63,10 @@ class LoginViewModel @Inject constructor(
 
         }
 
+    }
+
+    fun saveLoginInfo(id: Int, username: String, password: String) {
+        saveLoginInfoUseCase(id, username, password)
     }
 
 }

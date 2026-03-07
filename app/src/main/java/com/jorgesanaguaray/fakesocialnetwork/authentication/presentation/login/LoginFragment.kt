@@ -1,7 +1,6 @@
 package com.jorgesanaguaray.fakesocialnetwork.authentication.presentation.login
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -28,7 +27,7 @@ class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-    private lateinit var loginViewModel: LoginViewModel
+    private lateinit var viewModel: LoginViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
@@ -38,7 +37,7 @@ class LoginFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        loginViewModel = ViewModelProvider(this).get()
+        viewModel = ViewModelProvider(this).get()
 
     }
 
@@ -77,9 +76,7 @@ class LoginFragment : Fragment() {
             }
 
             else -> {
-
                 isLoginSuccessful()
-
             }
 
         }
@@ -89,7 +86,7 @@ class LoginFragment : Fragment() {
     @SuppressLint("RepeatOnLifecycleWrongUsage")
     private fun isLoginSuccessful() {
 
-        loginViewModel.isLoginSuccessful(
+        viewModel.isLoginSuccessful(
             username = binding.mEditTextUsername.text.toString(),
             password = binding.mEditTextPassword.text.toString()
         )
@@ -98,7 +95,7 @@ class LoginFragment : Fragment() {
 
             repeatOnLifecycle(Lifecycle.State.CREATED) {
 
-                loginViewModel.loginState.collect {
+                viewModel.loginState.collect {
 
                     if (it.isLoginSuccessful) {
 
@@ -123,15 +120,8 @@ class LoginFragment : Fragment() {
 
     private fun saveLoginInfo() {
 
-        loginViewModel.user.observe(viewLifecycleOwner) {
-
-            val sharedPreferences = activity?.getSharedPreferences(getString(R.string.user_info), Context.MODE_PRIVATE)
-            val editor = sharedPreferences!!.edit()
-            editor.putInt("id", it.id)
-            editor.putString("username", it.username)
-            editor.putString("password", it.password)
-            editor.apply()
-
+        viewModel.user.observe(viewLifecycleOwner) {
+            viewModel.saveLoginInfo(it.id, it.username, it.password)
         }
 
     }

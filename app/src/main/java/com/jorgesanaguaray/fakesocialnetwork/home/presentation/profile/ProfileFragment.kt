@@ -1,7 +1,6 @@
 package com.jorgesanaguaray.fakesocialnetwork.home.presentation.profile
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -33,7 +32,7 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
-    private val profileViewModel: ProfileViewModel by viewModels()
+    private val viewModel: ProfileViewModel by viewModels()
     private lateinit var profileAdapter: ProfileAdapter
     private var posts: MutableList<Post> = mutableListOf()
 
@@ -47,7 +46,6 @@ class ProfileFragment : Fragment() {
 
         setupViews()
         observeProfileState()
-        retrieveUserId()
 
     }
 
@@ -80,7 +78,7 @@ class ProfileFragment : Fragment() {
 
             repeatOnLifecycle(Lifecycle.State.STARTED) {
 
-                profileViewModel.profileState.collect {
+                viewModel.profileState.collect {
 
                     updateViews(it)
 
@@ -89,14 +87,6 @@ class ProfileFragment : Fragment() {
             }
 
         }
-
-    }
-
-    private fun retrieveUserId() {
-
-        val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.user_info), Context.MODE_PRIVATE)
-        val userId = sharedPreferences.getInt("id", 0)
-        profileViewModel.getUserById(userId)
 
     }
 
@@ -116,17 +106,9 @@ class ProfileFragment : Fragment() {
     }
 
     private fun logout() {
-
-        val sharedPreferencesA = activity?.getSharedPreferences(getString(R.string.user_info), Context.MODE_PRIVATE)
-        val editorA = sharedPreferencesA!!.edit()
-        editorA.remove("id")
-        editorA.remove("username")
-        editorA.remove("password")
-        editorA.apply()
-
+        viewModel.logout()
         startActivity(Intent(context, MainActivity::class.java))
         requireActivity().finish()
-
     }
 
     private fun goPostEdit(id: Int) {

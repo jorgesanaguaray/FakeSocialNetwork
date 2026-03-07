@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.jorgesanaguaray.fakesocialnetwork.authentication.domain.usecases.InsertUserUseCase
 import com.jorgesanaguaray.fakesocialnetwork.authentication.domain.usecases.IsUsernameAvailableUseCase
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.models.User
+import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.SaveLoginInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val insertUserUseCase: InsertUserUseCase,
-    private val isUsernameAvailableUseCase: IsUsernameAvailableUseCase
+    private val isUsernameAvailableUseCase: IsUsernameAvailableUseCase,
+    private val saveLoginInfoUseCase: SaveLoginInfoUseCase
 ) : ViewModel() {
 
     fun insertUser(user: User) {
@@ -27,7 +29,7 @@ class RegisterViewModel @Inject constructor(
 
     }
 
-    fun isUsernameAvailable(username: String) : Boolean {
+    fun isUsernameAvailable(username: String): Boolean {
 
         var usernameAvailable = false
 
@@ -37,6 +39,10 @@ class RegisterViewModel @Inject constructor(
 
         return usernameAvailable
 
+    }
+
+    fun saveLoginInfo(id: Int, username: String, password: String) {
+        saveLoginInfoUseCase(id, username, password)
     }
 
 }

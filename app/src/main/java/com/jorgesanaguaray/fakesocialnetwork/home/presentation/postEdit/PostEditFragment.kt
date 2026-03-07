@@ -1,7 +1,6 @@
 package com.jorgesanaguaray.fakesocialnetwork.home.presentation.postEdit
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.fragment.app.Fragment
@@ -27,12 +26,11 @@ class PostEditFragment : Fragment() {
     private var _binding: FragmentPostEditBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var postEditViewModel: PostEditViewModel
+    private lateinit var viewModel: PostEditViewModel
     private lateinit var navController: NavController
 
     private var postId = 0
     private var date = ""
-    private var imagePost = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentPostEditBinding.inflate(inflater, container, false)
@@ -42,16 +40,15 @@ class PostEditFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        postEditViewModel = ViewModelProvider(this).get()
+        viewModel = ViewModelProvider(this).get()
         navController = findNavController()
 
         postId = arguments?.getInt(KEY_POST_ID)!!
 
-        postEditViewModel.getPostById(postId)
+        viewModel.getPostById(postId)
 
-        postEditViewModel.post.observe(viewLifecycleOwner) {
+        viewModel.post.observe(viewLifecycleOwner) {
             date = it.date
-            imagePost = it.image
             setUpViews(it)
         }
 
@@ -117,26 +114,22 @@ class PostEditFragment : Fragment() {
 
     private fun updatePost() {
 
-        // Get user id from SharedPreferences
-        val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.user_info), Context.MODE_PRIVATE)
-        val userId = sharedPreferences.getInt("id", 0)
-
         val post = Post(
             id = postId,
             description = binding.mEditTextDescription.text.toString().trim(),
             image = binding.mEditTextImageLink.text.toString().trim(),
             date = date,
-            userId = userId
+            userId = viewModel.getUserId()
         )
 
-        postEditViewModel.updatePost(post)
+        viewModel.updatePost(post)
         navController.navigateUp()
         Toast.makeText(context, resources.getString(R.string.post_updated), Toast.LENGTH_SHORT).show()
 
     }
 
     private fun deletePost() {
-        postEditViewModel.deletePostById(postId)
+        viewModel.deletePostById(postId)
         navController.navigateUp()
         Toast.makeText(context, resources.getString(R.string.post_deleted), Toast.LENGTH_SHORT).show()
     }

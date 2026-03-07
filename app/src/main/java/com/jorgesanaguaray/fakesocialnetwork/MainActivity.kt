@@ -1,25 +1,25 @@
 package com.jorgesanaguaray.fakesocialnetwork
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import com.jorgesanaguaray.fakesocialnetwork.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var viewModel: MainViewModel
     private lateinit var binding: ActivityMainBinding
 
     override fun onStart() {
         super.onStart()
 
-        val sharedPreferences = getSharedPreferences(getString(R.string.user_info), Context.MODE_PRIVATE)
-        val username = sharedPreferences.getString("username", "")
-        val password = sharedPreferences.getString("password", "")
+        viewModel = ViewModelProvider(this).get()
 
-        if (username != "" && password != "") {
+        if (viewModel.getUserId() != 0) {
             startActivity(Intent(this, SecondActivity::class.java))
         }
 

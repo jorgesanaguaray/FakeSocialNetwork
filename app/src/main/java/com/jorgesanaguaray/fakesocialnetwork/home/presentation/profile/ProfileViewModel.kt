@@ -2,6 +2,8 @@ package com.jorgesanaguaray.fakesocialnetwork.home.presentation.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.GetUserIdUseCase
+import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.LogoutUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.ObserveUserByIdUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.ObservePostsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,18 +20,24 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
+    private val getUserIdUseCase: GetUserIdUseCase,
     private val observeUserByIdUseCase: ObserveUserByIdUseCase,
-    private val observePostsUseCase: ObservePostsUseCase
+    private val observePostsUseCase: ObservePostsUseCase,
+    private val logoutUseCase: LogoutUseCase
 ) : ViewModel() {
 
     private val _profileState = MutableStateFlow(ProfileState())
     val profileState: StateFlow<ProfileState> = _profileState.asStateFlow()
 
-    fun getUserById(id: Int) {
+    init {
+        observeUserById()
+    }
+
+    private fun observeUserById() {
 
         viewModelScope.launch {
 
-            observeUserByIdUseCase(id).collectLatest {
+            observeUserByIdUseCase(getUserIdUseCase()).collectLatest {
 
                 _profileState.value = _profileState.value.copy(user = it, isLoading = true)
                 getPosts()
@@ -52,6 +60,10 @@ class ProfileViewModel @Inject constructor(
 
         }
 
+    }
+
+    fun logout() {
+        logoutUseCase()
     }
 
 }

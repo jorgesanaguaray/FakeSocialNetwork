@@ -1,5 +1,6 @@
 package com.jorgesanaguaray.fakesocialnetwork.core.data.repository
 
+import android.content.SharedPreferences
 import com.jorgesanaguaray.fakesocialnetwork.core.data.local.daos.UserDao
 import com.jorgesanaguaray.fakesocialnetwork.core.data.local.entities.UserEntity
 import com.jorgesanaguaray.fakesocialnetwork.core.data.mapper.toDatabase
@@ -11,7 +12,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 
-class UserRepositoryImpl(private val userDao: UserDao): UserRepository {
+class UserRepositoryImpl(
+    private val userDao: UserDao,
+    private val sharedPreferences: SharedPreferences
+): UserRepository {
 
     private lateinit var searchedUsers: MutableList<User>
 
@@ -98,6 +102,22 @@ class UserRepositoryImpl(private val userDao: UserDao): UserRepository {
 
         }
 
+    }
+
+    override fun saveLoginInfo(id: Int, username: String, password: String) {
+        sharedPreferences.edit().putInt("id", id).apply()
+        sharedPreferences.edit().putString("username", username).apply()
+        sharedPreferences.edit().putString("password", password).apply()
+    }
+
+    override fun getUserId(): Int {
+        return sharedPreferences.getInt("id", 0)
+    }
+
+    override fun logout() {
+        sharedPreferences.edit().remove("id").apply()
+        sharedPreferences.edit().remove("username").apply()
+        sharedPreferences.edit().remove("password").apply()
     }
 
 }

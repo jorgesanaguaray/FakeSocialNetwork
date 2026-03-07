@@ -1,6 +1,5 @@
 package com.jorgesanaguaray.fakesocialnetwork.home.presentation.add
 
-import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.fragment.app.Fragment
@@ -21,7 +20,7 @@ class AddFragment : Fragment() {
     private var _binding: FragmentAddBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var addViewModel: AddViewModel
+    private lateinit var viewModel: AddViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentAddBinding.inflate(inflater, container, false)
@@ -31,7 +30,7 @@ class AddFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        addViewModel = ViewModelProvider(this).get()
+        viewModel = ViewModelProvider(this).get()
 
         binding.mPost.setOnClickListener {
             validateCredentials()
@@ -62,29 +61,23 @@ class AddFragment : Fragment() {
 
     private fun insertPost() {
 
-        // Get user id from SharedPreferences
-        val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.user_info), Context.MODE_PRIVATE)
-        val userId = sharedPreferences.getInt("id", 0)
-
         val post = Post(
             id = null,
             description = binding.mEditTextDescription.text.toString().trim(),
             image = binding.mEditTextImageLink.text.toString().trim(),
             date = System.currentTimeMillis().toString(),
-            userId = userId
+            userId = viewModel.getUserId()
         )
 
-        addViewModel.insertPost(post)
+        viewModel.insertPost(post)
         clearViews()
         Toast.makeText(context, resources.getString(R.string.post_published), Toast.LENGTH_SHORT).show()
 
     }
 
     private fun clearViews() {
-
         binding.mEditTextDescription.setText("")
         binding.mEditTextImageLink.setText("")
-
     }
 
 }

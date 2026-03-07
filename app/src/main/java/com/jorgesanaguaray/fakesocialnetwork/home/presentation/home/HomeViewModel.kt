@@ -3,6 +3,7 @@ package com.jorgesanaguaray.fakesocialnetwork.home.presentation.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.models.User
+import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.GetUserIdUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetUserByIdUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.ObservePostsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,6 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
+    private val getUserIdUseCase: GetUserIdUseCase,
     private val observePostsUseCase: ObservePostsUseCase,
     private val getUserByIdUseCase: GetUserByIdUseCase
 ) : ViewModel() {
@@ -33,33 +35,22 @@ class HomeViewModel @Inject constructor(
         getPosts()
     }
 
+    fun getUserId(): Int {
+        return getUserIdUseCase()
+    }
+
     fun getPosts() {
 
         viewModelScope.launch {
 
             _homeState.update {
-
-                it.copy(
-
-                    isContent = false,
-                    isLoading = true
-
-                )
-
+                it.copy(isContent = false, isLoading = true)
             }
 
             observePostsUseCase().collectLatest { posts ->
 
                 _homeState.update {
-
-                    it.copy(
-
-                        posts = posts,
-                        isContent = true,
-                        isLoading = false
-
-                    )
-
+                    it.copy(posts = posts, isContent = true, isLoading = false)
                 }
 
             }
@@ -75,9 +66,7 @@ class HomeViewModel @Inject constructor(
             val user = getUserAsync(id)
 
             withContext(Dispatchers.Main) {
-
                 callback(user)
-
             }
 
         }

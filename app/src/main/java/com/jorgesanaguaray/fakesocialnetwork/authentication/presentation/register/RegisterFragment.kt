@@ -1,6 +1,5 @@
 package com.jorgesanaguaray.fakesocialnetwork.authentication.presentation.register
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -24,7 +23,7 @@ class RegisterFragment : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
-    private lateinit var registerViewModel: RegisterViewModel
+    private lateinit var viewModel: RegisterViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
@@ -34,7 +33,7 @@ class RegisterFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        registerViewModel = ViewModelProvider(this).get()
+        viewModel = ViewModelProvider(this).get()
 
     }
 
@@ -46,7 +45,7 @@ class RegisterFragment : Fragment() {
         }
 
         binding.mRegister.setOnClickListener {
-            validateRegisterCredentials()
+            validateCredentials()
         }
 
     }
@@ -56,7 +55,7 @@ class RegisterFragment : Fragment() {
         _binding = null
     }
 
-    private fun validateRegisterCredentials() {
+    private fun validateCredentials() {
 
         when {
 
@@ -77,9 +76,7 @@ class RegisterFragment : Fragment() {
             }
 
             else -> {
-
                 isUsernameAvailable()
-
             }
 
         }
@@ -88,7 +85,7 @@ class RegisterFragment : Fragment() {
 
     private fun isUsernameAvailable() {
 
-        if (registerViewModel.isUsernameAvailable(binding.mEditTextUsername.text.toString())) {
+        if (viewModel.isUsernameAvailable(binding.mEditTextUsername.text.toString())) {
             insertUser()
         } else {
             binding.mEditTextUsername.error = resources.getString(R.string.username_not_available_try_another)
@@ -111,7 +108,7 @@ class RegisterFragment : Fragment() {
             isVerified = false
         )
 
-        registerViewModel.insertUser(user)
+        viewModel.insertUser(user)
         saveLoginInfo(userId)
         startActivity(Intent(context, SecondActivity::class.java))
         requireActivity().finish()
@@ -121,12 +118,11 @@ class RegisterFragment : Fragment() {
 
     private fun saveLoginInfo(userId: Int) {
 
-        val sharedPreferences = activity?.getSharedPreferences(getString(R.string.user_info), Context.MODE_PRIVATE)
-        val editor = sharedPreferences!!.edit()
-        editor.putInt("id", userId)
-        editor.putString("username", binding.mEditTextUsername.text.toString())
-        editor.putString("password", binding.mEditTextPassword.text.toString())
-        editor.apply()
+        viewModel.saveLoginInfo(
+            id = userId,
+            username = binding.mEditTextUsername.text.toString(),
+            password = binding.mEditTextPassword.text.toString()
+        )
 
     }
 
