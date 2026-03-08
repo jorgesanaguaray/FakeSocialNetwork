@@ -18,6 +18,14 @@ class PostRepositoryImpl(private val postDao: PostDao): PostRepository {
         postDao.updatePost(post.toDatabase())
     }
 
+    override suspend fun getPosts(): List<Post> {
+
+        return postDao.getPosts().map {
+            it.toDomain()
+        }
+
+    }
+
     override fun observePosts(): Flow<List<Post>> {
 
         return postDao.observePosts().map { postsEntity ->

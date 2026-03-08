@@ -22,6 +22,9 @@ interface PostDao {
     suspend fun updatePost(postEntity: PostEntity)
 
     @Query("SELECT * FROM post_table ORDER BY id DESC")
+    suspend fun getPosts(): List<PostEntity>
+
+    @Query("SELECT * FROM post_table ORDER BY id DESC")
     fun observePosts(): Flow<List<PostEntity>>
 
     @Query("SELECT * FROM post_table WHERE id = :id")

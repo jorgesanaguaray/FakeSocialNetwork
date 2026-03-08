@@ -2,7 +2,7 @@ package com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases
 
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.repository.UserRepository
 
-class GetUserIdUseCase(
+class GetCurrentUserIdUseCase(
     private val repository: UserRepository
 ) {
 

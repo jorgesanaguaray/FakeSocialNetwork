@@ -2,7 +2,7 @@ package com.jorgesanaguaray.fakesocialnetwork.home.presentation.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.GetUserIdUseCase
+import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.GetCurrentUserIdUseCase
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.LogoutUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.ObserveUserByIdUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.ObservePostsUseCase
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val getUserIdUseCase: GetUserIdUseCase,
+    private val getCurrentUserIdUseCase: GetCurrentUserIdUseCase,
     private val observeUserByIdUseCase: ObserveUserByIdUseCase,
     private val observePostsUseCase: ObservePostsUseCase,
     private val logoutUseCase: LogoutUseCase
@@ -37,7 +37,7 @@ class ProfileViewModel @Inject constructor(
 
         viewModelScope.launch {
 
-            observeUserByIdUseCase(getUserIdUseCase()).collectLatest {
+            observeUserByIdUseCase(getCurrentUserIdUseCase()).collectLatest {
 
                 _profileState.value = _profileState.value.copy(user = it, isLoading = true)
                 getPosts()

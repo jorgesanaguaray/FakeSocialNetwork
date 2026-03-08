@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.jorgesanaguaray.fakesocialnetwork.core.domain.models.Post
 import com.jorgesanaguaray.fakesocialnetwork.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -23,8 +22,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: HomeViewModel
-    private lateinit var homeAdapter: HomeAdapter
-    private lateinit var posts: MutableList<Post>
+    private lateinit var adapter: HomeAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
@@ -35,8 +33,7 @@ class HomeFragment : Fragment() {
         super.onStart()
 
         viewModel = ViewModelProvider(this).get()
-        homeAdapter = HomeAdapter(homeViewModel = viewModel)
-        posts = ArrayList()
+        adapter = HomeAdapter(viewModel = viewModel)
 
     }
 
@@ -44,21 +41,15 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
 
             repeatOnLifecycle(Lifecycle.State.STARTED) {
 
-                viewModel.homeState.collect {
-                    setUpViews(it)
-                }
+                adapter.setPosts(viewModel.getPosts())
+                binding.mRecyclerView.adapter = adapter
 
             }
 
-        }
-
-        binding.mSwipeRefresh.setOnRefreshListener {
-            viewModel.getPosts()
-            binding.mSwipeRefresh.isRefreshing = false
         }
 
     }
@@ -66,29 +57,6 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun setUpViews(homeState: HomeState) {
-
-        posts.clear()
-
-        homeState.posts.forEach { post ->
-
-            if (post.userId != viewModel.getUserId()) {
-                posts.add(post)
-            }
-
-        }
-
-        homeAdapter.setPosts(posts)
-        binding.mRecyclerView.adapter = homeAdapter
-
-        if (homeState.isContent) binding.mRecyclerView.visibility = View.VISIBLE
-        else binding.mRecyclerView.visibility = View.GONE
-
-        if (homeState.isLoading) binding.mProgressBar.visibility = View.VISIBLE
-        else binding.mProgressBar.visibility = View.GONE
-
     }
 
 }

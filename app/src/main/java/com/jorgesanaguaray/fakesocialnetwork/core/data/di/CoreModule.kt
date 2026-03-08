@@ -11,7 +11,7 @@ import com.jorgesanaguaray.fakesocialnetwork.core.data.repository.PostRepository
 import com.jorgesanaguaray.fakesocialnetwork.core.data.repository.UserRepositoryImpl
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.repository.PostRepository
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.repository.UserRepository
-import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.GetUserIdUseCase
+import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.GetCurrentUserIdUseCase
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.LogoutUseCase
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.SaveLoginInfoUseCase
 import dagger.Module
@@ -73,8 +73,8 @@ object CoreModule {
 
     @Provides
     @Singleton
-    fun provideGetUserIdUseCase(repository: UserRepository): GetUserIdUseCase {
-        return GetUserIdUseCase(repository)
+    fun provideGetCurrentUserIdUseCase(repository: UserRepository): GetCurrentUserIdUseCase {
+        return GetCurrentUserIdUseCase(repository)
     }
 
     @Provides

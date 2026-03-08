@@ -19,7 +19,7 @@ import java.util.Locale
  */
 
 class HomeAdapter(
-    private val homeViewModel: HomeViewModel
+    private val viewModel: HomeViewModel
 ) : RecyclerView.Adapter<HomeAdapter.MyHomeViewHolder>() {
 
     private var posts: List<Post> = ArrayList()
@@ -49,7 +49,7 @@ class HomeAdapter(
 
     private fun setUserInfo(userId: Int, binding: ItemHomeBinding) {
 
-        homeViewModel.getUserById(userId) {
+        viewModel.getUserById(userId) {
 
             binding.mProfilePicture.load(it.profilePicture) {
                 transformations(CircleCropTransformation())

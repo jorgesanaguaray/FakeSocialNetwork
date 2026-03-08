@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jorgesanaguaray.fakesocialnetwork.authentication.domain.usecases.IsUsernameAvailableUseCase
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.models.User
-import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.GetUserIdUseCase
+import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.GetCurrentUserIdUseCase
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.SaveLoginInfoUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetUserByIdUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.UpdateUserUseCase
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileEditViewModel @Inject constructor(
-    private val getUserIdUseCase: GetUserIdUseCase,
+    private val getCurrentUserIdUseCase: GetCurrentUserIdUseCase,
     private val getUserByIdUseCase: GetUserByIdUseCase,
     private val isUsernameAvailableUseCase: IsUsernameAvailableUseCase,
     private val updateUserUseCase: UpdateUserUseCase,
@@ -36,7 +36,7 @@ class ProfileEditViewModel @Inject constructor(
     private fun getUserById() {
 
         viewModelScope.launch {
-            _user.value = getUserByIdUseCase(getUserIdUseCase())
+            _user.value = getUserByIdUseCase(getCurrentUserIdUseCase())
         }
 
     }

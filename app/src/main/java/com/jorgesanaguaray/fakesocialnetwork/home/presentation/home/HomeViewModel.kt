@@ -2,17 +2,13 @@ package com.jorgesanaguaray.fakesocialnetwork.home.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jorgesanaguaray.fakesocialnetwork.core.domain.models.Post
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.models.User
-import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.GetUserIdUseCase
+import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.GetCurrentUserIdUseCase
+import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetOtherPostsUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetUserByIdUseCase
-import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.ObservePostsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -23,40 +19,23 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getUserIdUseCase: GetUserIdUseCase,
-    private val observePostsUseCase: ObservePostsUseCase,
-    private val getUserByIdUseCase: GetUserByIdUseCase
+    private val getCurrentUserIdUseCase: GetCurrentUserIdUseCase,
+    private val getUserByIdUseCase: GetUserByIdUseCase,
+    private val getOtherPostsUseCase: GetOtherPostsUseCase
 ) : ViewModel() {
 
-    private val _homeState = MutableStateFlow(HomeState())
-    val homeState: StateFlow<HomeState> = _homeState.asStateFlow()
-
     init {
-        getPosts()
+        viewModelScope.launch {
+            getPosts()
+        }
     }
 
     fun getUserId(): Int {
-        return getUserIdUseCase()
+        return getCurrentUserIdUseCase()
     }
 
-    fun getPosts() {
-
-        viewModelScope.launch {
-
-            _homeState.update {
-                it.copy(isContent = false, isLoading = true)
-            }
-
-            observePostsUseCase().collectLatest { posts ->
-
-                _homeState.update {
-                    it.copy(posts = posts, isContent = true, isLoading = false)
-                }
-
-            }
-
-        }
-
+    suspend fun getPosts(): List<Post> {
+        return getOtherPostsUseCase(getCurrentUserIdUseCase())
     }
 
     fun getUserById(id: Int, callback: (User) -> Unit) {
