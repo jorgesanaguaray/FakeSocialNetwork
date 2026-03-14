@@ -101,6 +101,7 @@
         android:layout_height="wrap_content"
         android:paddingHorizontal="8dp"
         android:paddingBottom="8dp"
+        android:autoLink="web"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         tools:text="Description"/>
 

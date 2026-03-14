@@ -20,7 +20,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jorgesanaguaray.fakesocialnetwork.Constants.Companion.KEY_POST_ID
 import com.jorgesanaguaray.fakesocialnetwork.MainActivity
 import com.jorgesanaguaray.fakesocialnetwork.R
-import com.jorgesanaguaray.fakesocialnetwork.core.domain.models.Post
 import com.jorgesanaguaray.fakesocialnetwork.databinding.DialogProfileBinding
 import com.jorgesanaguaray.fakesocialnetwork.databinding.FragmentProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,8 +32,7 @@ class ProfileFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: ProfileViewModel by viewModels()
-    private lateinit var profileAdapter: ProfileAdapter
-    private var posts: MutableList<Post> = mutableListOf()
+    private lateinit var adapter: ProfileAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
@@ -45,7 +43,7 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupViews()
-        observeProfileState()
+        observeState()
 
     }
 
@@ -59,8 +57,8 @@ class ProfileFragment : Fragment() {
         val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.mBottomNavigationView)
         bottomNavigationView?.visibility = View.VISIBLE
 
-        profileAdapter = ProfileAdapter { postId -> goPostEdit(postId) }
-        binding.mRecyclerView.adapter = profileAdapter
+        adapter = ProfileAdapter { postId -> goPostEdit(postId) }
+        binding.mRecyclerView.adapter = adapter
 
         binding.mMenu.setOnClickListener {
             openMenu()
@@ -72,20 +70,14 @@ class ProfileFragment : Fragment() {
 
     }
 
-    private fun observeProfileState() {
+    private fun observeState() {
 
         viewLifecycleOwner.lifecycleScope.launch {
-
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-
-                viewModel.profileState.collect {
-
+                viewModel.state.collect {
                     updateViews(it)
-
                 }
-
             }
-
         }
 
     }
@@ -117,20 +109,17 @@ class ProfileFragment : Fragment() {
     }
 
     @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
-    private fun updateViews(profileState: ProfileState) {
+    private fun updateViews(state: ProfileState) {
 
-        posts.clear()
-        posts.addAll(profileState.posts.filter { it.userId == profileState.user?.id })
-
-        profileAdapter.setUser(profileState.user)
-        profileAdapter.setPosts(posts)
-        profileAdapter.notifyDataSetChanged()
+        adapter.setUser(state.user)
+        adapter.setPosts(state.posts)
+        adapter.notifyDataSetChanged()
 
         binding.apply {
 
-            mUsername.text = profileState.user?.username
-            mPosts.text = posts.size.toString()
-            mProfilePicture.load(profileState.user?.profilePicture) {
+            mUsername.text = state.user?.username
+            mPosts.text = state.posts.size.toString()
+            mProfilePicture.load(state.user?.profilePicture) {
                 transformations(CircleCropTransformation())
                 placeholder(R.drawable.ic_profile)
                 error(R.drawable.ic_profile)
@@ -138,22 +127,22 @@ class ProfileFragment : Fragment() {
                 crossfade(400)
             }
 
-            mVerified.visibility = if (profileState.user?.isVerified == true) View.VISIBLE else View.GONE
+            mVerified.visibility = if (state.user?.isVerified == true) View.VISIBLE else View.GONE
 
-            val isNameBioLinkEmpty = profileState.user?.name.isNullOrEmpty() && profileState.user?.bio.isNullOrEmpty() && profileState.user?.link.isNullOrEmpty()
+            val isNameBioLinkEmpty = state.user?.name.isNullOrEmpty() && state.user?.bio.isNullOrEmpty() && state.user?.link.isNullOrEmpty()
             mContainerNameBioLink.visibility = if (isNameBioLinkEmpty) View.GONE else View.VISIBLE
 
-            mName.visibility = if (profileState.user?.name.isNullOrEmpty()) View.GONE else View.VISIBLE
-            mName.text = profileState.user?.name
+            mName.visibility = if (state.user?.name.isNullOrEmpty()) View.GONE else View.VISIBLE
+            mName.text = state.user?.name
 
-            mBio.visibility = if (profileState.user?.bio.isNullOrEmpty()) View.GONE else View.VISIBLE
-            mBio.text = profileState.user?.bio
+            mBio.visibility = if (state.user?.bio.isNullOrEmpty()) View.GONE else View.VISIBLE
+            mBio.text = state.user?.bio
 
-            mLink.visibility = if (profileState.user?.link.isNullOrEmpty()) View.GONE else View.VISIBLE
-            mLink.text = profileState.user?.link
+            mLink.visibility = if (state.user?.link.isNullOrEmpty()) View.GONE else View.VISIBLE
+            mLink.text = state.user?.link
 
-            mNestedScrollView.visibility = if (profileState.isLoading) View.GONE else View.VISIBLE
-            mProgressBar.visibility = if (profileState.isLoading) View.VISIBLE else View.GONE
+            mNestedScrollView.visibility = if (state.isLoading) View.GONE else View.VISIBLE
+            mProgressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
 
         }
 

@@ -2,10 +2,9 @@ package com.jorgesanaguaray.fakesocialnetwork.home.presentation.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.GetCurrentUserIdUseCase
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.LogoutUseCase
-import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.ObserveUserByIdUseCase
-import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.ObservePostsUseCase
+import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.ObserveCurrentUserByIdUseCase
+import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.ObserveCurrentUserPostsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,42 +19,37 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val getCurrentUserIdUseCase: GetCurrentUserIdUseCase,
-    private val observeUserByIdUseCase: ObserveUserByIdUseCase,
-    private val observePostsUseCase: ObservePostsUseCase,
+    private val observeCurrentUserByIdUseCase: ObserveCurrentUserByIdUseCase,
+    private val observeCurrentUserPostsUseCase: ObserveCurrentUserPostsUseCase,
     private val logoutUseCase: LogoutUseCase
 ) : ViewModel() {
 
-    private val _profileState = MutableStateFlow(ProfileState())
-    val profileState: StateFlow<ProfileState> = _profileState.asStateFlow()
+    private val _state = MutableStateFlow(ProfileState())
+    val state: StateFlow<ProfileState> = _state.asStateFlow()
 
     init {
-        observeUserById()
+        observeCurrentUserById()
     }
 
-    private fun observeUserById() {
+    private fun observeCurrentUserById() {
 
         viewModelScope.launch {
 
-            observeUserByIdUseCase(getCurrentUserIdUseCase()).collectLatest {
-
-                _profileState.value = _profileState.value.copy(user = it, isLoading = true)
-                getPosts()
-
+            observeCurrentUserByIdUseCase().collectLatest {
+                _state.value = _state.value.copy(user = it, isLoading = true)
+                observeCurrentUserPosts()
             }
 
         }
 
     }
 
-    private fun getPosts() {
+    private fun observeCurrentUserPosts() {
 
         viewModelScope.launch {
 
-            observePostsUseCase().collectLatest {
-
-                _profileState.value = _profileState.value.copy(posts = it, isLoading = false)
-
+            observeCurrentUserPostsUseCase().collectLatest {
+                _state.value = _state.value.copy(posts = it, isLoading = false)
             }
 
         }

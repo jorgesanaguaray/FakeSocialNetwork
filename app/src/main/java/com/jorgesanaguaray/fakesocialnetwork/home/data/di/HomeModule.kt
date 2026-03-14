@@ -2,6 +2,7 @@ package com.jorgesanaguaray.fakesocialnetwork.home.data.di
 
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.repository.PostRepository
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.repository.UserRepository
+import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.GetCurrentUserIdUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.DeletePostByIdUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetOtherPostsUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetPostByIdUseCase
@@ -9,8 +10,8 @@ import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetSearchedUse
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetUserByIdUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetUsersUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.InsertPostUseCase
-import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.ObservePostsUseCase
-import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.ObserveUserByIdUseCase
+import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.ObserveCurrentUserPostsUseCase
+import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.ObserveCurrentUserByIdUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.UpdatePostUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.UpdateUserUseCase
 import dagger.Module
@@ -37,8 +38,8 @@ object HomeModule {
 
     @Provides
     @Singleton
-    fun provideObserveUserByIdUseCase(repository: UserRepository): ObserveUserByIdUseCase {
-        return ObserveUserByIdUseCase(repository)
+    fun provideObserveCurrentUserByIdUseCase(repository: UserRepository, useCase: GetCurrentUserIdUseCase): ObserveCurrentUserByIdUseCase {
+        return ObserveCurrentUserByIdUseCase(repository, useCase)
     }
 
     @Provides
@@ -55,8 +56,8 @@ object HomeModule {
 
     @Provides
     @Singleton
-    fun provideObservePostsUseCase(repository: PostRepository): ObservePostsUseCase {
-        return ObservePostsUseCase(repository)
+    fun provideObserveCurrentUserPostsUseCase(repository: PostRepository, useCase: GetCurrentUserIdUseCase): ObserveCurrentUserPostsUseCase {
+        return ObserveCurrentUserPostsUseCase(repository, useCase)
     }
 
     @Provides
