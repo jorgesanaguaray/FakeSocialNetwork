@@ -22,8 +22,8 @@ class SearchViewModel @Inject constructor(
     private val getSearchedUsersUseCase: GetSearchedUsersUseCase
 ) : ViewModel() {
 
-    private val _searchState = MutableStateFlow(SearchState())
-    val searchState: StateFlow<SearchState> = _searchState.asStateFlow()
+    private val _state = MutableStateFlow(SearchState())
+    val state: StateFlow<SearchState> = _state.asStateFlow()
 
     init {
         getUsers()
@@ -33,34 +33,13 @@ class SearchViewModel @Inject constructor(
 
         viewModelScope.launch {
 
-            _searchState.update {
-
-                it.copy(
-
-                    isSearchView = false,
-                    isRecyclerView = false,
-                    isLoading = true
-
-                )
-
+            _state.update {
+                it.copy(isSearchView = false, isRecyclerView = false, isLoading = true)
             }
 
-            getUsersUseCase().onSuccess { users ->
-
-                _searchState.update {
-
-                    it.copy(
-
-                        users = users,
-                        isSearchView = true,
-                        isRecyclerView = true,
-                        isLoading = false
-
-                    )
-
-                }
-
-            }.onFailure {}
+            _state.update {
+                it.copy(users = getUsersUseCase(), isSearchView = true, isRecyclerView = true, isLoading = false)
+            }
 
         }
 
@@ -70,20 +49,9 @@ class SearchViewModel @Inject constructor(
 
         viewModelScope.launch {
 
-            getSearchedUsersUseCase(query).onSuccess { users ->
-
-                _searchState.update {
-
-                    it.copy(
-                        users = users,
-                        isSearchView = true,
-                        isRecyclerView = true,
-                        isLoading = false
-                    )
-
-                }
-
-            }.onFailure {}
+            _state.update {
+                it.copy(users = getSearchedUsersUseCase(query))
+            }
 
         }
 

@@ -7,7 +7,7 @@ class GetUsersUseCase(
     private val repository: UserRepository
 ) {
 
-    suspend operator fun invoke(): Result<List<User>> {
+    suspend operator fun invoke(): List<User> {
         return repository.getUsers()
     }
 

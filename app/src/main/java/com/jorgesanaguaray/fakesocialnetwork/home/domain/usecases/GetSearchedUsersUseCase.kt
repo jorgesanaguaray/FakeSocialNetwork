@@ -7,7 +7,7 @@ class GetSearchedUsersUseCase(
     private val repository: UserRepository
 ) {
 
-    suspend operator fun invoke(query: String): Result<List<User>> {
+    suspend operator fun invoke(query: String): List<User> {
         return repository.getSearchedUsers(query)
     }
 

@@ -22,8 +22,8 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var searchViewModel: SearchViewModel
-    private lateinit var searchAdapter: SearchAdapter
+    private lateinit var viewModel: SearchViewModel
+    private lateinit var adapter: SearchAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
@@ -33,8 +33,8 @@ class SearchFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        searchViewModel = ViewModelProvider(this).get()
-        searchAdapter = SearchAdapter()
+        viewModel = ViewModelProvider(this).get()
+        adapter = SearchAdapter()
 
     }
 
@@ -43,36 +43,30 @@ class SearchFragment : Fragment() {
         super.onResume()
 
         lifecycleScope.launch {
-
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-
-                searchViewModel.searchState.collect {
-
+                viewModel.state.collect {
                     setUpViews(it)
-
                 }
-
             }
-
         }
 
         binding.mSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
-                searchViewModel.getSearchedUsers(query!!)
+                viewModel.getSearchedUsers(query!!)
                 binding.mSearchView.clearFocus()
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                searchViewModel.getSearchedUsers(newText!!)
+                viewModel.getSearchedUsers(newText!!)
                 return true
             }
 
         })
 
         binding.mSwipeRefresh.setOnRefreshListener {
-            searchViewModel.getUsers()
+            viewModel.getUsers()
             binding.mSearchView.setQuery("", false)
             binding.mSwipeRefresh.isRefreshing = false
         }
@@ -84,18 +78,18 @@ class SearchFragment : Fragment() {
         _binding = null
     }
 
-    private fun setUpViews(searchState: SearchState) {
+    private fun setUpViews(state: SearchState) {
 
-        searchAdapter.setUsers(searchState.users)
-        binding.mRecyclerView.adapter = searchAdapter
+        adapter.setUsers(state.users)
+        binding.mRecyclerView.adapter = adapter
 
-        if (searchState.isSearchView) binding.mSearchView.visibility = View.VISIBLE
+        if (state.isSearchView) binding.mSearchView.visibility = View.VISIBLE
         else binding.mSearchView.visibility = View.GONE
 
-        if (searchState.isRecyclerView) binding.mRecyclerView.visibility = View.VISIBLE
+        if (state.isRecyclerView) binding.mRecyclerView.visibility = View.VISIBLE
         else binding.mRecyclerView.visibility = View.GONE
 
-        if (searchState.isLoading) binding.mProgressBar.visibility = View.VISIBLE
+        if (state.isLoading) binding.mProgressBar.visibility = View.VISIBLE
         else binding.mProgressBar.visibility = View.GONE
 
     }
