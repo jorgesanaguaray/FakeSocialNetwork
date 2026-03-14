@@ -7,7 +7,7 @@ class GetCurrentUserIdUseCase(
 ) {
 
     operator fun invoke(): Int {
-        return repository.getUserId()
+        return repository.getCurrentUserId()
     }
 
 }

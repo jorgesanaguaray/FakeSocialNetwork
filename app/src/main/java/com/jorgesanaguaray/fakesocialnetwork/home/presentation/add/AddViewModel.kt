@@ -19,14 +19,16 @@ class AddViewModel @Inject constructor(
     private val insertPostUseCase: InsertPostUseCase
 ): ViewModel() {
 
-    fun getUserId(): Int {
+    fun getCurrentUserId(): Int {
         return getCurrentUserIdUseCase()
     }
 
     fun insertPost(post: Post) {
+
         viewModelScope.launch {
             insertPostUseCase(post)
         }
+
     }
 
 }

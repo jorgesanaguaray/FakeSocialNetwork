@@ -96,7 +96,7 @@ class UserRepositoryImpl(
         sharedPreferences.edit().putString("password", password).apply()
     }
 
-    override fun getUserId(): Int {
+    override fun getCurrentUserId(): Int {
         return sharedPreferences.getInt("id", 0)
     }
 

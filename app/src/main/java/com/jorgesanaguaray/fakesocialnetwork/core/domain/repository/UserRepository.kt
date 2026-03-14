@@ -15,7 +15,7 @@ interface UserRepository {
     suspend fun isLoginSuccessful(username: String, password: String): Boolean
     suspend fun getSearchedUsers(query: String): List<User>
     fun saveLoginInfo(id: Int, username: String, password: String)
-    fun getUserId(): Int
+    fun getCurrentUserId(): Int
     fun logout()
 
 }

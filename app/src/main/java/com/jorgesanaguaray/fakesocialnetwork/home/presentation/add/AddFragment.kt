@@ -1,7 +1,6 @@
 package com.jorgesanaguaray.fakesocialnetwork.home.presentation.add
 
 import android.os.Bundle
-import android.text.TextUtils
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -45,16 +44,10 @@ class AddFragment : Fragment() {
 
     private fun validateCredentials() {
 
-        when {
-
-            TextUtils.isEmpty(binding.mEditTextDescription.text.toString()) -> {
-                binding.mEditTextDescription.error = resources.getString(R.string.enter_a_description)
-            }
-
-            else -> {
-                insertPost()
-            }
-
+        if (binding.mEditTextDescription.text.isNullOrEmpty()) {
+            binding.mEditTextDescription.error = getString(R.string.enter_a_description)
+        } else {
+            insertPost()
         }
 
     }
@@ -66,7 +59,7 @@ class AddFragment : Fragment() {
             description = binding.mEditTextDescription.text.toString().trim(),
             image = binding.mEditTextImageLink.text.toString().trim(),
             date = System.currentTimeMillis().toString(),
-            userId = viewModel.getUserId()
+            userId = viewModel.getCurrentUserId()
         )
 
         viewModel.insertPost(post)
