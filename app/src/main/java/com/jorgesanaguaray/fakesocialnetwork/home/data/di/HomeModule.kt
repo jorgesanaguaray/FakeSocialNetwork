@@ -93,8 +93,8 @@ object HomeModule {
 
     @Provides
     @Singleton
-    fun provideGetOtherPostsUseCase(repository: PostRepository): GetOtherPostsUseCase {
-        return GetOtherPostsUseCase(repository)
+    fun provideGetOtherPostsUseCase(repository: PostRepository, useCase: GetCurrentUserIdUseCase): GetOtherPostsUseCase {
+        return GetOtherPostsUseCase(repository, useCase)
     }
 
 }

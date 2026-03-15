@@ -45,7 +45,7 @@ class HomeFragment : Fragment() {
 
             repeatOnLifecycle(Lifecycle.State.STARTED) {
 
-                adapter.setPosts(viewModel.getPosts())
+                adapter.setPosts(viewModel.getOtherPosts())
                 binding.mRecyclerView.adapter = adapter
 
             }

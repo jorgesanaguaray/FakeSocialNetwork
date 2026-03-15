@@ -9,6 +9,9 @@ import coil.transform.CircleCropTransformation
 import com.jorgesanaguaray.fakesocialnetwork.R
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.models.Post
 import com.jorgesanaguaray.fakesocialnetwork.databinding.ItemHomeBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.ocpsoft.prettytime.PrettyTime
 import java.util.Calendar
 import java.util.Date
@@ -21,6 +24,8 @@ import java.util.Locale
 class HomeAdapter(
     private val viewModel: HomeViewModel
 ) : RecyclerView.Adapter<HomeAdapter.MyHomeViewHolder>() {
+
+    private val scope = CoroutineScope(Dispatchers.Main)
 
     private var posts: List<Post> = ArrayList()
 
@@ -49,20 +54,20 @@ class HomeAdapter(
 
     private fun setUserInfo(userId: Int, binding: ItemHomeBinding) {
 
-        viewModel.getUserById(userId) {
+        scope.launch {
+            val user = viewModel.getUserById(userId)
 
-            binding.mProfilePicture.load(it.profilePicture) {
+            binding.mProfilePicture.load(user.profilePicture) {
                 transformations(CircleCropTransformation())
                 placeholder(R.drawable.ic_profile)
                 error(R.drawable.ic_profile)
                 crossfade(true)
                 crossfade(400)
             }
-            binding.mUsername.text = it.username
+            binding.mUsername.text = user.username
 
-            if (it.isVerified) binding.mVerified.visibility = View.VISIBLE
+            if (user.isVerified) binding.mVerified.visibility = View.VISIBLE
             else binding.mVerified.visibility = View.GONE
-
         }
 
     }
