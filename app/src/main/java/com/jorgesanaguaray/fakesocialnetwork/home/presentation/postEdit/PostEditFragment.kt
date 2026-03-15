@@ -2,7 +2,6 @@ package com.jorgesanaguaray.fakesocialnetwork.home.presentation.postEdit
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.text.TextUtils
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -47,9 +46,13 @@ class PostEditFragment : Fragment() {
 
         viewModel.getPostById(postId)
 
-        viewModel.post.observe(viewLifecycleOwner) {
-            date = it.date
-            setUpViews(it)
+        viewModel.post.observe(viewLifecycleOwner) { post ->
+
+            if (post != null) {
+                date = post.date
+                setUpViews(post)
+            }
+
         }
 
         binding.mBack.setOnClickListener {
@@ -98,16 +101,10 @@ class PostEditFragment : Fragment() {
 
     private fun validateCredentials() {
 
-        when {
-
-            TextUtils.isEmpty(binding.mEditTextDescription.text.toString()) -> {
-                binding.mEditTextDescription.error = resources.getString(R.string.enter_a_description)
-            }
-
-            else -> {
-                updatePost()
-            }
-
+        if (binding.mEditTextDescription.text.isNullOrEmpty()) {
+            binding.mEditTextDescription.error = getString(R.string.enter_a_description)
+        } else {
+            updatePost()
         }
 
     }
@@ -119,7 +116,7 @@ class PostEditFragment : Fragment() {
             description = binding.mEditTextDescription.text.toString().trim(),
             image = binding.mEditTextImageLink.text.toString().trim(),
             date = date,
-            userId = viewModel.getUserId()
+            userId = viewModel.getCurrentUserId()
         )
 
         viewModel.updatePost(post)

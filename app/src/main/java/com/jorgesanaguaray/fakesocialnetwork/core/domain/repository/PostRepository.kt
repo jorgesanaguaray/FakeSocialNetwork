@@ -9,7 +9,7 @@ interface PostRepository {
     suspend fun updatePost(post: Post)
     suspend fun getPosts(): List<Post>
     fun observePosts(): Flow<List<Post>>
-    suspend fun getPostById(id: Int): Result<Post>
+    suspend fun getPostById(id: Int): Post
     suspend fun deletePostById(id: Int)
 
 }

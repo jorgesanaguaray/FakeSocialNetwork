@@ -25,23 +25,17 @@ class PostEditViewModel @Inject constructor(
     private val deletePostByIdUseCase: DeletePostByIdUseCase
 ) : ViewModel() {
 
-    private val _post = MutableLiveData<Post>()
-    val post: LiveData<Post> get() = _post
+    private val _post = MutableLiveData<Post?>()
+    val post: LiveData<Post?> get() = _post
 
-    fun getUserId(): Int {
+    fun getCurrentUserId(): Int {
         return getCurrentUserIdUseCase()
     }
 
     fun getPostById(id: Int) {
 
         viewModelScope.launch {
-
-            getPostByIdUseCase(id).onSuccess {
-
-                _post.value = it
-
-            }.onFailure {}
-
+            _post.value = getPostByIdUseCase(id)
         }
 
     }
@@ -49,9 +43,7 @@ class PostEditViewModel @Inject constructor(
     fun updatePost(post: Post) {
 
         viewModelScope.launch {
-
             updatePostUseCase(post)
-
         }
 
     }
@@ -59,9 +51,7 @@ class PostEditViewModel @Inject constructor(
     fun deletePostById(id: Int) {
 
         viewModelScope.launch {
-
             deletePostByIdUseCase(id)
-
         }
 
     }

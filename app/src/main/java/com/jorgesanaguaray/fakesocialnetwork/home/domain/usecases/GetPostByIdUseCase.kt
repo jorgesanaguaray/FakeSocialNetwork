@@ -7,7 +7,7 @@ class GetPostByIdUseCase(
     private val repository: PostRepository
 ) {
 
-    suspend operator fun invoke(id: Int): Result<Post> {
+    suspend operator fun invoke(id: Int): Post {
         return repository.getPostById(id)
     }
 

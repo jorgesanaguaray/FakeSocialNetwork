@@ -38,14 +38,8 @@ class PostRepositoryImpl(private val postDao: PostDao): PostRepository {
 
     }
 
-    override suspend fun getPostById(id: Int): Result<Post> {
-
-        return try {
-            Result.success(postDao.getPostById(id).toDomain())
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-
+    override suspend fun getPostById(id: Int): Post {
+        return postDao.getPostById(id).toDomain()
     }
 
     override suspend fun deletePostById(id: Int) {
