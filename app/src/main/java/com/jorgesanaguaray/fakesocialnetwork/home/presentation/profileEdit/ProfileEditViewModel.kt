@@ -7,7 +7,8 @@ import com.jorgesanaguaray.fakesocialnetwork.authentication.domain.usecases.IsUs
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.models.User
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.GetCurrentUserIdUseCase
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.SaveLoginInfoUseCase
-import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetUserByIdUseCase
+import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetCurrentUserByIdUseCase
+import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetCurrentUserUsernameUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.UpdateUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -19,8 +20,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileEditViewModel @Inject constructor(
+    private val getCurrentUserByIdUseCase: GetCurrentUserByIdUseCase,
     private val getCurrentUserIdUseCase: GetCurrentUserIdUseCase,
-    private val getUserByIdUseCase: GetUserByIdUseCase,
+    private val getCurrentUserUsernameUseCase: GetCurrentUserUsernameUseCase,
     private val isUsernameAvailableUseCase: IsUsernameAvailableUseCase,
     private val updateUserUseCase: UpdateUserUseCase,
     private val saveLoginInfoUseCase: SaveLoginInfoUseCase
@@ -30,25 +32,31 @@ class ProfileEditViewModel @Inject constructor(
     val user: MutableLiveData<User?> get() = _user
 
     init {
-        getUserById()
+        getCurrentUserById()
     }
 
-    private fun getUserById() {
+    private fun getCurrentUserById() {
 
         viewModelScope.launch {
-            _user.value = getUserByIdUseCase(getCurrentUserIdUseCase())
+            _user.value = getCurrentUserByIdUseCase()
         }
 
     }
 
-    fun isUsernameAvailable(username: String) : Boolean {
+    fun getCurrentUserId(): Int {
+        return getCurrentUserIdUseCase()
+    }
+
+    fun getCurrentUserUsername(): String {
+        return getCurrentUserUsernameUseCase()
+    }
+
+    fun isUsernameAvailable(username: String): Boolean {
 
         var usernameAvailable = false
 
         viewModelScope.launch {
-
             usernameAvailable = isUsernameAvailableUseCase(username)
-
         }
 
         return usernameAvailable
@@ -58,9 +66,7 @@ class ProfileEditViewModel @Inject constructor(
     fun updateUser(user: User) {
 
         viewModelScope.launch {
-
             updateUserUseCase(user)
-
         }
 
     }

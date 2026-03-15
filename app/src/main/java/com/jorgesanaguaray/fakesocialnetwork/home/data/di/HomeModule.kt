@@ -4,6 +4,7 @@ import com.jorgesanaguaray.fakesocialnetwork.core.domain.repository.PostReposito
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.repository.UserRepository
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.GetCurrentUserIdUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.DeletePostByIdUseCase
+import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetCurrentUserByIdUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetOtherPostsUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetPostByIdUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetSearchedUsersUseCase
@@ -52,6 +53,12 @@ object HomeModule {
     @Singleton
     fun provideGetSearchedUsersUseCase(repository: UserRepository): GetSearchedUsersUseCase {
         return GetSearchedUsersUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetCurrentUserByIdUseCase(repository: UserRepository, useCase: GetCurrentUserIdUseCase): GetCurrentUserByIdUseCase {
+        return GetCurrentUserByIdUseCase(repository, useCase)
     }
 
     @Provides

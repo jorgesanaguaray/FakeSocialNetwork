@@ -100,6 +100,10 @@ class UserRepositoryImpl(
         return sharedPreferences.getInt("id", 0)
     }
 
+    override fun getCurrentUserUsername(): String {
+        return sharedPreferences.getString("username", "") ?: ""
+    }
+
     override fun logout() {
         sharedPreferences.edit().remove("id").apply()
         sharedPreferences.edit().remove("username").apply()

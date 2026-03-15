@@ -29,9 +29,6 @@ class ProfileEditFragment : Fragment() {
     private lateinit var viewModel: ProfileEditViewModel
     private lateinit var navController: NavController
 
-    private var userId = 0
-    private var usernameCurrent = ""
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentProfileEditBinding.inflate(inflater, container, false)
         return binding.root
@@ -44,9 +41,7 @@ class ProfileEditFragment : Fragment() {
         navController = findNavController()
 
         viewModel.user.observe(viewLifecycleOwner) {
-            userId = it!!.id
-            usernameCurrent = it.username
-            setUpViews(it)
+            setUpViews(it!!)
         }
 
         binding.mBack.setOnClickListener {
@@ -113,7 +108,7 @@ class ProfileEditFragment : Fragment() {
 
             else -> {
 
-                if (usernameCurrent == binding.mEditTextUsername.text.toString()) {
+                if (viewModel.getCurrentUserUsername() == binding.mEditTextUsername.text.toString()) {
                     updateUser()
                 } else {
                     isUsernameAvailable()
@@ -138,7 +133,7 @@ class ProfileEditFragment : Fragment() {
     private fun updateUser() {
 
         val user = User(
-            id = userId,
+            id = viewModel.getCurrentUserId(),
             username = binding.mEditTextUsername.text.toString(),
             name = binding.mEditTextName.text.toString().trim(),
             bio = binding.mEditTextBio.text.toString(),
@@ -158,7 +153,7 @@ class ProfileEditFragment : Fragment() {
     private fun saveUserInfo() {
 
         viewModel.saveLoginInfo(
-            id = userId,
+            id = viewModel.getCurrentUserId(),
             username = binding.mEditTextUsername.text.toString(),
             password = binding.mEditTextPassword.text.toString()
         )
