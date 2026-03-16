@@ -44,8 +44,8 @@ class SearchFragment : Fragment() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.collect {
-                    setUpViews(it)
+                viewModel.state.collect { state ->
+                    setUpViews(state)
                 }
             }
         }
@@ -65,10 +65,10 @@ class SearchFragment : Fragment() {
 
         })
 
-        binding.mSwipeRefresh.setOnRefreshListener {
+        binding.mSwipeRefreshContent.setOnRefreshListener {
             viewModel.getUsers()
             binding.mSearchView.setQuery("", false)
-            binding.mSwipeRefresh.isRefreshing = false
+            binding.mSwipeRefreshContent.isRefreshing = false
         }
 
     }
@@ -83,11 +83,8 @@ class SearchFragment : Fragment() {
         adapter.setUsers(state.users)
         binding.mRecyclerView.adapter = adapter
 
-        if (state.isSearchView) binding.mSearchView.visibility = View.VISIBLE
-        else binding.mSearchView.visibility = View.GONE
-
-        if (state.isRecyclerView) binding.mRecyclerView.visibility = View.VISIBLE
-        else binding.mRecyclerView.visibility = View.GONE
+        if (state.isContent) binding.mSwipeRefreshContent.visibility = View.VISIBLE
+        else binding.mSwipeRefreshContent.visibility = View.GONE
 
         if (state.isLoading) binding.mProgressBar.visibility = View.VISIBLE
         else binding.mProgressBar.visibility = View.GONE

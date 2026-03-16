@@ -14,7 +14,7 @@ import com.jorgesanaguaray.fakesocialnetwork.databinding.ItemSearchBinding
  * Created by Jorge Sanaguaray
  */
 
-class SearchAdapter : RecyclerView.Adapter<SearchAdapter.MySearchViewHolder>() {
+class SearchAdapter: RecyclerView.Adapter<SearchAdapter.MySearchViewHolder>() {
 
     private var users: List<User> = ArrayList()
 

@@ -17,8 +17,6 @@ class UserRepositoryImpl(
     private val sharedPreferences: SharedPreferences
 ): UserRepository {
 
-    private lateinit var searchedUsers: MutableList<User>
-
     override suspend fun insertUser(user: User) {
         userDao.insertUser(user.toDatabase())
     }
@@ -28,7 +26,7 @@ class UserRepositoryImpl(
     }
 
     override suspend fun getUsers(): List<User> {
-        return userDao.getUsers().shuffled().map { it.toDomain() }
+        return userDao.getUsers().map { it.toDomain() }
     }
 
     override fun observeUserById(id: Int): Flow<User> {
@@ -74,19 +72,6 @@ class UserRepositoryImpl(
 
         if (userEntity != null) return true
         return false
-
-    }
-
-    override suspend fun getSearchedUsers(query: String): List<User> {
-
-        val users = userDao.getUsers().map { it.toDomain() }
-        searchedUsers = ArrayList()
-
-        for (user in users) {
-            if (user.username.lowercase().contains(query.lowercase())) searchedUsers.add(user)
-        }
-
-        return searchedUsers.shuffled()
 
     }
 

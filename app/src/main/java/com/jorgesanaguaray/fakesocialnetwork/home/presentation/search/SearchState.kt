@@ -9,8 +9,7 @@ import com.jorgesanaguaray.fakesocialnetwork.core.domain.models.User
 data class SearchState(
 
     val users: List<User> = emptyList(),
-    val isSearchView: Boolean = false,
-    val isRecyclerView: Boolean = false,
+    val isContent: Boolean = false,
     val isLoading: Boolean = false
 
 )

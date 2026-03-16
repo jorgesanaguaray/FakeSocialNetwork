@@ -13,7 +13,6 @@ interface UserRepository {
     suspend fun getUserByUsername(username: String): Boolean
     suspend fun getUserByUsernameAndPassword(username: String, password: String): Result<User>
     suspend fun isLoginSuccessful(username: String, password: String): Boolean
-    suspend fun getSearchedUsers(query: String): List<User>
     fun saveLoginInfo(id: Int, username: String, password: String)
     fun getCurrentUserId(): Int
     fun getCurrentUserUsername(): String
