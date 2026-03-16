@@ -41,15 +41,12 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        viewLifecycleOwner.lifecycleScope.launch {
-
+        lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-
-                adapter.setPosts(viewModel.getOtherPosts())
-                binding.mRecyclerView.adapter = adapter
-
+                viewModel.state.collect { state ->
+                    setUpViews(state)
+                }
             }
-
         }
 
     }
@@ -57,6 +54,19 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun setUpViews(state: HomeState) {
+
+        adapter.setPosts(state.posts)
+        binding.mRecyclerView.adapter = adapter
+
+        if (state.isContainer) binding.mContent.visibility = View.VISIBLE
+        else binding.mContent.visibility = View.GONE
+
+        if (state.isLoading) binding.mProgressBar.visibility = View.VISIBLE
+        else binding.mProgressBar.visibility = View.GONE
+
     }
 
 }

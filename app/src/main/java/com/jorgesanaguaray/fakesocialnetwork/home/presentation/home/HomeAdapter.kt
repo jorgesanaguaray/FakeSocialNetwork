@@ -23,7 +23,7 @@ import java.util.Locale
 
 class HomeAdapter(
     private val viewModel: HomeViewModel
-) : RecyclerView.Adapter<HomeAdapter.MyHomeViewHolder>() {
+): RecyclerView.Adapter<HomeAdapter.MyHomeViewHolder>() {
 
     private val scope = CoroutineScope(Dispatchers.Main)
 

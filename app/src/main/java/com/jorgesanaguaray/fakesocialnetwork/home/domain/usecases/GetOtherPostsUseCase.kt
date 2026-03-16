@@ -15,10 +15,8 @@ class GetOtherPostsUseCase(
 
         posts = ArrayList()
 
-        repository.getPosts().forEach {
-            if (it.userId != getCurrentUserIdUseCase()) {
-                posts.add(it)
-            }
+        repository.getPosts().forEach { post ->
+            if (post.userId != getCurrentUserIdUseCase()) posts.add(post)
         }
 
         return posts

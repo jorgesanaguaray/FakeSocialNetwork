@@ -8,7 +8,6 @@ import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetCurrentUser
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetOtherPostsUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetPostByIdUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetSearchedUsersUseCase
-import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetUserByIdUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetUsersUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.InsertPostUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.ObserveCurrentUserPostsUseCase
@@ -24,12 +23,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object HomeModule {
-
-    @Provides
-    @Singleton
-    fun provideGetUserByIdUseCase(repository: UserRepository): GetUserByIdUseCase {
-        return GetUserByIdUseCase(repository)
-    }
 
     @Provides
     @Singleton
