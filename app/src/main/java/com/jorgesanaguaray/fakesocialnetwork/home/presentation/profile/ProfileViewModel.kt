@@ -2,7 +2,7 @@ package com.jorgesanaguaray.fakesocialnetwork.home.presentation.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.LogoutUseCase
+import com.jorgesanaguaray.fakesocialnetwork.core.domain.repository.UserRepository
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.ObserveCurrentUserByIdUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.ObserveCurrentUserPostsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val observeCurrentUserByIdUseCase: ObserveCurrentUserByIdUseCase,
     private val observeCurrentUserPostsUseCase: ObserveCurrentUserPostsUseCase,
-    private val logoutUseCase: LogoutUseCase
+    private val repository: UserRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ProfileState())
@@ -35,9 +35,11 @@ class ProfileViewModel @Inject constructor(
 
         viewModelScope.launch {
 
-            observeCurrentUserByIdUseCase().collectLatest {
-                _state.value = _state.value.copy(user = it, isLoading = true)
+            observeCurrentUserByIdUseCase().collectLatest { user ->
+
+                _state.value = _state.value.copy(user = user, isContent = false, isLoading = true)
                 observeCurrentUserPosts()
+
             }
 
         }
@@ -48,8 +50,10 @@ class ProfileViewModel @Inject constructor(
 
         viewModelScope.launch {
 
-            observeCurrentUserPostsUseCase().collectLatest {
-                _state.value = _state.value.copy(posts = it, isLoading = false)
+            observeCurrentUserPostsUseCase().collectLatest { posts ->
+
+                _state.value = _state.value.copy(posts = posts, isContent = true, isLoading = false)
+
             }
 
         }
@@ -57,7 +61,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun logout() {
-        logoutUseCase()
+        repository.logout()
     }
 
 }

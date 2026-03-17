@@ -8,8 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
@@ -31,7 +32,7 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: ProfileViewModel by viewModels()
+    private lateinit var viewModel: ProfileViewModel
     private lateinit var adapter: ProfileAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -42,20 +43,19 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupViews()
-        observeState()
-
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    private fun setupViews() {
+        viewModel = ViewModelProvider(this).get()
+        adapter = ProfileAdapter { postId -> goPostEdit(postId) }
 
         val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.mBottomNavigationView)
         bottomNavigationView?.visibility = View.VISIBLE
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.state.collect { state ->
+                    setUpViews(state)
+                }
+            }
+        }
 
         adapter = ProfileAdapter { postId -> goPostEdit(postId) }
         binding.mRecyclerView.adapter = adapter
@@ -70,16 +70,9 @@ class ProfileFragment : Fragment() {
 
     }
 
-    private fun observeState() {
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.collect {
-                    updateViews(it)
-                }
-            }
-        }
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun openMenu() {
@@ -109,7 +102,7 @@ class ProfileFragment : Fragment() {
     }
 
     @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
-    private fun updateViews(state: ProfileState) {
+    private fun setUpViews(state: ProfileState) {
 
         adapter.setUser(state.user)
         adapter.setPosts(state.posts)
@@ -117,32 +110,39 @@ class ProfileFragment : Fragment() {
 
         binding.apply {
 
-            mUsername.text = state.user?.username
-            mPosts.text = state.posts.size.toString()
-            mProfilePicture.load(state.user?.profilePicture) {
-                transformations(CircleCropTransformation())
-                placeholder(R.drawable.ic_profile)
-                error(R.drawable.ic_profile)
-                crossfade(true)
-                crossfade(400)
+            if (state.user != null) {
+
+                mUsername.text = state.user.username
+                mPosts.text = state.posts.size.toString()
+                mProfilePicture.load(state.user.profilePicture) {
+                    transformations(CircleCropTransformation())
+                    placeholder(R.drawable.ic_profile)
+                    error(R.drawable.ic_profile)
+                    crossfade(true)
+                    crossfade(400)
+                }
+
+                mVerified.visibility = if (state.user.isVerified) View.VISIBLE else View.GONE
+
+                val isNameBioLinkEmpty = state.user.name.isEmpty() && state.user.bio.isEmpty() && state.user.link.isEmpty()
+                mContainerNameBioLink.visibility = if (isNameBioLinkEmpty) View.GONE else View.VISIBLE
+
+                mName.visibility = if (state.user.name.isEmpty()) View.GONE else View.VISIBLE
+                mName.text = state.user.name
+
+                mBio.visibility = if (state.user.bio.isEmpty()) View.GONE else View.VISIBLE
+                mBio.text = state.user.bio
+
+                mLink.visibility = if (state.user.link.isEmpty()) View.GONE else View.VISIBLE
+                mLink.text = state.user.link
+
             }
 
-            mVerified.visibility = if (state.user?.isVerified == true) View.VISIBLE else View.GONE
+            if (state.isContent) mContent.visibility = View.VISIBLE
+            else mContent.visibility = View.GONE
 
-            val isNameBioLinkEmpty = state.user?.name.isNullOrEmpty() && state.user?.bio.isNullOrEmpty() && state.user?.link.isNullOrEmpty()
-            mContainerNameBioLink.visibility = if (isNameBioLinkEmpty) View.GONE else View.VISIBLE
-
-            mName.visibility = if (state.user?.name.isNullOrEmpty()) View.GONE else View.VISIBLE
-            mName.text = state.user?.name
-
-            mBio.visibility = if (state.user?.bio.isNullOrEmpty()) View.GONE else View.VISIBLE
-            mBio.text = state.user?.bio
-
-            mLink.visibility = if (state.user?.link.isNullOrEmpty()) View.GONE else View.VISIBLE
-            mLink.text = state.user?.link
-
-            mNestedScrollView.visibility = if (state.isLoading) View.GONE else View.VISIBLE
-            mProgressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
+            if (state.isLoading) mProgressBar.visibility = View.VISIBLE
+            else mProgressBar.visibility = View.GONE
 
         }
 
