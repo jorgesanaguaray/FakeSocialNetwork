@@ -39,17 +39,8 @@ class UserRepositoryImpl(
         return userDao.getUserById(id).toDomain()
     }
 
-    override suspend fun getUserByUsername(username: String): Boolean {
-
-        var userEntity: UserEntity?
-
-        runBlocking(Dispatchers.IO) {
-            userEntity = userDao.getUserByUsername(username)
-        }
-
-        if (userEntity == null) return true
-        return false
-
+    override suspend fun getUserByUsername(username: String): User {
+        return userDao.getUserByUsername(username)!!.toDomain()
     }
 
     override suspend fun getUserByUsernameAndPassword(username: String, password: String): Result<User> {

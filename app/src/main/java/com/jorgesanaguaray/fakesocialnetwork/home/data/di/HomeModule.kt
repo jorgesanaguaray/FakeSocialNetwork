@@ -8,7 +8,6 @@ import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetOtherPostsU
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetSearchedUsersUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.ObserveCurrentUserPostsUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.ObserveCurrentUserByIdUseCase
-import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.UpdateUserUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,12 +22,6 @@ object HomeModule {
     @Singleton
     fun provideObserveCurrentUserByIdUseCase(repository: UserRepository, useCase: GetCurrentUserIdUseCase): ObserveCurrentUserByIdUseCase {
         return ObserveCurrentUserByIdUseCase(repository, useCase)
-    }
-
-    @Provides
-    @Singleton
-    fun provideUpdateUserUseCase(repository: UserRepository): UpdateUserUseCase {
-        return UpdateUserUseCase(repository)
     }
 
     @Provides

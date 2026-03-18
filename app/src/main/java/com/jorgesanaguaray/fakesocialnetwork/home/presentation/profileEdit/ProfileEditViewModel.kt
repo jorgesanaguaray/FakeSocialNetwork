@@ -5,11 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jorgesanaguaray.fakesocialnetwork.authentication.domain.usecases.IsUsernameAvailableUseCase
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.models.User
+import com.jorgesanaguaray.fakesocialnetwork.core.domain.repository.UserRepository
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.GetCurrentUserIdUseCase
-import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.SaveLoginInfoUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetCurrentUserByIdUseCase
-import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetCurrentUserUsernameUseCase
-import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.UpdateUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,10 +20,8 @@ import javax.inject.Inject
 class ProfileEditViewModel @Inject constructor(
     private val getCurrentUserByIdUseCase: GetCurrentUserByIdUseCase,
     private val getCurrentUserIdUseCase: GetCurrentUserIdUseCase,
-    private val getCurrentUserUsernameUseCase: GetCurrentUserUsernameUseCase,
     private val isUsernameAvailableUseCase: IsUsernameAvailableUseCase,
-    private val updateUserUseCase: UpdateUserUseCase,
-    private val saveLoginInfoUseCase: SaveLoginInfoUseCase
+    private val repository: UserRepository
 ) : ViewModel() {
 
     private val _user = MutableLiveData<User?>()
@@ -48,31 +44,23 @@ class ProfileEditViewModel @Inject constructor(
     }
 
     fun getCurrentUserUsername(): String {
-        return getCurrentUserUsernameUseCase()
+        return repository.getCurrentUserUsername()
     }
 
     fun isUsernameAvailable(username: String): Boolean {
-
-        var usernameAvailable = false
-
-        viewModelScope.launch {
-            usernameAvailable = isUsernameAvailableUseCase(username)
-        }
-
-        return usernameAvailable
-
+        return isUsernameAvailableUseCase(username)
     }
 
     fun updateUser(user: User) {
 
         viewModelScope.launch {
-            updateUserUseCase(user)
+            repository.updateUser(user)
         }
 
     }
 
     fun saveLoginInfo(id: Int, username: String, password: String) {
-        saveLoginInfoUseCase(id, username, password)
+        repository.saveLoginInfo(id, username, password)
     }
 
 }

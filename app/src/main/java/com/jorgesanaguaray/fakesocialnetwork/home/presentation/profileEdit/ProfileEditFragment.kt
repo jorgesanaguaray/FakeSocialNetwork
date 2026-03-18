@@ -40,8 +40,12 @@ class ProfileEditFragment : Fragment() {
         viewModel = ViewModelProvider(this).get()
         navController = findNavController()
 
-        viewModel.user.observe(viewLifecycleOwner) {
-            setUpViews(it!!)
+        viewModel.user.observe(viewLifecycleOwner) { user ->
+
+            if (user != null) {
+                setUpViews(user)
+            }
+
         }
 
         binding.mBack.setOnClickListener {

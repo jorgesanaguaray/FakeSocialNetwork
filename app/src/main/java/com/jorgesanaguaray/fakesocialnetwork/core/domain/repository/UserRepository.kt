@@ -10,7 +10,7 @@ interface UserRepository {
     suspend fun getUsers(): List<User>
     fun observeUserById(id: Int): Flow<User>
     suspend fun getUserById(id: Int): User
-    suspend fun getUserByUsername(username: String): Boolean
+    suspend fun getUserByUsername(username: String): User
     suspend fun getUserByUsernameAndPassword(username: String, password: String): Result<User>
     suspend fun isLoginSuccessful(username: String, password: String): Boolean
     fun saveLoginInfo(id: Int, username: String, password: String)
