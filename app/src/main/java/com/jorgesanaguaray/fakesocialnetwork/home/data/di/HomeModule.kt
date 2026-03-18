@@ -3,14 +3,11 @@ package com.jorgesanaguaray.fakesocialnetwork.home.data.di
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.repository.PostRepository
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.repository.UserRepository
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.GetCurrentUserIdUseCase
-import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.DeletePostByIdUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetCurrentUserByIdUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetOtherPostsUseCase
-import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetPostByIdUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetSearchedUsersUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.ObserveCurrentUserPostsUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.ObserveCurrentUserByIdUseCase
-import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.UpdatePostUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.UpdateUserUseCase
 import dagger.Module
 import dagger.Provides
@@ -50,24 +47,6 @@ object HomeModule {
     @Singleton
     fun provideObserveCurrentUserPostsUseCase(repository: PostRepository, useCase: GetCurrentUserIdUseCase): ObserveCurrentUserPostsUseCase {
         return ObserveCurrentUserPostsUseCase(repository, useCase)
-    }
-
-    @Provides
-    @Singleton
-    fun provideGetPostByIdUseCase(repository: PostRepository): GetPostByIdUseCase {
-        return GetPostByIdUseCase(repository)
-    }
-
-    @Provides
-    @Singleton
-    fun provideUpdatePostUseCase(repository: PostRepository): UpdatePostUseCase {
-        return UpdatePostUseCase(repository)
-    }
-
-    @Provides
-    @Singleton
-    fun provideDeletePostByIdUseCase(repository: PostRepository): DeletePostByIdUseCase {
-        return DeletePostByIdUseCase(repository)
     }
 
     @Provides

@@ -27,29 +27,33 @@ class PostEditFragment : Fragment() {
 
     private lateinit var viewModel: PostEditViewModel
     private lateinit var navController: NavController
-
-    private var postId = 0
-    private var date = ""
+    private lateinit var post: Post
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentPostEditBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onStart() {
+        super.onStart()
 
         viewModel = ViewModelProvider(this).get()
         navController = findNavController()
+        viewModel.getPostById(arguments?.getInt(KEY_POST_ID)!!)
 
-        postId = arguments?.getInt(KEY_POST_ID)!!
+    }
 
-        viewModel.getPostById(postId)
+    override fun onResume() {
+        super.onResume()
+
+        // Hide Bottom Navigation View
+        val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.mBottomNavigationView)
+        bottomNavigationView?.visibility = View.GONE
 
         viewModel.post.observe(viewLifecycleOwner) { post ->
 
             if (post != null) {
-                date = post.date
+                this.post = post
                 setUpViews(post)
             }
 
@@ -66,15 +70,6 @@ class PostEditFragment : Fragment() {
         binding.mDelete.setOnClickListener {
             deletePost()
         }
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        // Hide Bottom Navigation View
-        val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.mBottomNavigationView)
-        bottomNavigationView?.visibility = View.GONE
 
     }
 
@@ -112,10 +107,10 @@ class PostEditFragment : Fragment() {
     private fun updatePost() {
 
         val post = Post(
-            id = postId,
+            id = post.id,
             description = binding.mEditTextDescription.text.toString().trim(),
             image = binding.mEditTextImageLink.text.toString().trim(),
-            date = date,
+            date = post.date,
             userId = viewModel.getCurrentUserId()
         )
 
@@ -126,7 +121,7 @@ class PostEditFragment : Fragment() {
     }
 
     private fun deletePost() {
-        viewModel.deletePostById(postId)
+        viewModel.deletePostById(post.id!!)
         navController.navigateUp()
         Toast.makeText(context, resources.getString(R.string.post_deleted), Toast.LENGTH_SHORT).show()
     }

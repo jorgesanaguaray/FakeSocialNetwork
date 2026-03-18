@@ -5,10 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.models.Post
+import com.jorgesanaguaray.fakesocialnetwork.core.domain.repository.PostRepository
 import com.jorgesanaguaray.fakesocialnetwork.core.domain.usecases.GetCurrentUserIdUseCase
-import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.DeletePostByIdUseCase
-import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetPostByIdUseCase
-import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.UpdatePostUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,9 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PostEditViewModel @Inject constructor(
     private val getCurrentUserIdUseCase: GetCurrentUserIdUseCase,
-    private val getPostByIdUseCase: GetPostByIdUseCase,
-    private val updatePostUseCase: UpdatePostUseCase,
-    private val deletePostByIdUseCase: DeletePostByIdUseCase
+    private val repository: PostRepository
 ) : ViewModel() {
 
     private val _post = MutableLiveData<Post?>()
@@ -35,7 +31,7 @@ class PostEditViewModel @Inject constructor(
     fun getPostById(id: Int) {
 
         viewModelScope.launch {
-            _post.value = getPostByIdUseCase(id)
+            _post.value = repository.getPostById(id)
         }
 
     }
@@ -43,7 +39,7 @@ class PostEditViewModel @Inject constructor(
     fun updatePost(post: Post) {
 
         viewModelScope.launch {
-            updatePostUseCase(post)
+            repository.updatePost(post)
         }
 
     }
@@ -51,7 +47,7 @@ class PostEditViewModel @Inject constructor(
     fun deletePostById(id: Int) {
 
         viewModelScope.launch {
-            deletePostByIdUseCase(id)
+            repository.deletePostById(id)
         }
 
     }
