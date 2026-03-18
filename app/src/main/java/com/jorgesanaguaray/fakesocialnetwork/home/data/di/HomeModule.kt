@@ -8,7 +8,6 @@ import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetCurrentUser
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetOtherPostsUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetPostByIdUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.GetSearchedUsersUseCase
-import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.InsertPostUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.ObserveCurrentUserPostsUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.ObserveCurrentUserByIdUseCase
 import com.jorgesanaguaray.fakesocialnetwork.home.domain.usecases.UpdatePostUseCase
@@ -51,12 +50,6 @@ object HomeModule {
     @Singleton
     fun provideObserveCurrentUserPostsUseCase(repository: PostRepository, useCase: GetCurrentUserIdUseCase): ObserveCurrentUserPostsUseCase {
         return ObserveCurrentUserPostsUseCase(repository, useCase)
-    }
-
-    @Provides
-    @Singleton
-    fun provideInsertPostUseCase(repository: PostRepository): InsertPostUseCase {
-        return InsertPostUseCase(repository)
     }
 
     @Provides
