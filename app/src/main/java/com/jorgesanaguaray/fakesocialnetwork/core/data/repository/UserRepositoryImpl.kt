@@ -12,10 +12,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 
+/**
+ * Created by Jorge Sanaguaray
+ */
+
 class UserRepositoryImpl(
     private val userDao: UserDao,
     private val sharedPreferences: SharedPreferences
-): UserRepository {
+) : UserRepository {
 
     override suspend fun insertUser(user: User) {
         userDao.insertUser(user.toDatabase())
@@ -26,7 +30,9 @@ class UserRepositoryImpl(
     }
 
     override suspend fun getUsers(): List<User> {
-        return userDao.getUsers().map { it.toDomain() }
+        return userDao.getUsers().map {
+            it.toDomain()
+        }
     }
 
     override fun observeUserById(id: Int): Flow<User> {
@@ -39,14 +45,19 @@ class UserRepositoryImpl(
         return userDao.getUserById(id).toDomain()
     }
 
-    override suspend fun getUserByUsername(username: String): User {
-        return userDao.getUserByUsername(username)!!.toDomain()
+    override suspend fun getUserByUsername(username: String): User? {
+        return userDao.getUserByUsername(username)?.toDomain()
     }
 
     override suspend fun getUserByUsernameAndPassword(username: String, password: String): Result<User> {
 
         return try {
-            Result.success(userDao.getUserByUsernameAndPassword(username, password)!!.toDomain())
+            val userEntity = userDao.getUserByUsernameAndPassword(username, password)
+            if (userEntity != null) {
+                Result.success(userEntity.toDomain())
+            } else {
+                Result.failure(Exception("User not found"))
+            }
         } catch (e: Exception) {
             Result.failure(e)
         }
@@ -61,8 +72,7 @@ class UserRepositoryImpl(
             userEntity = userDao.getUserByUsernameAndPassword(username, password)
         }
 
-        if (userEntity != null) return true
-        return false
+        return userEntity != null
 
     }
 
